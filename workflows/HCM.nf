@@ -22,8 +22,9 @@ include {R_R2_and_logistic_and_quantile_compare}from '../modules/local/R_R2_and_
 // #### UKBB input files ####
 
 genotype_chr_files = Channel
-    .fromFilePairs("$geno_input_dir/c*_b0*.{bgen,sample}", flat: true, checkIfExists: true)
+    .fromFilePairs("$geno_input_dir/*c*_b0*.{bgen,sample}", flat: true, checkIfExists: true)
     .map{ it-> [it[1],it[2]] }
+genotype_chr_files.view()
 
 UKBBethinicityRelatedness = Channel.fromPath( './input/biobank/EIDs_nonBritIrish_includingsecondary_or_related_over_king125.tsv' , checkIfExists: true)
 HCM_UKBB_pheno =    Channel.fromPath("./input/biobank/HCM.pheno", checkIfExists: true)
