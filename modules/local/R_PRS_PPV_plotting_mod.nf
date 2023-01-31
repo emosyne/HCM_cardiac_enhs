@@ -1,6 +1,6 @@
 process R_PRS_PPV_plotting {
     // debug true
-    container 'emosyne/r_docker:1.92'
+    container 'emosyne/r_docker:1.94'
     // container 'emosyne/simpler:1.1' does not work here
     label 'process_low'
     tag "$EP_list"

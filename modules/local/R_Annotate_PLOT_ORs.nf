@@ -1,6 +1,6 @@
 process R_Annotate_PLOT_ORs {
     // debug true
-    container 'emosyne/r_docker:1.92'
+    container 'emosyne/r_docker:1.94'
     // stageInMode 'copy'
     label 'process_high'
     tag "$EP_list"

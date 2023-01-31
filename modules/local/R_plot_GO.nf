@@ -1,6 +1,6 @@
 process R_plot_GO {
     // debug true
-    container 'emosyne/r_docker:1.92'
+    container 'emosyne/r_docker:1.94'
     label 'process_low'
     tag "$EP_list"
     cache "lenient"

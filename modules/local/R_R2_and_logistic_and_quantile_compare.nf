@@ -1,6 +1,6 @@
 process R_R2_and_logistic_and_quantile_compare {
     // debug true
-    container 'emosyne/r_docker:1.92'
+    container 'emosyne/r_docker:1.94'
     label 'process_mid'
     tag "$cohort_ENHpart"
     cache "lenient"

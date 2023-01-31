@@ -1,7 +1,7 @@
 process extract_GWAS_SNPs_fromBedFiles {
     // debug true
     maxForks 2
-    container 'emosyne/r_docker:1.92'
+    container 'emosyne/r_docker:1.94'
     // container 'emosyne/simpler:1.1'
     label 'process_high_resource_short'
     // tag "$meta"

@@ -1,6 +1,6 @@
 process R_forest_by_SNP_by_sample {
     // debug true
-    container 'emosyne/r_docker:1.92'
+    container 'emosyne/r_docker:1.94'
     stageInMode 'copy'
     label 'process_low'
     // tag "$meta"
