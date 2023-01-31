@@ -9,13 +9,13 @@ process R_PRS_QC {
 
 
     input: 
-    ////[celso, celso.prune.in, celso.het, daner_PGC_SCZ_w3_76_0518d_eur.nocelso.gz, /home/osimoe/PGC_w3_data/celso]
-    tuple val(cohort), path (prune), path (het), path(LOO_GWAS), path(cohort_dir)
+    ////// [celso, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/0e/ce0ddf79c4e1e43923154fa08368cc/celso.prune.in, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/0e/ce0ddf79c4e1e43923154fa08368cc/celso.het, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/c4/f0be9b4b466c6063bbb943a07381f8/celso, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/c4/f0be9b4b466c6063bbb943a07381f8/celso_GWAS_QC.gz]
+    tuple val(cohort), path (prune), path (het), path(cohort_dir), path(LOO_GWAS_QC)
     
     
 
     output:
-    tuple val(cohort), path ("*_het_valid_out_vs_LOO_GWAS*.sample"), path("*_a1_cohort_bim_vs_LOO_GWAS*"), path("*_mismatching_SNPs_vs_LOO_GWAS*"),  emit: QC_het_a1_mismatch
+    tuple val(cohort), path(cohort_dir), path ("*_het_valid_out_vs_LOO_GWAS*.sample"), path("*_a1_cohort_bim_vs_LOO_GWAS*"), path("*_mismatching_SNPs_vs_LOO_GWAS*"),  emit: QC_het_a1_mismatch
     // path("*fullGWAS_merged_with_EP_lists_vs_UKBB_annotated_mismatching.csv")    
 
     
@@ -23,7 +23,7 @@ process R_PRS_QC {
     """
     bimfile="${cohort_dir}/imputed/hardcall_genotypes/*.bgn.bim"
 
-    R_PRS_QC2.R ${het} \$bimfile ${LOO_GWAS}  ${cohort}
+    R_PRS_QC2.R ${het} \$bimfile ${LOO_GWAS_QC}  ${cohort}
     
     """
 }

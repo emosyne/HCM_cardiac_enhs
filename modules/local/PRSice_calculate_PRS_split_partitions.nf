@@ -50,6 +50,7 @@ process PRSice_calculate_PRS_split_partitions {
         --base ${clumped_TS_ENH_GWAS_compartment} \\
         --target ${cohort_bed_QC.simpleName} \\
         --no-clump  \\
+        --keep-ambig \\
         --quantile 10 --quant-ref 1 \\
         --bar-levels 0.001,0.05,0.1,0.2,0.3,0.4,0.5,1 \\
         --lower 5e-08 \\
@@ -67,6 +68,7 @@ process PRSice_calculate_PRS_split_partitions {
         --base ${clumped_TS_ENH_GWAS_compartment} \\
         --target ${cohort_bed_QC.simpleName} \\
         --no-clump  \\
+        --keep-ambig \\
         --quantile 10 --quant-ref 1 \\
         --bar-levels 0.001,0.05,0.1,0.2,0.3,0.4,0.5,1 \\
         --lower 5e-08 \\
@@ -84,6 +86,7 @@ process PRSice_calculate_PRS_split_partitions {
         --base ${clumped_TS_ENH_GWAS_compartment} \\
         --target ${cohort_bed_QC.simpleName} \\
         --no-clump  \\
+        --keep-ambig \\
         --quantile 10 --quant-ref 1 \\
         --bar-levels 0.001,0.05,0.1,0.2,0.3,0.4,0.5,1 \\
         --lower 5e-08 \\
@@ -100,6 +103,7 @@ process PRSice_calculate_PRS_split_partitions {
         --base ${clumped_residual_GWAS_compartment} \\
         --target ${cohort_bed_QC.simpleName} \\
         --no-clump  \\
+        --keep-ambig \\
         --quantile 10 --quant-ref 1 \\
         --bar-levels 0.001,0.05,0.1,0.2,0.3,0.4,0.5,1 \\
         --lower 5e-08 \\
@@ -118,6 +122,7 @@ process PRSice_calculate_PRS_split_partitions {
         --snp SNP --chr CHR --bp POS --A1 A1 --A2 A2 --pvalue P --stat OR --or \\
         --target ${cohort_bed_QC.simpleName} \\
         --no-clump  \\
+        --keep-ambig \\
         --quantile 10 --quant-ref 1 \\
         --bar-levels 0.001,0.05,0.1,0.2,0.3,0.4,0.5,1 \\
         --lower 5e-08 \\
@@ -136,6 +141,7 @@ process PRSice_calculate_PRS_split_partitions {
         --ld ${LD_ref_bed.baseName} \\
         --clump-p 1 \\
         --clump-kb 500 --clump-r2 0.1 \\
+        --keep-ambig \\
         --quantile 10 --quant-ref 1 \\
         --bar-levels 0.001,0.05,0.1,0.2,0.3,0.4,0.5,1 \\
         --lower 5e-08 \\

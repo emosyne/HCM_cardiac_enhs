@@ -316,8 +316,9 @@ CoD_per_SNP
 
 
 (df_plot<- data.frame(
-  partition=c(factor(c("0","1","2","3","3b","3c","4","4b","4c"))),
-  partition_name= factor(c("0-original_GWAS",
+  partition=c(factor(c(#"0",
+                      "1","2","3","3b","3c","4","4b","4c"))),
+  partition_name= factor(c(#"0-original_GWAS",
   "1-merged_GWAS",
   "2-residual_GWAS", 
   "3-TS_ENH original_OR",
@@ -327,7 +328,7 @@ CoD_per_SNP
   paste0("4b-residual_GWAS_plus_TS_ENH_OR_by ",modif_name_1),
   paste0("4c-residual_GWAS_plus_TS_ENH_OR_by ",modif_name_2)
 )),
-R2=c(original_GWAS_logistic_model_R2,
+R2=c(#original_GWAS_logistic_model_R2,
   merged_GWAS_logistic_model_R2, #1
   residual_GWAS_compart_logistic_model_R2,#2 
   TS_ENH_originalOR_compart_logistic_model_R2, #3

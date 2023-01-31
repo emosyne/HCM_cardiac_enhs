@@ -8,13 +8,15 @@ process R_split_lists {
     
 
     input:
-    // tuple val(cohort), path (LOO_GWAS),  path(cohort_dir), val(ENH_list), path(PGC_noclump_TS_ENH_GWAS_compartment),  path(PGC_noclump_residual_GWAS_compartment), path("*_PGC_clumped_SNPs.clumped"), emit: clumped_SNPs_and_noclump_lists
-    tuple val(cohort), path (LOO_GWAS),  val(ENH_list), path(noclump_TS_ENH_GWAS_compartment),  path(noclump_residual_GWAS_compartment),  path(clumped_SNPs)
+    //[celso, celso_GWAS_QC.gz, NEURAL_8k_GRB_significant_EPs, 
+        // celso_NEURAL_8k_GRB_significant_EPs_PGC__noclump_TS_ENH_GWAS_compartment.tsv.gz, celso_NEURAL_8k_GRB_significant_EPs_PGC__noclump_residual_GWAS_compartment.tsv.gz, celso_PGC_clumped_SNPs.clumped]
+    tuple val(cohort), path (LOO_GWAS_QC),  val(ENH_list), \
+        path(noclump_TS_ENH_GWAS_compartment),  path(noclump_residual_GWAS_compartment),  path(clumped_SNPs)
     each path(EP_ES_gene_brain_exp)
 
 
     output:
-    tuple val(cohort), path (LOO_GWAS),  val(ENH_list), path("*_clumped_TS_ENH_GWAS_compartment.tsv.gz"), path("*_clumped_residual_GWAS_compartment.tsv.gz"), path("*_clumped_merged_GWAS.tsv.gz"),       emit: partitioned
+    tuple val(cohort), path (LOO_GWAS_QC),  val(ENH_list), path("*_clumped_TS_ENH_GWAS_compartment.tsv.gz"), path("*_clumped_residual_GWAS_compartment.tsv.gz"), path("*_clumped_merged_GWAS.tsv.gz"),       emit: partitioned
     
     
     

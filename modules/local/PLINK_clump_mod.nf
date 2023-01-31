@@ -7,12 +7,12 @@ process PLINK_clump {
 
     input:
    //  tuple tuple val(cohort), path (LOO_GWAS),  path(cohort_dir), val(ENH_list), path("*_PGC__noclump_TS_ENH_GWAS_compartment.tsv.gz"), path("*_PGC__noclump_residual_GWAS_compartment.tsv.gz"), emit: lists_before_clump
-    tuple val(cohort), path (LOO_GWAS), val(ENH_list), path(PGC_noclump_TS_ENH_GWAS_compartment),  path(PGC_noclump_residual_GWAS_compartment), path(LD_ref_bed), path(LD_ref_bim), path(LD_ref_fam)
+    tuple val(cohort), path (LOO_GWAS_QC), val(ENH_list), path(PGC_noclump_TS_ENH_GWAS_compartment),  path(PGC_noclump_residual_GWAS_compartment), path(LD_ref_bed), path(LD_ref_bim), path(LD_ref_fam)
 
 
 
     output:
-    tuple val(cohort), path (LOO_GWAS), val(ENH_list), path(PGC_noclump_TS_ENH_GWAS_compartment),  path(PGC_noclump_residual_GWAS_compartment), path("*_PGC_clumped_SNPs.clumped"), emit: clumped_SNPs_and_noclump_lists
+    tuple val(cohort), path (LOO_GWAS_QC), val(ENH_list), path(PGC_noclump_TS_ENH_GWAS_compartment),  path(PGC_noclump_residual_GWAS_compartment), path("*_PGC_clumped_SNPs.clumped"), emit: clumped_SNPs_and_noclump_lists
     path("*.log")
 
 

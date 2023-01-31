@@ -7,10 +7,10 @@ process PLINK_PRODUCE_QC_DATASET {
 
 
     input:
-    tuple val(cohort), path (het_valid), path (a1_bim), path(mismatch), path(LOO_GWAS), path(cohort_dir)
+    tuple val(cohort), path(cohort_dir),  path (het_valid), path (a1_bim), path(mismatch)
 
     output:
-    tuple val(cohort), path ("*.bed"), path ("*.bim"), path ("*.fam"), emit: all_chromosomes_QC
+    tuple val(cohort), path ("*.bed"), path ("*.bim"), path ("*.fam"), emit: target_QC
     path ("*.log")
 
 
@@ -27,6 +27,7 @@ process PLINK_PRODUCE_QC_DATASET {
     plink \\
         --bfile \$bedfile2 \\
         --make-bed \\
+        --maf 0.01 --mac 100 --geno 0.1 --hwe 1e-15 --mind 0.1 \\
         --a1-allele ${a1_bim} \\
         --keep ${het_valid} \\
         --exclude ${mismatch} \\
@@ -37,7 +38,7 @@ process PLINK_PRODUCE_QC_DATASET {
     #remove text before star from IID
     mv ${cohort}_QC.fam ${cohort}_QC.fam.bak
     cat ${cohort}_QC.fam.bak | sed 's/*/1/g' > ${cohort}_QC.fam
-    #< ${cohort}_QC.fam.bak cut -d'*' -f2 > ${cohort}_QC.fam
+    
 
     """
 }
