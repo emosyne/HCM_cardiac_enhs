@@ -15,7 +15,6 @@ print(args[9])
 
 full_PGC_GWAS_hg19 <- fread(file = args[8])
 collected_bed_files_for_enhancers <- read_lines(args[9])
-clumped_GWAS_hg19 <- fread(file = args[10])
 
 
 
@@ -53,14 +52,9 @@ print(head(full_PGC_GWAS_hg19))
 seqlevelsStyle(full_PGC_GWAS_hg19) <- "UCSC"
 (full_PGC_GWAS_overlap_beds = subsetByOverlaps(x = full_PGC_GWAS_hg19, ranges = totalbed, type="any"))
 
-(clumped_GWAS_hg19 = makeGRangesFromDataFrame(clumped_GWAS_hg19, keep.extra.columns = T,
-                                               seqnames.field = "CHR", start.field = "POS", 
-                                               end.field = "POS"))
-seqlevelsStyle(clumped_GWAS_hg19) <- "UCSC"
 
 (SNPs_to_extract = rbind(
-  as_tibble(full_PGC_GWAS_overlap_beds),
-  as_tibble(clumped_GWAS_hg19)
+  as_tibble(full_PGC_GWAS_overlap_beds)
 ))
 
 

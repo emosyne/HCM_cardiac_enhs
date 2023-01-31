@@ -11,7 +11,7 @@ args = commandArgs()
 print(args)
 
     # input:
-    # R_split_lists.R "${cohort}_${ENH_list}" ${clumped_SNPs} ${noclump_residual_GWAS_compartment} ${noclump_TS_ENH_GWAS_compartment} ${EP_ES_gene_brain_exp}
+    # R_split_lists.R "${ENH_list}" ${clumped_SNPs} ${noclump_residual_GWAS_compartment} ${noclump_TS_ENH_GWAS_compartment} ${EP_ES_gene_brain_exp}
 (ENH_list_cohort = args[8])
 clumped_SNPs = args[9]
 noclump_residual_GWAS_compartment = args[10]

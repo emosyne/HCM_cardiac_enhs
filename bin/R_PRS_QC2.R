@@ -7,19 +7,17 @@ args = commandArgs()
 
 print(args)
 
-#        R_PRS_QC2.R ${het} \$bimfile ${LOO_GWAS}  ${cohort}
-
 
 hetfile = args[8]
-cohort_bimfile = args[9]
-LOO_GWAS = args[10]
+target_bimfile = args[9]
+HCM_GWAS = args[10]
 (cohort = args[11])
 
 #OUTPUT
-het_valid_out = paste0(cohort,"_het_valid_out_vs_LOO_GWAS.sample")
-restranded_recoded_cohort_bim = paste0(cohort,"_a1_cohort_bim_vs_LOO_GWAS")
-mismatching_SNPs = paste0(cohort,"_mismatching_SNPs_vs_LOO_GWAS")
-# annotated_mismatching_file = paste0(cohort,"_LOO_GWAS_vs_UKBB_annotated_mismatching.csv")
+het_valid_out = paste0(cohort,"_het_valid_out_vs_HCM_GWAS.sample")
+restranded_recoded_cohort_bim = paste0(cohort,"_a1_cohort_bim_vs_HCM_GWAS")
+mismatching_SNPs = paste0(cohort,"_mismatching_SNPs_vs_HCM_GWAS")
+# annotated_mismatching_file = paste0(cohort,"_HCM_GWAS_vs_UKBB_annotated_mismatching.csv")
 
 
 #Very high or low heterozygosity rates in individuals could be due to DNA contamination or to high levels of inbreeding. Therefore, samples with extreme heterozygosity are typically removed prior to downstream analyses. 
@@ -44,17 +42,18 @@ fwrite(valid[,c("FID","IID")], het_valid_out, sep="\t")
 ## 1. Load the cohort_bim file, the summary statistic and the QC SNP list into R
 
 # Read in QCed cohort_bim file
-cohort_bim <- read.table(cohort_bimfile)
+cohort_bim <- read.table(target_bimfile)
 colnames(cohort_bim) <- c("CHR", "SNP", "CM", "BP", "B.A1", "B.A2")
 cohort_bim
 # Read in the GWAS data
-             #CHR	SNP	BP	A1	A2	FRQ_A_51393	FRQ_U_75752	INFO	OR	SE	P	ngt	Direction	HetISqt	HetDf	HetPVa	Nca	Nco	Neff
-GWAS <- fread(file=LOO_GWAS, select = c("CHR", "SNP", "BP", "A1", "A2",  "P", "OR"))
-  # read.table(gzfile(LOO_GWAS),
+GWAS <- fread(file=HCM_GWAS, select = c("CHR", "SNP", "POS", "A1", "A2",  "P"))
+GWAS <- GWAS %>% rename(BP=POS)
+
+  # read.table(gzfile(HCM_GWAS),
   #            header = T,
   #            stringsAsFactors = F, 
   #            sep="\t")
-# colnames(GWAS) <- c("CHR", "SNP", "BP", "A1", "A2",  "P", "OR", "tidytype")
+
 
 # Change all alleles to upper case for easy comparison
 GWAS$A1 <- toupper(GWAS$A1)

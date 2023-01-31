@@ -1,4 +1,4 @@
-process input_to_bed_file {
+process extract_GWAS_SNPs_fromBedFiles {
     // debug true
     maxForks 2
     container 'emosyne/r_docker:1.92'
@@ -11,7 +11,6 @@ process input_to_bed_file {
     input:
     path(collected_bed_files_for_enhancers)
     each path(full_GWAS_hg19)
-    each path(clumped_GWAS_hg19)
 
     output:
     path("GWAS_SNPs_in_initial_bed_files.bed"), emit: GWAS_SNPs_in_initial_bed_files
@@ -21,7 +20,7 @@ process input_to_bed_file {
     """
     echo ${collected_bed_files_for_enhancers} | tr ' ' '\\n' > collected_bed_files_for_enhancers.txt
 
-    input_to_bed.R ${full_GWAS_hg19} collected_bed_files_for_enhancers.txt ${clumped_GWAS_hg19}
+    extract_GWAS_SNPs_fromBedFiles.R ${full_GWAS_hg19} collected_bed_files_for_enhancers.txt
     
     """
 }

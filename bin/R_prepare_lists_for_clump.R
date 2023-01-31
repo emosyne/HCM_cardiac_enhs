@@ -16,7 +16,7 @@ setDTthreads( round(nthreads))
 
 (ENH_list = args[9])
 (ENH_bed_file = args[10])
-(LOO_GWAS = args[11])
+(HCM_GWAS = args[11])
 (cohort = args[12])
 
 
@@ -38,17 +38,19 @@ seqlevelsStyle(x = ENH_bed) <- "UCSC"
 #extract GWAS SNPs within ranges
 print("GWAS head")
 # Read in the GWAS data
-             #CHR	SNP	BP	A1	A2	FRQ_A_51393	FRQ_U_75752	INFO	OR	SE	P	ngt	Direction	HetISqt	HetDf	HetPVa	Nca	Nco	Neff
-LOO_GWAS <- fread(file=LOO_GWAS, select = c("CHR", "SNP", "BP", "A1", "A2",  "P", "OR")) %>%
-    dplyr::select(CHR,SNP,POS=BP,A1,A2,P,OR)
-(LOO_GWAS_hg19 = makeGRangesFromDataFrame(LOO_GWAS, keep.extra.columns = T,
+# SNP     A1      A2      Z       N       FRQ     P       POS     CHR     BETA    SE
+(HCM_GWAS <- fread(file=HCM_GWAS, select = c("CHR", "SNP", "POS", "A1", "A2",  "P", "BETA")) %>%
+    dplyr::select(CHR,SNP,POS,A1,A2,P,BETA) %>%
+    mutate(OR=exp(BETA), BETA=NULL)
+    ) 
+(HCM_GWAS_hg19 = makeGRangesFromDataFrame(HCM_GWAS, keep.extra.columns = T,
                                                seqnames.field = "CHR", start.field = "POS", 
                                                end.field = "POS"))
-seqlevelsStyle(LOO_GWAS_hg19) <- "UCSC"
+seqlevelsStyle(HCM_GWAS_hg19) <- "UCSC"
 
 #subset GWAS by bed
 ################################################################################################################ CAN DIVIDE P BY VALUE TO PRIORITISE ENH SNPS ########################################################
-(full_GWAS_overlap_beds = subsetByOverlaps(x = LOO_GWAS_hg19, ranges = ENH_bed, type="any"))
+(full_GWAS_overlap_beds = subsetByOverlaps(x = HCM_GWAS_hg19, ranges = ENH_bed, type="any"))
 (full_GWAS_overlap_beds = as_tibble(full_GWAS_overlap_beds) %>%
   dplyr::select(CHR=seqnames, SNP, POS=start, A1, A2, P, OR) %>%
   dplyr::mutate(P=P/pDivBy)
@@ -61,7 +63,7 @@ fwrite(x= full_GWAS_overlap_beds, file = TS_EPs_outfilename, sep="\t")
 
 #merge annotated_OR_E_Ps and original_base, map to LD blocks, clump, separate 2 lists
 #merge annotated_OR_E_Ps and original_base
-(full_GWAS_NOoverlap_beds = subsetByOverlaps(x = LOO_GWAS_hg19, ranges = ENH_bed, invert = TRUE))
+(full_GWAS_NOoverlap_beds = subsetByOverlaps(x = HCM_GWAS_hg19, ranges = ENH_bed, invert = TRUE))
 (full_GWAS_NOoverlap_beds = as_tibble(full_GWAS_NOoverlap_beds) %>%
   dplyr::select(CHR=seqnames, SNP, POS=start, A1, A2, P, OR))
 
