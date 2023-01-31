@@ -11,7 +11,7 @@ process PLINK_clump {
 
 
     output:
-    tuple val(cohort), path (HCM_GWAS_QC), val(ENH_list), path(PGC_noclump_TS_ENH_GWAS_compartment),  path(PGC_noclump_residual_GWAS_compartment), path("PGC_clumped_SNPs.clumped"), emit: clumped_SNPs_and_noclump_lists
+    tuple path(bed_QC),  path(bim_QC), path(fam_QC), path (HCM_GWAS_QC), val(ENH_list), path(PGC_noclump_TS_ENH_GWAS_compartment),  path(PGC_noclump_residual_GWAS_compartment), path("PGC_clumped_SNPs.clumped"), emit: clumped_SNPs_and_noclump_lists
     path("*.log")
 
 

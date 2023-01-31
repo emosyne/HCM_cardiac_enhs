@@ -38,7 +38,6 @@ LD_reference = Channel.from("bed","bim","fam")
 
 
 full_GWAS_hg19 = Channel
-    // .fromPath("./input/textfiles/fullGWAS_SCZ_PGC3_SCZ_wave3.european.autosome.public.v3_tidy_hg19.tsv.gz", checkIfExists: true) 
     .fromPath("$GWAS_dir/hcm.gwama.sumstats_hg19_24Feb21.gz", checkIfExists: true) 
     // .fromPath("$GWAS_dir/GWASsamplechr122.tsv.gz", checkIfExists: true) 
 
@@ -169,13 +168,13 @@ workflow HCM {
         .view()
     // 
 
-    // PLINK_clump (
-    //     //CLUMPING of enhancer-based SNP compartments together 
-    //     R_prepare_lists_for_clump.out.lists_before_clump
-    //         .combine(LD_reference)
-    // )
-    // // PLINK_clump.out.clumped_SNPs_and_noclump_lists
-    // //     .view()
+    PLINK_clump (
+        //CLUMPING of enhancer-based SNP compartments together 
+        R_prepare_lists_for_clump.out.lists_before_clump
+            .combine(LD_reference)
+    )
+    // PLINK_clump.out.clumped_SNPs_and_noclump_lists
+    //     .view()
     // // [celso, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/a1/90c446ff1933f735dc31ec989df901/celso_GWAS_QC.gz, NEURAL_8k_GRB_significant_EPs, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/a1/90c446ff1933f735dc31ec989df901/celso_NEURAL_8k_GRB_significant_EPs_PGC__noclump_TS_ENH_GWAS_compartment.tsv.gz, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/a1/90c446ff1933f735dc31ec989df901/celso_NEURAL_8k_GRB_significant_EPs_PGC__noclump_residual_GWAS_compartment.tsv.gz, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/a1/90c446ff1933f735dc31ec989df901/celso_PGC_clumped_SNPs.clumped]
     // // [celso, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/95/93aeae17e1e7b3b5df6b320b5c8064/celso_GWAS_QC.gz, notNeural_20k_100flank_noInternalOverlap, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/95/93aeae17e1e7b3b5df6b320b5c8064/celso_notNeural_20k_100flank_noInternalOverlap_PGC__noclump_TS_ENH_GWAS_compartment.tsv.gz, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/95/93aeae17e1e7b3b5df6b320b5c8064/celso_notNeural_20k_100flank_noInternalOverlap_PGC__noclump_residual_GWAS_compartment.tsv.gz, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/95/93aeae17e1e7b3b5df6b320b5c8064/celso_PGC_clumped_SNPs.clumped]
     // // [celso, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/54/65433ffc2328c2dec9fe2a5be9431c/celso_GWAS_QC.gz, NEURAL_14k_noGRB_significant_EPs, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/54/65433ffc2328c2dec9fe2a5be9431c/celso_NEURAL_14k_noGRB_significant_EPs_PGC__noclump_TS_ENH_GWAS_compartment.tsv.gz, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/54/65433ffc2328c2dec9fe2a5be9431c/celso_NEURAL_14k_noGRB_significant_EPs_PGC__noclump_residual_GWAS_compartment.tsv.gz, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/54/65433ffc2328c2dec9fe2a5be9431c/celso_PGC_clumped_SNPs.clumped]
