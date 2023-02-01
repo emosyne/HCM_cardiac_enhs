@@ -21,7 +21,7 @@ print(args)
 #     ${residual_GWAS_compartment_summary} ${residual_GWAS_compartment_best}\
 #     ${merged_GWAS_summary} ${merged_GWAS_best}\
 #     ${TS_ENH_GWAS_compartment_originalOR_prsice} ${TS_ENH_GWAS_compartment_OR_by_measure1_prsice} ${TS_ENH_GWAS_compartment_OR_by_measure2_prsice} ${residual_GWAS_compartment_prsice} ${merged_GWAS_prsice}  \
-#     ${original_HCM_GWAS_summary} ${original_HCM_GWAS_prsice} ${original_HCM_GWAS_best}\
+#     ${original_LOO_GWAS_summary} ${original_LOO_GWAS_prsice} ${original_LOO_GWAS_best}\
 #     ${modif_name_1} ${modif_name_2}
 nthreads = as.numeric(args[8])
 #set max CPU processes
@@ -64,10 +64,10 @@ TS_ENH_GWAS_compartment_OR_by_measure2_prsice = args[23]
 residual_GWAS_compartment_prsice = args[24]
 merged_GWAS_prsice = args[25]
 
-original_HCM_GWAS_summary = args[26]
-original_HCM_GWAS_prsice = args[27]
-(original_HCM_GWAS_best = fread(args[28], select=c("FID", "IID", "PRS"))  %>% 
-  dplyr::rename(original_HCM_GWAS_best_PRS = PRS))
+original_LOO_GWAS_summary = args[26]
+original_LOO_GWAS_prsice = args[27]
+(original_LOO_GWAS_best = fread(args[28], select=c("FID", "IID", "PRS"))  %>% 
+  dplyr::rename(original_LOO_GWAS_best_PRS = PRS))
 
 modif_name_1 = args[29]
 modif_name_2 = args[30]
@@ -81,7 +81,7 @@ PRS_comparison_figure_path = paste0(cohort_ENHpart, "_", modif_name_1,"_", modif
 # CoD_per_SNP_plot = paste0(cohort_ENHpart, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_CoD_per_snp_plot.pdf")
 CoD_per_SNP_plot_scaled= paste0(cohort_ENHpart, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_scaled_CoD_per_snp_plot.pdf")
 
-number_quantiles = 3
+number_quantiles = 5
 
 
 r_color <- colors()
@@ -101,8 +101,8 @@ r_color <- colors()
         data.frame(fread(residual_GWAS_compartment_summary, select=c("Threshold", "PRS.R2","Num_SNP"))),#"PRS.R2.adj",
       "merged_GWAS_summary"=
         data.frame(fread(merged_GWAS_summary, select=c("Threshold", "PRS.R2","Num_SNP"))),#"PRS.R2.adj",
-      "original_HCM_GWAS_summary"=
-        data.frame(fread(original_HCM_GWAS_summary, select=c("Threshold", "PRS.R2","Num_SNP")))#"PRS.R2.adj",
+      "original_LOO_GWAS_summary"=
+        data.frame(fread(original_LOO_GWAS_summary, select=c("Threshold", "PRS.R2","Num_SNP")))#"PRS.R2.adj",
     ) %>%  rownames_to_column(var = "compartment"))
 
 
@@ -114,7 +114,7 @@ r_color <- colors()
     left_join(TS_ENH_GWAS_compartment_OR_by_measure2_best) %>%
     left_join(residual_GWAS_compartment_best) %>%
     left_join(merged_GWAS_best) %>%
-    left_join(original_HCM_GWAS_best) %>%
+    left_join(original_LOO_GWAS_best) %>%
     left_join(diagnosis) %>%
     mutate(dx=factor(dx), IID=factor(IID)) %>%
     select(-FID) %>%
@@ -135,7 +135,7 @@ head(scaled_BEST_PRS_score_per_UKBB_participant)
     remove_missing() %>% 
     #generate quantiles
     mutate(original_GWAS_q = 
-             factor(ntile(original_HCM_GWAS_best_PRS, n = number_quantiles))) %>% 
+             factor(ntile(original_LOO_GWAS_best_PRS, n = number_quantiles))) %>% 
     mutate(merged_GWAS_q = 
              factor(ntile(merged_GWAS_best_PRS, n = number_quantiles))) %>% 
     mutate(residual_GWAS_compartment_q = 
@@ -187,10 +187,10 @@ summary_table
 
 sink(analysis_output_txt)
 ## original_GWAS
-(original_GWAS_logistic_model <- lrm(dx ~ original_HCM_GWAS_best_PRS, 
+(original_GWAS_logistic_model <- lrm(dx ~ original_LOO_GWAS_best_PRS, 
                                      data = scaled_BEST_PRS_score_per_UKBB_participant))
 #logistic model
-pmv = glm(dx ~ original_HCM_GWAS_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_participant,family = binomial(probit)) #probit model
+pmv = glm(dx ~ original_LOO_GWAS_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_participant,family = binomial(probit)) #probit model
 # R2 on the liability scale using the transformation
 (R2O = var(pmv$fitted.values)/(ncase/nt*ncont/nt))
 #R2 on the observed scale
@@ -198,7 +198,7 @@ pmv = glm(dx ~ original_HCM_GWAS_best_PRS, data = scaled_BEST_PRS_score_per_UKBB
 (CoD_per_SNP = rbind(
   CoD_per_SNP,
   c("0",original_GWAS_logistic_model_R2,
-    summary_table[summary_table$compartment=="original_HCM_GWAS_summary",]$Num_SNP, NA)
+    summary_table[summary_table$compartment=="original_LOO_GWAS_summary",]$Num_SNP, NA)
 ))
 
 
@@ -403,30 +403,10 @@ f3<-grid.arrange(textGrob(paste("Relative number of SNPs, total CoD, and CoD per
                           gp = gpar(fontsize = 7)), 
                  p, 
                  heights = c(0.1, 0.1, 1))
-ggsave(filename = CoD_per_SNP_plot_scaled, f3,  width = 8, height = 7)
+# ggsave(filename = CoD_per_SNP_plot_scaled, f3,  width = 8, height = 7)
 
 
 
-#scaled plot
-scale1 <- function(x) scale(x, center = F)[,1]
-p <- df_plot%>% 
-  mutate(scaled_CoD = R2, scaled_N = Num_SNP, scaled_CoD_per_SNP = CoD_per_SNP) %>% 
-  mutate_at(vars(contains("scaled")), scale1) %>% drop_na() %>% 
-  dplyr::select("partition","scaled_CoD","scaled_N","scaled_CoD_per_SNP") %>% 
-  pivot_longer(!partition) %>% 
-  ggplot(aes(y=value, fill=name, x=addline_format(partition))) + geom_col(position = "dodge") +
-  scale_fill_brewer(name="",palette="Set1")+
-  coord_flip()+theme_minimal()+
-  xlab("") +  ylab("")+
-  theme(legend.position = "bottom",
-        axis.text.y = element_text(lineheight = 0.8, angle = 60,size = rel(0.8)))
-f3<-grid.arrange(textGrob(paste("Relative number of SNPs, total CoD, and CoD per SNP for:", cohort_ENHpart), 
-                      gp = gpar(fontsize = 9, fontface = "bold")), 
-             textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", 
-                      gp = gpar(fontsize = 7)), 
-             p, 
-             heights = c(0.1, 0.1, 1))
-ggsave(filename = CoD_per_SNP_plot_scaled, f3,  width = 8, height = 7)
 
 
 
@@ -451,7 +431,7 @@ original_GWAS_q_OR
 (ORs <- original_GWAS_q_OR)
 ORs[1,]<-list("1",1,1,1)
 ORs[,1]<-list(1:nrow(ORs))
-ORs$original_OR_quant <- paste("all_thresh:",summary_table[summary_table$compartment=="original_HCM_GWAS_summary",c("Threshold")],"_N=", summary_table[summary_table$compartment=="original_HCM_GWAS_summary",c("Num_SNP")])
+ORs$original_OR_quant <- paste("all_thresh:",summary_table[summary_table$compartment=="original_LOO_GWAS_summary",c("Threshold")],"_N=", summary_table[summary_table$compartment=="original_LOO_GWAS_summary",c("Num_SNP")])
 ORs
 
 
@@ -469,7 +449,7 @@ for  (i in 1:number_quantiles) {
   
   ORs_original_OR<-rbind(ORs_original_OR,OR)
 }
-ORs_original_OR$comp=paste0("1-TS_ENH_compartment_originalOR","_thresh_",
+ORs_original_OR$comp=paste0("1-TS_ENH_compartment_originalOR","__thresh_",
                             summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_originalOR_summary",c("Threshold")],
                             "_N=",NROW(scaled_BEST_PRS_score_per_UKBB_participant[scaled_BEST_PRS_score_per_UKBB_participant$TS_ENH_compartment_originalOR_q==i,]))
 ORs_original_OR
@@ -490,7 +470,7 @@ for  (i in 1:number_quantiles) {
   
   ORs_OR_by_ES<-rbind(ORs_OR_by_ES,OR)
 }
-ORs_OR_by_ES$comp=paste0("2-TS_ENH by_",modif_name_1,"_thresh_",
+ORs_OR_by_ES$comp=paste0("2-TS_ENH by_",modif_name_1,"__thresh_",
                          summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_OR_by_measure1_summary",c("Threshold")],
                          "_N=",NROW(scaled_BEST_PRS_score_per_UKBB_participant[scaled_BEST_PRS_score_per_UKBB_participant$TS_ENH_compartment_OR_by_measure1_q==i,]))
 ORs_OR_by_ES
@@ -510,7 +490,7 @@ for  (i in 1:number_quantiles) {
   
   ORs_OR_by_exp<-rbind(ORs_OR_by_exp,OR)
 }
-ORs_OR_by_exp$comp=paste0("3-TS_ENH by_",modif_name_2,"_thresh_",
+ORs_OR_by_exp$comp=paste0("3-TS_ENH by_",modif_name_2,"__thresh_",
                           summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_OR_by_measure2_summary",c("Threshold")],
                           "_N=",NROW(scaled_BEST_PRS_score_per_UKBB_participant[scaled_BEST_PRS_score_per_UKBB_participant$TS_ENH_compartment_OR_by_measure2_q==i,]))
 ORs_OR_by_exp
@@ -544,19 +524,24 @@ ORs_OR_by_exp
 
 
 
-pdf(file = PRS_double_QUANTILE_PLOT, width = 11, height = 7)
-ggplot(data = all_ORs , aes(y= OR, ymin = LCI, ymax=UCI, x=factor(quantile), colour=original_OR_quant, group=original_OR_quant)) + 
-  facet_wrap(facets = vars(comp))+
+# pdf(file = PRS_double_QUANTILE_PLOT, width = 11, height = 7)
+p = ggplot(data = all_ORs , aes(y= OR, ymin = LCI, ymax=UCI, x=factor(quantile), colour=original_OR_quant, group=original_OR_quant)) + 
+  facet_wrap(facets = vars(addline_format(comp)))+
   scale_colour_manual(name="ENH compartment quantile", values = c("tomato","#ccece6", "#99d8c9", "#41ae76","#006d2c", "#00441b",r_color))+
   geom_pointrange(position = position_dodge(width = 0.3))  + 
   ylab("OR for HCM")+   xlab('Original PRS quantile')+
-  labs(title =  paste("Participant distribution by HCM OR by original PGC GWAS quantile\nand further by", cohort_ENHpart, "quantile"))+ 
-  theme(legend.position="bottom", strip.text.x = element_text(size = rel(0.7)))
-dev.off()
+  # labs(title =  paste("Participant distribution by HCM OR by original PGC GWAS quantile\nand further by", cohort_ENHpart, "quantile"))+ 
+  theme_minimal()+theme(legend.position="bottom", strip.text.x = element_text(size = rel(0.7)))
+# dev.off()
+f4<-grid.arrange(textGrob(paste("Participant distribution by HCM OR by original PGC GWAS quantile\nand further by", cohort_ENHpart, "quantile"), 
+                          gp = gpar(fontsize = 9, fontface = "bold")), 
+                #  textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", 
+                #           gp = gpar(fontsize = 7)), 
+                 p, 
+                 heights = c(0.1, 1))
 
 
-
-
+ggsave(filename = CoD_per_SNP_plot_scaled, arrangeGrob(f1, f2, f3, f4, ncol = 2),  width = 17, height = 14)
 
 
 
@@ -567,7 +552,7 @@ dev.off()
 
 
 (original<- cbind(
-  data.table::fread(original_HCM_GWAS_prsice, select=c("Threshold","R2","Num_SNP")),
+  data.table::fread(original_LOO_GWAS_prsice, select=c("Threshold","R2","Num_SNP")),
   dataset="Original GWAS"
 ))
 
