@@ -92,7 +92,8 @@ clumped_TS_ENH_GWAS_compartment$OR_by_measure2 <- ifelse(
 
 
 clumped_TS_ENH_GWAS_compartment <- clumped_TS_ENH_GWAS_compartment %>%
-    dplyr::select(CHR,POS,SNP,A1,A2,P,OR, OR_by_measure1, OR_by_measure2, measure1, measure2)
+    dplyr::select(CHR,POS,SNP,A1,A2,P,OR, OR_by_measure1, OR_by_measure2, measure1, measure2) %>%
+    group_by(SNP) %>% slice_max(OR,with_ties = F) %>% ungroup()
 
 fwrite(x =clumped_TS_ENH_GWAS_compartment , file = clumped_TS_ENH_GWAS_compartment_out, sep="\t", compress="gzip") 
 
@@ -100,14 +101,16 @@ fwrite(x =clumped_TS_ENH_GWAS_compartment , file = clumped_TS_ENH_GWAS_compartme
 #residual compartment
 clumped_residual_GWAS_compartment <- as_tibble(fread(noclump_residual_GWAS_compartment)) %>% dplyr::select("CHR","POS","SNP","A1","A2","P","OR") %>%#CHR	SNP	POS	A1	A2	P	OR
     group_by(SNP) %>% slice_min(P, with_ties=F) %>% ungroup()%>%
-    dplyr::filter(SNP %in% clumped_SNPs$SNP) 
+    dplyr::filter(SNP %in% clumped_SNPs$SNP) %>%
+    group_by(SNP) %>% slice_max(OR,with_ties = F) %>% ungroup()
 
 fwrite(x =clumped_residual_GWAS_compartment , file = clumped_residual_GWAS_compartment_out, sep="\t", compress="gzip")
 
 
 
 #merged compartment
-clumped_merged_GWAS <- rbind(clumped_residual_GWAS_compartment,dplyr::select(clumped_TS_ENH_GWAS_compartment, "CHR","POS","SNP","A1","A2","P","OR")) 
+clumped_merged_GWAS <- rbind(clumped_residual_GWAS_compartment,dplyr::select(clumped_TS_ENH_GWAS_compartment, "CHR","POS","SNP","A1","A2","P","OR")) %>%
+    group_by(SNP) %>% slice_max(OR,with_ties = F) %>% ungroup()
 
 
 
