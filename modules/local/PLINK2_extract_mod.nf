@@ -3,7 +3,7 @@ process PLINK2_EXTRACT {
     label 'process_high_memory'
     // maxForks 1
     tag "${chr_bgenfile.simpleName}"
-    errorStrategy 'ignore' 
+    // errorStrategy 'ignore' 
     container 'emosyne/plink2:1.23'
     cache "lenient"
 

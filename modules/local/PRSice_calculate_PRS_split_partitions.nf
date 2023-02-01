@@ -134,7 +134,7 @@ process PRSice_calculate_PRS_split_partitions {
     PRSice.R \\
         --prsice /usr/local/bin/PRSice_linux \\
         --base ${HCM_GWAS_QC} \\
-        --snp SNP --chr CHR --bp BP --A1 A1 --A2 A2 --pvalue P --stat BETA --beta \\
+        --snp SNP --chr CHR --bp POS --A1 A1 --A2 A2 --pvalue P --stat BETA --beta \\
         --target ${cohort_bed_QC.simpleName} \\
         --ld ${LD_ref_bed.baseName} \\
         --clump-p 1 \\
