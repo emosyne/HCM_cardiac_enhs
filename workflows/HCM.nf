@@ -186,14 +186,14 @@ workflow HCM {
     
     
 
-    // R_split_lists (
-    //     // first annotate SNPs with ES of relevant E-P - for ENH SNP list
-    //     // ##################################################### GENERATE MODIFIED ORS MULT BY ES OR EXP       ###########################################################
-    //     // ##################################################### CAN MULTIPLY P BY VALUE TO RESTORE ENH SNPS P ###########################################################
-    //     // output separate lists to calculate split PRSs and also merged one
-    //     PLINK_clump.out.clumped_SNPs_and_noclump_lists,
-    //     Channel.fromPath( "./input/ES_multipliers/2023-01-18_NEURAL_ENH_EXP_significant_ES_significant_contact_EPs_gene_brain_exp_plus_100_noOverlap.csv.gz", checkIfExists: true)
-    // )
+    R_split_lists (
+        // first annotate SNPs with ES of relevant E-P - for ENH SNP list
+        // ##################################################### GENERATE MODIFIED ORS MULT BY ES OR EXP       ###########################################################
+        // ##################################################### CAN MULTIPLY P BY VALUE TO RESTORE ENH SNPS P ###########################################################
+        // output separate lists to calculate split PRSs and also merged one
+        PLINK_clump.out.clumped_SNPs_and_noclump_lists,
+        Channel.fromPath( "./input/ES_multipliers/2023-01-18_NEURAL_ENH_EXP_significant_ES_significant_contact_EPs_gene_brain_exp_plus_100_noOverlap.csv.gz", checkIfExists: true)
+    )
 
     
     // R_split_lists.out.partitioned//tuple val(cohort), path (HCM_GWAS),  val(ENH_list), path("*_clumped_TS_ENH_GWAS_compartment.tsv.gz"), path("*_clumped_residual_GWAS_compartment.tsv.gz"), path("*_clumped_merged_GWAS.tsv.gz"),       emit: partitioned
