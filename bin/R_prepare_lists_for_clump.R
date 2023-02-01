@@ -21,8 +21,8 @@ setDTthreads( round(nthreads))
 
 
 #OUTPUT
-TS_EPs_outfilename = paste0(cohort, "_", ENH_list, "_PGC__noclump_TS_ENH_GWAS_compartment.tsv.gz")
-residual_GWAS_compartment_outfilename = paste0(cohort, "_", ENH_list, "_PGC__noclump_residual_GWAS_compartment.tsv.gz")
+TS_EPs_outfilename = paste0(cohort, "_", ENH_list, "_noclump_TS_ENH_GWAS_compartment.tsv.gz")
+residual_GWAS_compartment_outfilename = paste0(cohort, "_", ENH_list, "_noclump_residual_GWAS_compartment.tsv.gz")
 
 
 

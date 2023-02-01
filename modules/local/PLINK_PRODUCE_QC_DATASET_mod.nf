@@ -21,7 +21,7 @@ process PLINK_PRODUCE_QC_DATASET {
     plink \\
         --bfile ${bed.simpleName} \\
         --make-bed \\
-        --maf 0.01 --mac 100 --geno 0.1 --hwe 1e-15 --mind 0.1 \\
+        --maf 0.01 --mac 100 --geno 0.1 --hwe 1e-15 \\
         --a1-allele ${a1_bim} \\
         --keep ${het_valid} \\
         --exclude ${mismatch} \\
@@ -32,4 +32,4 @@ process PLINK_PRODUCE_QC_DATASET {
 
     """
 }
-//        
+//        --mind 0.1

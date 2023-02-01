@@ -1,5 +1,5 @@
 process R_prepare_lists_for_clump {
-    debug true
+    // debug true
     errorStrategy 'terminate'
     container 'emosyne/r_docker:1.94'
     // container 'emosyne/simpler:1.1'
@@ -14,7 +14,7 @@ process R_prepare_lists_for_clump {
 
 
     output:
-    tuple path(bed_QC),  path(bim_QC), path(fam_QC), path (HCM_GWAS_QC), val(ENH_list), path(ENH_bed), path("*_PGC__noclump_TS_ENH_GWAS_compartment.tsv.gz"), path("*_PGC__noclump_residual_GWAS_compartment.tsv.gz"), emit: lists_before_clump
+    tuple path(bed_QC),  path(bim_QC), path(fam_QC), path (HCM_GWAS_QC), val(ENH_list), path("*_noclump_TS_ENH_GWAS_compartment.tsv.gz"), path("*_noclump_residual_GWAS_compartment.tsv.gz"), emit: lists_before_clump
 
     
     script:
