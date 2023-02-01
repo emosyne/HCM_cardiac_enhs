@@ -4,7 +4,7 @@ process R_split_lists {
     label 'process_high'
     tag "${ENH_list}"
     cache "lenient"
-    errorStrategy 'ignore'
+    // errorStrategy 'ignore'
     
 
     input:

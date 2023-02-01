@@ -33,20 +33,17 @@ pdivby = 100000
 
 ############################################################ import ES and exp data ############################################################
 #import ES per enh
-#  chr,start,end,enh,score,strand,
-            # log_brain_neuron_FANTOM_enh_tpm_1_4, log_any_tissue_FANTOM_enh_tpm_1_2,
-            # GTEx_log_brain_mean_1_8,
-            # log_max_ES_perEnh_contact_1_3,
-            # maxESperEnh_contact_X_brainTGeneExp_1_21, maxESperEnh_contact_X_brainEnhFantomExp_1_7, maxESperEnh_contact_X_brainEnhFantomExp_X_brainTGeneExp_1_32,
-            # highestES_gene_contact_ensemblID,
-            # enh_GRB_gal, enh_GRB_mus, numGenes_perEnh_contact,
-            # gene_tau, ENH_with_contact
+#  [1] "chr"                                      "start"                                    "end"                                     
+#  [4] "enh"                                      "score"                                    "strand"                                  
+#  [7] "log_TS_FANTOM_enh_tpm_1_4"                "log_tissue_FANTOM_enh_tpm_1_2"            "log_max_ES_perEnh_contact_1_3"           
+# [10] "maxESperEnh_contact_X_TSEnhFantomExp_1_7" "highestES_gene_contact_ensemblID"         "enh_GRB_gal"                             
+# [13] "enh_GRB_mus"                              "numGenes_perEnh_contact"                  "ENH_with_contact"          
 (EP_ES_gene_brain_exp_info<-fread(EP_ES_gene_brain_exp)%>% 
     ############################################################ SCALE ES         ############################
     # mutate(measure1=scales::rescale(log_max_ES_perEnh_contact_1_3, to=c(1,10))) %>% 
     # elog_max_ES_perEnh_contact_X_10
     mutate(measure1= log_max_ES_perEnh_contact_1_3 * 10)%>%
-    mutate(measure2= log_brain_neuron_FANTOM_enh_tpm_1_4 * 10)%>%
+    mutate(measure2= log_TS_FANTOM_enh_tpm_1_4 * 10)%>%
     # dplyr::filter(brain_exp_more_than_brain_median==1) %>% # N = 28100
     # dplyr::filter(brain_exp_more_than_brain_median==1 & brain_exp_more_than_other_tissues==1) %>% # N = 9176
     # dplyr::filter(brain_exp_tissue_specific==1) %>% # N = 7157
