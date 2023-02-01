@@ -2,7 +2,7 @@ process PRSice_calculate_PRS_split_partitions {
     debug true
     tag "${ENH_list}"
     label 'process_high_memory'
-    clusterOptions "--partition=shared_52c_384g"
+    // clusterOptions "--partition=shared_52c_384g"
     container 'emosyne/prsice_gwama_exec:1.0'
     cache "lenient"
     // maxForks 5
