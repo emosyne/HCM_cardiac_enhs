@@ -201,30 +201,30 @@ workflow HCM {
         .combine(LD_reference)
         .set{combined_splitlists_bedfile_QCeddata_LDdata}
     
-    combined_splitlists_bedfile_QCeddata_LDdata.view()
-    // [clz2a, daner_PGC_SCZ_w3_76_0518d_eur.noclz2a.gz, PsychENCODE_DER_03b_PFC_enhancers_18k_100flank_noInternalOverlap, clz2a_PsychENCODE_DER_03b_PFC_enhancers_18k_100flank_noInternalOverlap_clumped_TS_ENH_GWAS_compartment.tsv.gz, clz2a_PsychENCODE_DER_03b_PFC_enhancers_18k_100flank_noInternalOverlap_clumped_residual_GWAS_compartment.tsv.gz, clz2a_PsychENCODE_DER_03b_PFC_enhancers_18k_100flank_noInternalOverlap_clumped_merged_GWAS.tsv.gz, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/f0/c7b8deb7b44c89970443f95440e801/clz2a_QC.bed, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/f0/c7b8deb7b44c89970443f95440e801/clz2a_QC.bim, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/f0/c7b8deb7b44c89970443f95440e801/clz2a_QC.fam, /home/osimoe/PGC_w3_data/clz2a, /home/osimoe/project/LD_ref/EUR_phase3_autosomes_hg19.bed, /home/osimoe/project/LD_ref/EUR_phase3_autosomes_hg19.bim, /home/osimoe/project/LD_ref/EUR_phase3_autosomes_hg19.fam]
+    // combined_splitlists_bedfile_QCeddata_LDdata.view()
+    // [GWAS_ENH_SNPs_hg19_ALLCHR_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, GWAS_QC.gz, 6k_CARDIAC_NoFibro_significant_noGRB, 6k_CARDIAC_NoFibro_significant_noGRB_clumped_TS_ENH_GWAS_compartment.tsv.gz, 6k_CARDIAC_NoFibro_significant_noGRB_clumped_residual_GWAS_compartment.tsv.gz, 6k_CARDIAC_NoFibro_significant_noGRB_clumped_merged_GWAS.tsv.gz, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/input/biobank/non_missing_10PCs_Jun22.covariate.gz, /Users/eosimo/large_files_not_to_back_up/LD_ref/EUR_phase3_autosomes_hg19.bed, /Users/eosimo/large_files_not_to_back_up/LD_ref/EUR_phase3_autosomes_hg19.bim, /Users/eosimo/large_files_not_to_back_up/LD_ref/EUR_phase3_autosomes_hg19.fam]
                 
     
-    // PRSice_calculate_PRS_split_partitions(
-    //     combined_splitlists_bedfile_QCeddata_LDdata
-    // )
+    PRSice_calculate_PRS_split_partitions(
+        combined_splitlists_bedfile_QCeddata_LDdata
+    )
     
-    // // ########################################### CHANGE NAMES OF MULTIPLIERS ###########################################
-    // PRS_results = 
-    //     PRSice_calculate_PRS_split_partitions.out.clumped_TS_ENH_GWAS_compartment_PRS
-    //         .join(PRSice_calculate_PRS_split_partitions.out.clumped_residual_GWAS_compartment_PRS)
-    //         .join(PRSice_calculate_PRS_split_partitions.out.clumped_merged_GWAS_PRS)
-    //         .join(PRSice_calculate_PRS_split_partitions.out.clumped_original_HCM_GWAS_PRS)
-    //         .map { [it, "e_log_OR_X__log_max_ES_perEnh_contact_X_10",
-    //                     "e_log_OR_X__log_neuron_FANTOM_enh_tpm_1_4_X10"].flatten() }
+    // ########################################### CHANGE NAMES OF MULTIPLIERS ###########################################
+    PRS_results = 
+        PRSice_calculate_PRS_split_partitions.out.clumped_TS_ENH_GWAS_compartment_PRS
+            .join(PRSice_calculate_PRS_split_partitions.out.clumped_residual_GWAS_compartment_PRS)
+            .join(PRSice_calculate_PRS_split_partitions.out.clumped_merged_GWAS_PRS)
+            .join(PRSice_calculate_PRS_split_partitions.out.clumped_original_HCM_GWAS_PRS)
+            .map { [it, "e_log_OR_X__log_max_ES_perSigEnh__X_10",
+                        "e_log_OR_X__log_cardiac_FANTOM_enh_tpm__X_10"].flatten() }
 
 
-    // // PRS_results.view()
-    // // [celso_ALL_BRAIN_EPs_1569, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/28/c71a646089a6bd625df05cc916f4ce/celso_ALL_BRAIN_EPs_1569_clumped_TS_ENH_GWAS_compartment_OR_by_measure1.summary, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/28/c71a646089a6bd625df05cc916f4ce/celso_ALL_BRAIN_EPs_1569_clumped_TS_ENH_GWAS_compartment_OR_by_measure2.summary, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/28/c71a646089a6bd625df05cc916f4ce/celso_ALL_BRAIN_EPs_1569_clumped_TS_ENH_GWAS_compartment_originalOR.summary, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/28/c71a646089a6bd625df05cc916f4ce/celso_ALL_BRAIN_EPs_1569_clumped_TS_ENH_GWAS_compartment_OR_by_measure1.prsice, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/28/c71a646089a6bd625df05cc916f4ce/celso_ALL_BRAIN_EPs_1569_clumped_TS_ENH_GWAS_compartment_OR_by_measure2.prsice, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/28/c71a646089a6bd625df05cc916f4ce/celso_ALL_BRAIN_EPs_1569_clumped_TS_ENH_GWAS_compartment_originalOR.prsice, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/28/c71a646089a6bd625df05cc916f4ce/celso_ALL_BRAIN_EPs_1569_clumped_TS_ENH_GWAS_compartment_OR_by_measure1.best, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/28/c71a646089a6bd625df05cc916f4ce/celso_ALL_BRAIN_EPs_1569_clumped_TS_ENH_GWAS_compartment_OR_by_measure2.best, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/28/c71a646089a6bd625df05cc916f4ce/celso_ALL_BRAIN_EPs_1569_clumped_TS_ENH_GWAS_compartment_originalOR.best, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/28/c71a646089a6bd625df05cc916f4ce/celso_ALL_BRAIN_EPs_1569_clumped_residual_GWAS_compartment.summary, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/28/c71a646089a6bd625df05cc916f4ce/celso_ALL_BRAIN_EPs_1569_clumped_residual_GWAS_compartment.prsice, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/28/c71a646089a6bd625df05cc916f4ce/celso_ALL_BRAIN_EPs_1569_clumped_residual_GWAS_compartment.best, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/28/c71a646089a6bd625df05cc916f4ce/celso_ALL_BRAIN_EPs_1569_clumped_merged_GWAS.summary, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/28/c71a646089a6bd625df05cc916f4ce/celso_ALL_BRAIN_EPs_1569_clumped_merged_GWAS.prsice, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/28/c71a646089a6bd625df05cc916f4ce/celso_ALL_BRAIN_EPs_1569_clumped_merged_GWAS.best, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/28/c71a646089a6bd625df05cc916f4ce/celso_QC.fam, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/28/c71a646089a6bd625df05cc916f4ce/celso_ALL_BRAIN_EPs_1569_original_HCM_GWAS.summary, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/28/c71a646089a6bd625df05cc916f4ce/celso_ALL_BRAIN_EPs_1569_original_HCM_GWAS.prsice, /project/osimoe/.nextflow/assets/emosyne/lisa_percohort_devel/work/28/c71a646089a6bd625df05cc916f4ce/celso_ALL_BRAIN_EPs_1569_original_HCM_GWAS.best, max_ES_1plus, ES_1plus_X_log_GTEx_geneBrainExp_1plus]
+    PRS_results.view()
     
-    // R_R2_and_logistic_and_quantile_compare (
-    //     PRS_results
-    // )
+    
+    R_R2_and_logistic_and_quantile_compare (
+        PRS_results
+    )
 
 }
 

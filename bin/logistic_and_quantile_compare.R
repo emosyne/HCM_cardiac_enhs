@@ -549,8 +549,8 @@ ggplot(data = all_ORs , aes(y= OR, ymin = LCI, ymax=UCI, x=factor(quantile), col
   facet_wrap(facets = vars(comp))+
   scale_colour_manual(name="ENH compartment quantile", values = c("tomato","#ccece6", "#99d8c9", "#41ae76","#006d2c", "#00441b",r_color))+
   geom_pointrange(position = position_dodge(width = 0.3))  + 
-  ylab("OR for SCZ")+   xlab('Original PRS quantile')+
-  labs(title =  paste("Participant distribution by SCZ OR by original PGC GWAS quantile\nand further by", cohort_ENHpart, "quantile"))+ 
+  ylab("OR for HCM")+   xlab('Original PRS quantile')+
+  labs(title =  paste("Participant distribution by HCM OR by original PGC GWAS quantile\nand further by", cohort_ENHpart, "quantile"))+ 
   theme(legend.position="bottom", strip.text.x = element_text(size = rel(0.7)))
 dev.off()
 
