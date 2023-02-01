@@ -5,7 +5,6 @@ include { PLINK_MERGE }                 from '../modules/local/PLINK_MERGE_mod.n
 include { PLINK2_QC_PRUNE_HET }         from '../modules/local/PLINK2_QC_PRUNE_HET_mod.nf'
 include { R_PRS_QC }                    from '../modules/local/R_PRS_QC_mod.nf'
 include { PLINK_PRODUCE_QC_DATASET }    from '../modules/local/PLINK_PRODUCE_QC_DATASET_mod.nf'
-include { R_forest_by_SNP_by_sample }   from '../modules/local/R_forest_by_SNP_by_sample.nf'
 include { R_prepare_lists_for_clump }   from '../modules/local/R_prepare_lists_for_clump.nf'
 include {PLINK_clump}                   from '../modules/local/PLINK_clump_mod.nf'
 include {R_split_lists}                 from '../modules/local/R_split_lists.nf'
