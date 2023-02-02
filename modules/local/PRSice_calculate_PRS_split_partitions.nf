@@ -1,5 +1,5 @@
 process PRSice_calculate_PRS_split_partitions {
-    debug true
+    // debug true
     tag "${ENH_list}"
     label 'process_high_memory'
     // clusterOptions "--partition=shared_52c_384g" //only for LISA
