@@ -9,7 +9,7 @@ include { R_prepare_lists_for_clump }   from '../modules/local/R_prepare_lists_f
 include {PLINK_clump}                   from '../modules/local/PLINK_clump_mod.nf'
 include {R_split_lists}                 from '../modules/local/R_split_lists.nf'
 include {PRSice_calculate_PRS_split_partitions} from '../modules/local/PRSice_calculate_PRS_split_partitions.nf'
-include {R_final_plot}from '../modules/local/R_final_plot.nf'
+include {R_final_plot}                  from '../modules/local/R_R2_and_logistic_and_quantile_compare.nf'
 
 // // chain file
 // hg38ToHg19_chain = Channel
