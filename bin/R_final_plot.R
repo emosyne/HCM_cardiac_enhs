@@ -82,7 +82,7 @@ CoD_per_SNP_plot_scaled= paste0(ENH_list, "_", modif_name_1,"_", modif_name_2,"_
 CoD_ALL_plots = paste0("CoD_ALL_plots_", ENH_list, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), ".pdf")
 
 number_quantiles = 5
-
+condition_name = "HCM"
 
 r_color <- colors()
 
@@ -529,11 +529,11 @@ p = ggplot(data = all_ORs , aes(y= OR, ymin = LCI, ymax=UCI, x=factor(quantile),
   facet_wrap(facets = vars(addline_format(comp)))+
   scale_colour_manual(name="ENH compartment quantile", values = c("tomato","#ccece6", "#99d8c9", "#41ae76","#006d2c", "#00441b",r_color))+
   geom_pointrange(position = position_dodge(width = 0.3))  + 
-  ylab("OR for HCM")+   xlab('Original PRS quantile')+
+  ylab(paste0("OR for ",condition_name))+   xlab('Original PRS quantile')+
   # labs(title =  paste("Participant distribution by HCM OR by original PGC GWAS quantile\nand further by", ENH_list, "quantile"))+ 
   theme_minimal()+theme(legend.position="bottom", strip.text.x = element_text(size = rel(0.7)))
 # dev.off()
-f4<-grid.arrange(textGrob(paste("Participant distribution by HCM OR by original PGC GWAS quantile\nand further by", ENH_list, "quantile"), 
+f4<-grid.arrange(textGrob(paste("Participant distribution by ",condition_name," OR by original PGC GWAS quantile\nand further by", ENH_list, "quantile"), 
                           gp = gpar(fontsize = 9, fontface = "bold")), 
                 #  textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", 
                 #           gp = gpar(fontsize = 7)), 
