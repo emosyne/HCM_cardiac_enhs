@@ -1,5 +1,5 @@
 process R_final_plot {
-    debug true
+    // debug true
     container 'emosyne/r_docker:1.94'
     label 'process_low'
     tag "$ENH_list"
