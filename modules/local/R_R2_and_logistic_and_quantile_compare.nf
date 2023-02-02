@@ -1,4 +1,4 @@
-process R_R2_and_logistic_and_quantile_compare {
+process R_final_plot {
     debug true
     container 'emosyne/r_docker:1.94'
     label 'process_mid'
