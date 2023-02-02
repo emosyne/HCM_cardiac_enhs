@@ -32,7 +32,7 @@ process R_final_plot {
     script:
     """
     
-    logistic_and_quantile_compare.R $task.cpus ${ENH_list} ${cohort_fam} \
+    R_final_plot.R $task.cpus ${ENH_list} ${cohort_fam} \
         ${TS_ENH_GWAS_compartment_originalOR_summary} ${TS_ENH_GWAS_compartment_originalOR_best}\
         ${TS_ENH_GWAS_compartment_OR_by_measure1_summary} ${TS_ENH_GWAS_compartment_OR_by_measure1_best}\
         ${TS_ENH_GWAS_compartment_OR_by_measure2_summary} ${TS_ENH_GWAS_compartment_OR_by_measure2_best}\

@@ -10,13 +10,14 @@ process PRSice_calculate_PRS_split_partitions {
 
 
     input:
-        // [GWAS_ENH_SNPs_hg19_ALLCHR_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, GWAS_QC.gz, 6k_CARDIAC_NoFibro_significant_noGRB, 
-        // 6k_CARDIAC_NoFibro_significant_noGRB_clumped_TS_ENH_GWAS_compartment.tsv.gz, 6k_CARDIAC_NoFibro_significant_noGRB_clumped_residual_GWAS_compartment.tsv.gz, 6k_CARDIAC_NoFibro_significant_noGRB_clumped_merged_GWAS.tsv.gz, 
-        // /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/input/biobank/non_missing_10PCs_Jun22.covariate.gz, 
-        // /Users/eosimo/large_files_not_to_back_up/LD_ref/EUR_phase3_autosomes_hg19.bed, /Users/eosimo/large_files_not_to_back_up/LD_ref/EUR_phase3_autosomes_hg19.bim, /Users/eosimo/large_files_not_to_back_up/LD_ref/EUR_phase3_autosomes_hg19.fam]
-        
-    tuple path(cohort_bed_QC),  path(cohort_bim_QC), path(cohort_fam_QC), path (HCM_GWAS_QC), val(ENH_list), \
+    // [GWAS_ENH_SNPs_hg19_ALLCHR_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, 6k_CARDIAC_NoFibro_significant_noGRB, 
+    // 6k_CARDIAC_NoFibro_significant_noGRB_clumped_TS_ENH_GWAS_compartment.tsv.gz, 6k_CARDIAC_NoFibro_significant_noGRB_clumped_residual_GWAS_compartment.tsv.gz, 6k_CARDIAC_NoFibro_significant_noGRB_clumped_merged_GWAS.tsv.gz, 
+    // clumped_GWAS_QC_nodups.tsv.gz, 
+    // non_missing_10PCs_Jun22.covariate.gz, 
+    // EUR_phase3_autosomes_hg19.bed, EUR_phase3_autosomes_hg19.bim, EUR_phase3_autosomes_hg19.fam]
+    tuple path(cohort_bed_QC),  path(cohort_bim_QC), path(cohort_fam_QC), val(ENH_list), \
         path(clumped_TS_ENH_GWAS_compartment), path(clumped_residual_GWAS_compartment), path(clumped_merged_GWAS), \
+        path(clumped_GWAS_QC_nodups), \
         path(UKBB_covariates), \
         path(LD_ref_bed), path(LD_ref_bim), path(LD_ref_fam)
     
@@ -133,7 +134,7 @@ process PRSice_calculate_PRS_split_partitions {
     echo ORIGINAL GWAS LOO
     PRSice.R \\
         --prsice /usr/local/bin/PRSice_linux \\
-        --base ${HCM_GWAS_QC} \\
+        --base ${clumped_GWAS_QC_nodups} \\
         --snp SNP --chr CHR --bp POS --A1 A1 --A2 A2 --pvalue P --stat BETA --beta \\
         --target ${cohort_bed_QC.simpleName} \\
         --ld ${LD_ref_bed.baseName} \\

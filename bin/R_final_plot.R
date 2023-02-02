@@ -78,8 +78,8 @@ analysis_output_txt = paste0(ENH_list, "_", modif_name_1,"_", modif_name_2,"_", 
 model_fit_plot      = paste0(ENH_list, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_MODEL_FIT_PLOT.pdf")
 PRS_double_QUANTILE_PLOT  = paste0(ENH_list, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_PRS_double_QUANTILE_PLOT.pdf")
 PRS_comparison_figure_path = paste0(ENH_list, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_PRS_comparison_plot.pdf")
-# CoD_per_SNP_plot = paste0(ENH_list, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_CoD_per_snp_plot.pdf")
 CoD_per_SNP_plot_scaled= paste0(ENH_list, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_scaled_CoD_per_snp_plot.pdf")
+CoD_ALL_plots = paste0("CoD_ALL_plots_", ENH_list, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), ".pdf")
 
 number_quantiles = 5
 
@@ -316,7 +316,7 @@ CoD_per_SNP
 
 
 (df_plot<- data.frame(
-  partition=c(factor(c(#"0",
+  partition=c(factor(c("0",
                       "1","2","3","3b","3c","4","4b","4c"))),
   partition_name= factor(c(#"0-original_GWAS",
   "1-merged_GWAS",
@@ -328,7 +328,7 @@ CoD_per_SNP
   paste0("4b-residual_GWAS_plus_TS_ENH_OR_by ",modif_name_1),
   paste0("4c-residual_GWAS_plus_TS_ENH_OR_by ",modif_name_2)
 )),
-R2=c(#original_GWAS_logistic_model_R2,
+R2=c(original_GWAS_logistic_model_R2,
   merged_GWAS_logistic_model_R2, #1
   residual_GWAS_compart_logistic_model_R2,#2 
   TS_ENH_originalOR_compart_logistic_model_R2, #3
@@ -541,7 +541,8 @@ f4<-grid.arrange(textGrob(paste("Participant distribution by HCM OR by original 
                  heights = c(0.1, 1))
 
 
-ggsave(filename = CoD_per_SNP_plot_scaled, arrangeGrob(f1, f2, f3, f4, ncol = 2),  width = 17, height = 14)
+ggsave(filename = CoD_per_SNP_plot_scaled, arrangeGrob(f3, f4, ncol = 2),  width = 17, height = 7)
+ggsave(filename = CoD_ALL_plots, arrangeGrob(f1, f2, f3, f4, ncol = 2),  width = 17, height = 14)
 
 
 
