@@ -57,11 +57,6 @@ enhancer_lists_bed_files =
     
 
 
-
-
-
-
-
 workflow HCM {
     // BASE =   SEAN HCM GWAS
     // TARGET = UKBB

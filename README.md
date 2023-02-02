@@ -1,25 +1,16 @@
-# 2HH
-# Emanuele's first workflow
-eosimo@ic.ac.uk
+## Applying partitioned PRS to HCM
+# A pipeline to partition PRS for HCM
 
-Run this example pipeline with:
+BASE =   HCM GWAS from Zheng et al, in press
+TARGET = UK Biobank
+
+Developed by Emanuele Osimo, contact eosimo@ic.ac.uk
+
+
+
+Run this pipeline with:
 
 ```
 nextflow run main.nf -profile servername
 ```
 
-To install additional modules, use the [nf-core tools](https://github.com/nf-core/tools), for example:
-
-```
-nf-core modules install star/align
-```
-
-To create your own module, also use the [nf-core tools](https://github.com/nf-core/tools):
-
-```
-nf-core modules create
-```
-
-It will ask you for the module name and other parameters.
-
-After creating or installing a module, you need to add an `include` instruction for that module into your workflow and also add a corresponding structure to `modules.config` (see `workflows/example_wf.nf` and `modules.config` for examples).

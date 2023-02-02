@@ -1,35 +1,22 @@
 process R_R2_and_logistic_and_quantile_compare {
-    // debug true
+    debug true
     container 'emosyne/r_docker:1.94'
     label 'process_mid'
-    tag "$cohort_ENHpart"
+    tag "$ENH_list"
     cache "lenient"
-    errorStrategy 'ignore'
+    // errorStrategy 'ignore'
 
     input: 
-    // [clz2a_notNeural_20k_100flank_noInternalOverlap, 
-    //     clz2a_notNeural_20k_100flank_noInternalOverlap_clumped_TS_ENH_GWAS_compartment_OR_by_measure1.summary, 
-    //     clz2a_notNeural_20k_100flank_noInternalOverlap_clumped_TS_ENH_GWAS_compartment_OR_by_measure2.summary, 
-    //     clz2a_notNeural_20k_100flank_noInternalOverlap_clumped_TS_ENH_GWAS_compartment_originalOR.summary, 
-    //     clz2a_notNeural_20k_100flank_noInternalOverlap_clumped_TS_ENH_GWAS_compartment_OR_by_measure1.prsice, 
-    //     clz2a_notNeural_20k_100flank_noInternalOverlap_clumped_TS_ENH_GWAS_compartment_OR_by_measure2.prsice, 
-    //     clz2a_notNeural_20k_100flank_noInternalOverlap_clumped_TS_ENH_GWAS_compartment_originalOR.prsice, 
-    //     clz2a_notNeural_20k_100flank_noInternalOverlap_clumped_TS_ENH_GWAS_compartment_OR_by_measure1.best, 
-    //     clz2a_notNeural_20k_100flank_noInternalOverlap_clumped_TS_ENH_GWAS_compartment_OR_by_measure2.best, 
-    //     clz2a_notNeural_20k_100flank_noInternalOverlap_clumped_TS_ENH_GWAS_compartment_originalOR.best, 
-    //     clz2a_notNeural_20k_100flank_noInternalOverlap_clumped_residual_GWAS_compartment.summary, 
-    //     clz2a_notNeural_20k_100flank_noInternalOverlap_clumped_residual_GWAS_compartment.prsice, 
-    //     clz2a_notNeural_20k_100flank_noInternalOverlap_clumped_residual_GWAS_compartment.best, 
-    //     clz2a_notNeural_20k_100flank_noInternalOverlap_clumped_merged_GWAS.summary, 
-    //     clz2a_notNeural_20k_100flank_noInternalOverlap_clumped_merged_GWAS.prsice, 
-    //     clz2a_notNeural_20k_100flank_noInternalOverlap_clumped_merged_GWAS.best, 
-    //     clz2a_QC.fam, 
-    //     clz2a_notNeural_20k_100flank_noInternalOverlap_original_HCM_GWAS.summary, 
-    //     clz2a_notNeural_20k_100flank_noInternalOverlap_original_HCM_GWAS.prsice, 
-    //     clz2a_notNeural_20k_100flank_noInternalOverlap_original_HCM_GWAS.best, 
-    //     exp_log_OR_times__log_max_ES_perEnh_contact_1_3_times_5, 
-    //     maxESperEnh_contact_X__brainEnhFantomExp_1_7]
-    tuple val(cohort_ENHpart), \
+    // [34k_neg, 
+        // 34k_neg_clumped_TS_ENH_GWAS_compartment_OR_by_measure1.summary, 34k_neg_clumped_TS_ENH_GWAS_compartment_OR_by_measure2.summary, 34k_neg_clumped_TS_ENH_GWAS_compartment_originalOR.summary, 
+        // 34k_neg_clumped_TS_ENH_GWAS_compartment_OR_by_measure1.prsice,34k_neg_clumped_TS_ENH_GWAS_compartment_OR_by_measure2.prsice, 34k_neg_clumped_TS_ENH_GWAS_compartment_originalOR.prsice, 
+        // 34k_neg_clumped_TS_ENH_GWAS_compartment_OR_by_measure1.best, 34k_neg_clumped_TS_ENH_GWAS_compartment_OR_by_measure2.best, 34k_neg_clumped_TS_ENH_GWAS_compartment_originalOR.best, 
+        // 34k_neg_clumped_residual_GWAS_compartment.summary, 34k_neg_clumped_residual_GWAS_compartment.prsice, 34k_neg_clumped_residual_GWAS_compartment.best, 
+        // 34k_neg_clumped_merged_GWAS.summary, 34k_neg_clumped_merged_GWAS.prsice, 34k_neg_clumped_merged_GWAS.best, 
+        // GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, 
+        // 34k_neg_original_HCM_GWAS.summary, 34k_neg_original_HCM_GWAS.prsice, 34k_neg_original_HCM_GWAS.best, 
+        // e_log_OR_X__log_max_ES_perSigEnh__X_10, e_log_OR_X__log_cardiac_FANTOM_enh_tpm__X_10]
+    tuple val(ENH_list), \
         path(TS_ENH_GWAS_compartment_OR_by_measure1_summary), path(TS_ENH_GWAS_compartment_OR_by_measure2_summary), path(TS_ENH_GWAS_compartment_originalOR_summary), \
         path(TS_ENH_GWAS_compartment_OR_by_measure1_prsice), path(TS_ENH_GWAS_compartment_OR_by_measure2_prsice), path(TS_ENH_GWAS_compartment_originalOR_prsice), \
         path(TS_ENH_GWAS_compartment_OR_by_measure1_best), path(TS_ENH_GWAS_compartment_OR_by_measure2_best), path (TS_ENH_GWAS_compartment_originalOR_best), \
@@ -45,7 +32,7 @@ process R_R2_and_logistic_and_quantile_compare {
     script:
     """
     
-    logistic_and_quantile_compare.R $task.cpus ${cohort_ENHpart} ${cohort_fam} \
+    logistic_and_quantile_compare.R $task.cpus ${ENH_list} ${cohort_fam} \
         ${TS_ENH_GWAS_compartment_originalOR_summary} ${TS_ENH_GWAS_compartment_originalOR_best}\
         ${TS_ENH_GWAS_compartment_OR_by_measure1_summary} ${TS_ENH_GWAS_compartment_OR_by_measure1_best}\
         ${TS_ENH_GWAS_compartment_OR_by_measure2_summary} ${TS_ENH_GWAS_compartment_OR_by_measure2_best}\

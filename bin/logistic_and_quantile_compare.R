@@ -14,7 +14,7 @@ args = commandArgs()
 
 print(args)                                                                                                
 
-# logistic_and_quantile_compare.R $task.cpus ${cohort_ENHpart} ${cohort_fam} \
+# logistic_and_quantile_compare.R $task.cpus ${ENH_list} ${cohort_fam} \
 #     ${TS_ENH_GWAS_compartment_originalOR_summary} ${TS_ENH_GWAS_compartment_originalOR_best}\
 #     ${TS_ENH_GWAS_compartment_OR_by_measure1_summary} ${TS_ENH_GWAS_compartment_OR_by_measure1_best}\
 #     ${TS_ENH_GWAS_compartment_OR_by_measure2_summary} ${TS_ENH_GWAS_compartment_OR_by_measure2_best}\
@@ -28,7 +28,7 @@ nthreads = as.numeric(args[8])
 setDTthreads(nthreads)
 threads_fst(nr_of_threads = round(nthreads/3*2))
 
-(cohort_ENHpart = args[9])
+(ENH_list = args[9])
 (diagnosis = fread(args[10], header=F, col.names = c("FID", "IID", "IIDf", "IIDm", "sex", "dx" )) %>%
     dplyr::select("FID", "IID", "dx"))
 
@@ -74,12 +74,12 @@ modif_name_2 = args[30]
 
 
 #OUTPUT
-analysis_output_txt = paste0(cohort_ENHpart, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_model_fit.txt")
-model_fit_plot      = paste0(cohort_ENHpart, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_MODEL_FIT_PLOT.pdf")
-PRS_double_QUANTILE_PLOT  = paste0(cohort_ENHpart, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_PRS_double_QUANTILE_PLOT.pdf")
-PRS_comparison_figure_path = paste0(cohort_ENHpart, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_PRS_comparison_plot.pdf")
-# CoD_per_SNP_plot = paste0(cohort_ENHpart, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_CoD_per_snp_plot.pdf")
-CoD_per_SNP_plot_scaled= paste0(cohort_ENHpart, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_scaled_CoD_per_snp_plot.pdf")
+analysis_output_txt = paste0(ENH_list, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_model_fit.txt")
+model_fit_plot      = paste0(ENH_list, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_MODEL_FIT_PLOT.pdf")
+PRS_double_QUANTILE_PLOT  = paste0(ENH_list, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_PRS_double_QUANTILE_PLOT.pdf")
+PRS_comparison_figure_path = paste0(ENH_list, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_PRS_comparison_plot.pdf")
+# CoD_per_SNP_plot = paste0(ENH_list, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_CoD_per_snp_plot.pdf")
+CoD_per_SNP_plot_scaled= paste0(ENH_list, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_scaled_CoD_per_snp_plot.pdf")
 
 number_quantiles = 5
 
@@ -355,7 +355,7 @@ p <- ggplot(data = df_plot, aes(
   xlab("") +  ylab("")+coord_flip()+theme_minimal()+
   theme(axis.text.y = element_text(lineheight = 0.8, angle = 45,size = rel(0.8)))#, size=8
 
-f1<-grid.arrange(textGrob(paste("Coefficients of determination for:", cohort_ENHpart), 
+f1<-grid.arrange(textGrob(paste("Coefficients of determination for:", ENH_list), 
                           gp = gpar(fontsize = 11, col="darkgreen", fontface = "bold")), 
                  textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", 
                           gp = gpar(fontsize = 9)), 
@@ -372,7 +372,7 @@ p <-ggplot(data = df_plot[!is.na(df_plot$Num_SNP),],
   ylim(0, NA) + 
   xlab("") +  ylab("")+coord_flip()+theme_minimal()+
   theme(axis.text.y = element_text(lineheight = 0.8, angle = 45,size = rel(0.8)))#, size=8
-f2<-grid.arrange(textGrob(paste("CoD per SNP * 10^5 for:", cohort_ENHpart), 
+f2<-grid.arrange(textGrob(paste("CoD per SNP * 10^5 for:", ENH_list), 
                           gp = gpar(fontsize = 11, col="maroon4", fontface = "bold")), 
                  textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", 
                           gp = gpar(fontsize = 9)), 
@@ -397,7 +397,7 @@ p <- df_plot%>%
   xlab("") +  ylab("")+
   theme(legend.position = "bottom",
         axis.text.y = element_text(lineheight = 0.8, angle = 60,size = rel(0.8)))
-f3<-grid.arrange(textGrob(paste("Relative number of SNPs, total CoD, and CoD per SNP for:", cohort_ENHpart), 
+f3<-grid.arrange(textGrob(paste("Relative number of SNPs, total CoD, and CoD per SNP for:", ENH_list), 
                           gp = gpar(fontsize = 9, fontface = "bold")), 
                  textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", 
                           gp = gpar(fontsize = 7)), 
@@ -530,10 +530,10 @@ p = ggplot(data = all_ORs , aes(y= OR, ymin = LCI, ymax=UCI, x=factor(quantile),
   scale_colour_manual(name="ENH compartment quantile", values = c("tomato","#ccece6", "#99d8c9", "#41ae76","#006d2c", "#00441b",r_color))+
   geom_pointrange(position = position_dodge(width = 0.3))  + 
   ylab("OR for HCM")+   xlab('Original PRS quantile')+
-  # labs(title =  paste("Participant distribution by HCM OR by original PGC GWAS quantile\nand further by", cohort_ENHpart, "quantile"))+ 
+  # labs(title =  paste("Participant distribution by HCM OR by original PGC GWAS quantile\nand further by", ENH_list, "quantile"))+ 
   theme_minimal()+theme(legend.position="bottom", strip.text.x = element_text(size = rel(0.7)))
 # dev.off()
-f4<-grid.arrange(textGrob(paste("Participant distribution by HCM OR by original PGC GWAS quantile\nand further by", cohort_ENHpart, "quantile"), 
+f4<-grid.arrange(textGrob(paste("Participant distribution by HCM OR by original PGC GWAS quantile\nand further by", ENH_list, "quantile"), 
                           gp = gpar(fontsize = 9, fontface = "bold")), 
                 #  textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", 
                 #           gp = gpar(fontsize = 7)), 
@@ -565,7 +565,7 @@ ADDPRS_clumpedOriginalGWAS_NoEPs_overlap_prsice<- cbind(
 
 TS_EPs_no_overlap_clumped<- cbind(
   data.table::fread(TS_ENH_GWAS_compartment_originalOR_prsice, select=c("Threshold","R2","Num_SNP")),
-  dataset=paste(cohort_ENHpart," TS_ENH_compartment_originalOR")
+  dataset=paste(ENH_list," TS_ENH_compartment_originalOR")
 )
 
 
@@ -596,7 +596,7 @@ ggplot(all_PRS, aes(x=factor(as.numeric(round(Threshold,2))), y=R2, #label=paste
   #                          size=10, lineheight = 0.7)+
   scale_fill_manual(values=c("red","orange","darkgreen"))+
   ggtitle("R2 calculated by PRSice at several thresholds",
-          subtitle = paste("Original GWAS PRS, vs partitioned PRSs for", cohort_ENHpart) )+
+          subtitle = paste("Original GWAS PRS, vs partitioned PRSs for", ENH_list) )+
   xlab(label = "PRSice p-value threshold")+labs(fill='PRS') +
   theme(legend.position="bottom",axis.text.x = element_text(angle = 30),
         plot.title = element_text(size=16))
