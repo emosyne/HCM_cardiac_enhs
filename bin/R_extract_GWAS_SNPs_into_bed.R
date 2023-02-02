@@ -13,13 +13,13 @@ print(args)
 
 print(args[9])
 
-full_PGC_GWAS_hg19 <- fread(file = args[8])
+GWAS_QC_nodups <- fread(file = args[8])
 collected_bed_files_for_enhancers <- read_lines(args[9])
-
-
+clumped_SNPs <-fread(file = args[10], select=c("CHR","SNP"))
 
 #outputs
-(general_out <- "GWAS_SNPs_in_initial_bed_files.bed")
+(SNPs_to_extract_out <- "clumped_GWAS_SNPs_plus_those_in_bed_files.bed")
+clumped_GWAS_out <- "clumped_GWAS_QC_nodups.tsv.gz"
 
 
 
@@ -45,16 +45,24 @@ sample_n(totalbed, 20)
 
 #extract GWAS SNPs wihtin ranges
 print("GWAS head")
-print(head(full_PGC_GWAS_hg19))
-(full_PGC_GWAS_hg19 = makeGRangesFromDataFrame(full_PGC_GWAS_hg19, keep.extra.columns = T,
+print(head(GWAS_QC_nodups))
+(GWAS_QC_nodups_GR = makeGRangesFromDataFrame(GWAS_QC_nodups, keep.extra.columns = T,
                                                seqnames.field = "CHR", start.field = "POS", 
                                                end.field = "POS"))
-seqlevelsStyle(full_PGC_GWAS_hg19) <- "UCSC"
-(full_PGC_GWAS_overlap_beds = subsetByOverlaps(x = full_PGC_GWAS_hg19, ranges = totalbed, type="any"))
+seqlevelsStyle(GWAS_QC_nodups_GR) <- "UCSC"
+(full_PGC_GWAS_overlap_beds = subsetByOverlaps(x = GWAS_QC_nodups_GR, ranges = totalbed, type="any"))
 
+##clumped GWAS
+clumped_GWAS_QC_nodups <- GWAS_QC_nodups %>% dplyr::filter(SNP %in% clumped_SNPs$SNP)
+fwrite(clumped_GWAS_QC_nodups, file=clumped_GWAS_out, sep = "\t", compress = "gzip")
+(clumped_GWAS_QC_nodups_GR = makeGRangesFromDataFrame(clumped_GWAS_QC_nodups, keep.extra.columns = T,
+                                               seqnames.field = "CHR", start.field = "POS", 
+                                               end.field = "POS"))
+seqlevelsStyle(clumped_GWAS_QC_nodups_GR) <- "UCSC"
 
 (SNPs_to_extract = rbind(
-  as_tibble(full_PGC_GWAS_overlap_beds)
+  as_tibble(full_PGC_GWAS_overlap_beds),
+  as_tibble(clumped_GWAS_QC_nodups_GR)
 ))
 
 
@@ -65,4 +73,4 @@ seqlevelsStyle(full_PGC_GWAS_hg19) <- "UCSC"
 SNPs_to_extract %>% select(seqnames,  start, SNP) %>%
   mutate(POS=start, score=".", strand=".") %>%
   relocate(seqnames, start, POS, SNP, score, strand) %>%
-  fwrite(file=general_out, sep="\t", col.names=F)
+  fwrite(file=SNPs_to_extract_out, sep="\t", col.names=F)
