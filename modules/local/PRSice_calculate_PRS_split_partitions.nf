@@ -138,8 +138,7 @@ process PRSice_calculate_PRS_split_partitions {
         --snp SNP --chr CHR --bp POS --A1 A1 --A2 A2 --pvalue P --stat BETA --beta \\
         --target ${cohort_bed_QC.simpleName} \\
         --ld ${LD_ref_bed.baseName} \\
-        --clump-p 1 \\
-        --clump-kb 500 --clump-r2 0.1 \\
+        --no-clump  \\
         --keep-ambig \\
         --quantile 10 --quant-ref 1 \\
         --bar-levels 0.001,0.05,0.1,0.2,0.3,0.4,0.5,1 \\
