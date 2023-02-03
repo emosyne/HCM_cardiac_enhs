@@ -212,7 +212,7 @@ workflow HCM {
                         "e_log_OR_X__log_cardiac_FANTOM_enh_tpm__X_10"].flatten() }
 
 
-    PRS_results.view()
+    // PRS_results.view()
     
     
     R_final_plot (

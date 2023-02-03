@@ -350,10 +350,10 @@ p <- ggplot(data = df_plot, aes(
   x=paste0(addline_format(partition_name), "\nN_SNP ", Num_SNP), #x=addline_format(partition_name), 
   y=R2, 
   label=paste0("CoD=",round(R2,4)))) +  
-  geom_point(color="darkgreen", size=3) + ggrepel::geom_text_repel(size = rel(2)) +
+  geom_point(color="darkgreen", size=3) + ggrepel::geom_text_repel(size = rel(3)) +
   ylim(0, NA) + 
   xlab("") +  ylab("")+coord_flip()+theme_minimal()+
-  theme(axis.text.y = element_text(lineheight = 0.8, angle = 45,size = rel(0.8)))#, size=8
+  theme(axis.text.y = element_text(lineheight = 0.8, angle = 45,size = rel(1)))#, size=8
 
 f1<-grid.arrange(textGrob(paste("Coefficients of determination for:", ENH_list), 
                           gp = gpar(fontsize = 11, col="darkgreen", fontface = "bold")), 
@@ -368,10 +368,10 @@ p <-ggplot(data = df_plot[!is.na(df_plot$Num_SNP),],
              x=paste0(addline_format(partition_name),"\nCoD ",round(R2,4), " N_SNP ", Num_SNP), 
              y=CoD_per_SNP, 
              label=round(CoD_per_SNP,4))) +  
-  geom_point(color="maroon4", size=3) + ggrepel::geom_text_repel(size = rel(2)) +
+  geom_point(color="maroon4", size=3) + ggrepel::geom_text_repel(size = rel(3)) +
   ylim(0, NA) + 
   xlab("") +  ylab("")+coord_flip()+theme_minimal()+
-  theme(axis.text.y = element_text(lineheight = 0.8, angle = 45,size = rel(0.8)))#, size=8
+  theme(axis.text.y = element_text(lineheight = 0.8, angle = 45,size = rel(1)))#, size=8
 f2<-grid.arrange(textGrob(paste("CoD per SNP * 10^5 for:", ENH_list), 
                           gp = gpar(fontsize = 11, col="maroon4", fontface = "bold")), 
                  textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", 
@@ -396,7 +396,7 @@ p <- df_plot%>%
   coord_flip()+theme_minimal()+
   xlab("") +  ylab("")+
   theme(legend.position = "bottom",
-        axis.text.y = element_text(lineheight = 0.8, angle = 60,size = rel(0.8)))
+        axis.text.y = element_text(lineheight = 0.8, angle = 60,size = rel(1)))
 f3<-grid.arrange(textGrob(paste("Relative number of SNPs, total CoD, and CoD per SNP for:", ENH_list), 
                           gp = gpar(fontsize = 9, fontface = "bold")), 
                  textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", 
@@ -531,7 +531,7 @@ p = ggplot(data = all_ORs , aes(y= OR, ymin = LCI, ymax=UCI, x=factor(quantile),
   geom_pointrange(position = position_dodge(width = 0.3))  + 
   ylab(paste0("OR for ",condition_name))+   xlab('Original PRS quantile')+
   # labs(title =  paste("Participant distribution by HCM OR by original PGC GWAS quantile\nand further by", ENH_list, "quantile"))+ 
-  theme_minimal()+theme(legend.position="bottom", strip.text.x = element_text(size = rel(0.7)))
+  theme_minimal()+theme(legend.position="bottom", strip.text.x = element_text(size = rel(0.8)))
 # dev.off()
 f4<-grid.arrange(textGrob(paste("Participant distribution by ",condition_name," OR by original PGC GWAS quantile\nand further by", ENH_list, "quantile"), 
                           gp = gpar(fontsize = 9, fontface = "bold")), 
