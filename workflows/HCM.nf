@@ -215,9 +215,9 @@ workflow HCM {
     PRS_results.view()
     
     
-    // R_final_plot (
-    //     PRS_results
-    // )
+    R_final_plot (
+        PRS_results
+    )
 
 }
 
