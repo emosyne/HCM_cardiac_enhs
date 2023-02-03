@@ -318,7 +318,7 @@ CoD_per_SNP
 (df_plot<- data.frame(
   partition=c(factor(c("0",
                       "1","2","3","3b","3c","4","4b","4c"))),
-  partition_name= factor(c(#"0-original_GWAS",
+  partition_name= factor(c("0-original_GWAS",
   "1-merged_GWAS",
   "2-residual_GWAS", 
   "3-TS_ENH original_OR",
