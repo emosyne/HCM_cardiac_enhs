@@ -194,30 +194,30 @@ workflow HCM {
         .combine(LD_reference)
         .set{combined_splitlists_bedfile_QCeddata_LDdata}
     
-    // combined_splitlists_bedfile_QCeddata_LDdata.view()
+    combined_splitlists_bedfile_QCeddata_LDdata.view()
     // [GWAS_ENH_SNPs_hg19_ALLCHR_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, 6k_CARDIAC_NoFibro_significant_noGRB, 6k_CARDIAC_NoFibro_significant_noGRB_clumped_TS_ENH_GWAS_compartment.tsv.gz, 6k_CARDIAC_NoFibro_significant_noGRB_clumped_residual_GWAS_compartment.tsv.gz, 6k_CARDIAC_NoFibro_significant_noGRB_clumped_merged_GWAS.tsv.gz, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/d0/8806ec9ca5ab5919d95cb4719d256e/clumped_GWAS_QC_nodups.tsv.gz, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/input/biobank/non_missing_10PCs_Jun22.covariate.gz, /Users/eosimo/large_files_not_to_back_up/LD_ref/EUR_phase3_autosomes_hg19.bed, /Users/eosimo/large_files_not_to_back_up/LD_ref/EUR_phase3_autosomes_hg19.bim, /Users/eosimo/large_files_not_to_back_up/LD_ref/EUR_phase3_autosomes_hg19.fam]
                 
     
-    PRSice_calculate_PRS_split_partitions(
-        combined_splitlists_bedfile_QCeddata_LDdata
-    )
+    // PRSice_calculate_PRS_split_partitions(
+    //     combined_splitlists_bedfile_QCeddata_LDdata
+    // )
     
-    // ########################################### SET NAMES OF MULTIPLIERS ###########################################
-    PRS_results = 
-        PRSice_calculate_PRS_split_partitions.out.clumped_TS_ENH_GWAS_compartment_PRS
-            .join(PRSice_calculate_PRS_split_partitions.out.clumped_residual_GWAS_compartment_PRS)
-            .join(PRSice_calculate_PRS_split_partitions.out.clumped_merged_GWAS_PRS)
-            .join(PRSice_calculate_PRS_split_partitions.out.clumped_original_HCM_GWAS_PRS)
-            .map { [it, "e_log_OR_X__log_max_ES_perSigEnh__X_10",
-                        "e_log_OR_X__log_cardiac_FANTOM_enh_tpm__X_10"].flatten() }
+    // // ########################################### SET NAMES OF MULTIPLIERS ###########################################
+    // PRS_results = 
+    //     PRSice_calculate_PRS_split_partitions.out.clumped_TS_ENH_GWAS_compartment_PRS
+    //         .join(PRSice_calculate_PRS_split_partitions.out.clumped_residual_GWAS_compartment_PRS)
+    //         .join(PRSice_calculate_PRS_split_partitions.out.clumped_merged_GWAS_PRS)
+    //         .join(PRSice_calculate_PRS_split_partitions.out.clumped_original_HCM_GWAS_PRS)
+    //         .map { [it, "e_log_OR_X__log_max_ES_perSigEnh__X_10",
+    //                     "e_log_OR_X__log_cardiac_FANTOM_enh_tpm__X_10"].flatten() }
 
 
-    PRS_results.view()
+    // PRS_results.view()
     
     
-    R_final_plot (
-        PRS_results
-    )
+    // R_final_plot (
+    //     PRS_results
+    // )
 
 }
 
