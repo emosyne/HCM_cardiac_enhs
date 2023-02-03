@@ -51,8 +51,7 @@ process PRSice_calculate_PRS_split_partitions {
         --no-clump  \\
         --keep-ambig \\
         --quantile 10 --quant-ref 1 \\
-        --bar-levels 0.001,0.05,0.1,0.2,0.3,0.4,0.5,1 \\
-        --lower 5e-08 \\
+        --bar-levels 0.05 --fastscore \\
         --binary-target T --prevalence 0.002 \\
         --cov covariates.pheno --cov-factor sex \\
         --thread $max_cpus \\
@@ -69,8 +68,7 @@ process PRSice_calculate_PRS_split_partitions {
         --no-clump  \\
         --keep-ambig \\
         --quantile 10 --quant-ref 1 \\
-        --bar-levels 0.001,0.05,0.1,0.2,0.3,0.4,0.5,1 \\
-        --lower 5e-08 \\
+        --bar-levels 0.05 --fastscore \\
         --binary-target T --prevalence 0.002 \\
         --cov covariates.pheno --cov-factor sex \\
         --thread $max_cpus \\
@@ -87,8 +85,7 @@ process PRSice_calculate_PRS_split_partitions {
         --no-clump  \\
         --keep-ambig \\
         --quantile 10 --quant-ref 1 \\
-        --bar-levels 0.001,0.05,0.1,0.2,0.3,0.4,0.5,1 \\
-        --lower 5e-08 \\
+        --bar-levels 0.05 --fastscore \\
         --binary-target T --prevalence 0.002 \\
         --cov covariates.pheno --cov-factor sex \\
         --thread $max_cpus \\
@@ -104,8 +101,7 @@ process PRSice_calculate_PRS_split_partitions {
         --no-clump  \\
         --keep-ambig \\
         --quantile 10 --quant-ref 1 \\
-        --bar-levels 0.001,0.05,0.1,0.2,0.3,0.4,0.5,1 \\
-        --lower 5e-08 \\
+        --bar-levels 0.05 --fastscore \\
         --binary-target T --prevalence 0.002 \\
         --cov covariates.pheno --cov-factor sex \\
         --thread $max_cpus \\
@@ -123,8 +119,7 @@ process PRSice_calculate_PRS_split_partitions {
         --no-clump  \\
         --keep-ambig \\
         --quantile 10 --quant-ref 1 \\
-        --bar-levels 0.001,0.05,0.1,0.2,0.3,0.4,0.5,1 \\
-        --lower 5e-08 \\
+        --bar-levels 0.05 --fastscore \\
         --binary-target T --prevalence 0.002 \\
         --cov covariates.pheno --cov-factor sex \\
         --thread $max_cpus \\
@@ -141,8 +136,7 @@ process PRSice_calculate_PRS_split_partitions {
         --no-clump  \\
         --keep-ambig \\
         --quantile 10 --quant-ref 1 \\
-        --bar-levels 0.001,0.05,0.1,0.2,0.3,0.4,0.5,1 \\
-        --lower 5e-08 \\
+        --bar-levels 0.05 --fastscore \\
         --binary-target T --prevalence 0.002 \\
         --cov covariates.pheno --cov-factor sex \\
         --thread $max_cpus \\
