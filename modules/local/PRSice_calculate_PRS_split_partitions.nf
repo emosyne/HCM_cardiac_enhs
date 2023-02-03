@@ -51,7 +51,7 @@ process PRSice_calculate_PRS_split_partitions {
         --no-clump  \\
         --keep-ambig \\
         --quantile 10 --quant-ref 1 \\
-        --bar-levels 0.05 --fastscore \\
+        --bar-levels 0.05 --no-full --fastscore \\
         --binary-target T --prevalence 0.002 \\
         --cov covariates.pheno --cov-factor sex \\
         --thread $max_cpus \\
@@ -68,7 +68,7 @@ process PRSice_calculate_PRS_split_partitions {
         --no-clump  \\
         --keep-ambig \\
         --quantile 10 --quant-ref 1 \\
-        --bar-levels 0.05 --fastscore \\
+        --bar-levels 0.05 --no-full --fastscore \\
         --binary-target T --prevalence 0.002 \\
         --cov covariates.pheno --cov-factor sex \\
         --thread $max_cpus \\
@@ -85,7 +85,7 @@ process PRSice_calculate_PRS_split_partitions {
         --no-clump  \\
         --keep-ambig \\
         --quantile 10 --quant-ref 1 \\
-        --bar-levels 0.05 --fastscore \\
+        --bar-levels 0.05 --no-full --fastscore \\
         --binary-target T --prevalence 0.002 \\
         --cov covariates.pheno --cov-factor sex \\
         --thread $max_cpus \\
@@ -101,7 +101,7 @@ process PRSice_calculate_PRS_split_partitions {
         --no-clump  \\
         --keep-ambig \\
         --quantile 10 --quant-ref 1 \\
-        --bar-levels 0.05 --fastscore \\
+        --bar-levels 0.05 --no-full --fastscore \\
         --binary-target T --prevalence 0.002 \\
         --cov covariates.pheno --cov-factor sex \\
         --thread $max_cpus \\
@@ -119,7 +119,7 @@ process PRSice_calculate_PRS_split_partitions {
         --no-clump  \\
         --keep-ambig \\
         --quantile 10 --quant-ref 1 \\
-        --bar-levels 0.05 --fastscore \\
+        --bar-levels 0.05 --no-full --fastscore \\
         --binary-target T --prevalence 0.002 \\
         --cov covariates.pheno --cov-factor sex \\
         --thread $max_cpus \\
@@ -136,7 +136,7 @@ process PRSice_calculate_PRS_split_partitions {
         --no-clump  \\
         --keep-ambig \\
         --quantile 10 --quant-ref 1 \\
-        --bar-levels 0.05 --fastscore \\
+        --bar-levels 0.05 --no-full --fastscore \\
         --binary-target T --prevalence 0.002 \\
         --cov covariates.pheno --cov-factor sex \\
         --thread $max_cpus \\
