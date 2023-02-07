@@ -208,8 +208,8 @@ workflow HCM {
             .join(PRSice_calculate_PRS_split_partitions.out.clumped_residual_GWAS_compartment_PRS)
             .join(PRSice_calculate_PRS_split_partitions.out.clumped_merged_GWAS_PRS)
             .join(PRSice_calculate_PRS_split_partitions.out.clumped_original_HCM_GWAS_PRS)
-            .map { [it, "e_log_OR_X__log_max_ES_perSigEnh_X_10",
-                        "e_log_OR_X__log_cardiac_FANTOM_enh_tpm_X_10"].flatten() }
+            .map { [it, "enh_ES_*10",
+                        "enh_TS_tpm_*10"].flatten() }
 
 
     // PRS_results.view()
