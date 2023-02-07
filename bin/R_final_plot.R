@@ -361,7 +361,8 @@ colour=c("black",
 p <- ggplot(data = df_plot, aes(
                               x=reorder(xlabel, desc(xlabel)), #reorder(the_factor, desc(the_factor))
                               y=R2, 
-                              label=paste0("CoD=",round(R2,4)))) +  
+                              label=paste0("CoD=",round(R2,4)))
+                              ) +  
   geom_point(color=df_plot$colour, size=3) + ggrepel::geom_text_repel(size = rel(3)) +
   ylim(0, NA) + 
   xlab("") +  ylab("")+coord_flip()+theme_minimal()+
@@ -377,7 +378,7 @@ f1<-grid.arrange(textGrob(paste("Coefficients of determination for:", ENH_list),
 
 p <-ggplot(data = df_plot[!is.na(df_plot$Num_SNP),], 
            aes(
-             x=reorder(xlabel, desc(xlabel))#paste0(addline_format(partition_name),"\nCoD ",round(R2,4), " N_SNP ", Num_SNP), 
+             x=reorder(xlabel, desc(xlabel)),#paste0(addline_format(partition_name),"\nCoD ",round(R2,4), " N_SNP ", Num_SNP), 
              y=CoD_per_SNP, 
              label=round(CoD_per_SNP,3))) +  
   geom_point(color="maroon4", size=3) + ggrepel::geom_text_repel(size = rel(3)) +
