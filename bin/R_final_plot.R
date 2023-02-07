@@ -73,16 +73,21 @@ modif_name_1 = args[29]
 modif_name_2 = args[30]
 
 
-#OUTPUT
-analysis_output_txt = paste0(ENH_list, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_model_fit.txt")
-model_fit_plot      = paste0(ENH_list, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_MODEL_FIT_PLOT.pdf")
-PRS_double_QUANTILE_PLOT  = paste0(ENH_list, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_PRS_double_QUANTILE_PLOT.pdf")
-PRS_comparison_figure_path = paste0(ENH_list, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_PRS_comparison_plot.pdf")
-CoD_per_SNP_plot_scaled= paste0(ENH_list, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_scaled_CoD_per_snp_plot.pdf")
-CoD_ALL_plots = paste0("CoD_ALL_plots_", ENH_list, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), ".pdf")
-
+#set input variables
 number_quantiles = 5
 condition_name = "HCM"
+threshold = "0.05"
+
+
+#OUTPUT
+analysis_output_txt = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_model_fit.txt")
+model_fit_plot      = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_MODEL_FIT_PLOT.pdf")
+PRS_double_QUANTILE_PLOT  = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_PRS_double_QUANTILE_PLOT.pdf")
+PRS_comparison_figure_path = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_PRS_comparison_plot.pdf")
+CoD_per_SNP_plot_scaled= paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_scaled_CoD_per_snp_plot.pdf")
+CoD_ALL_plots = paste0("CoD_ALL_plots_", ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), ".pdf")
+
+
 
 r_color <- colors()
 
