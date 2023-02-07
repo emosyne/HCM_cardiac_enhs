@@ -338,11 +338,21 @@ R2=c(original_GWAS_logistic_model_R2,
   residual_GWAS_plus_TS_ENH_originalOR_logistic_model_R2, #4
   residual_GWAS_plus_TS_ENH_OR_by_measure1_logistic_model_R2,
   residual_GWAS_plus_TS_ENH_OR_by_measure2_logistic_model_R2
+),
+colour=c("black",
+  #"darkgreen",
+  "darkgreen",
+  "darkgreen",
+  "green",
+  "green",
+  "darkgreen",
+  "green",
+  "green"
 )) %>% left_join(CoD_per_SNP, by="partition") %>% dplyr::select(-CoD)  %>% 
     mutate_at(c("Num_SNP"), ~replace_na(.,-1))
 )
 #invert order of rows
-df_plot=df_plot[order(1:nrow(df_plot)),]
+# df_plot=df_plot[order(nrow(df_plot):1),]
 addline_format <- function(x,...){
   gsub('\\s|__','\n',x)
 }
@@ -351,15 +361,15 @@ p <- ggplot(data = df_plot, aes(
   x=paste0(addline_format(partition_name), "\nN_SNP ", Num_SNP), #x=addline_format(partition_name), 
   y=R2, 
   label=paste0("CoD=",round(R2,4)))) +  
-  geom_point(color="darkgreen", size=3) + ggrepel::geom_text_repel(size = rel(3)) +
+  geom_point(color=df_plot$colour, size=3) + ggrepel::geom_text_repel(size = rel(3)) +
   ylim(0, NA) + 
   xlab("") +  ylab("")+coord_flip()+theme_minimal()+
-  theme(axis.text.y = element_text(lineheight = 0.8, angle = 45,size = rel(0.8)))#, size=8
+  theme(axis.text.y = element_text(lineheight = 0.8, angle = 45,size = rel(1)))#, size=8
 
 f1<-grid.arrange(textGrob(paste("Coefficients of determination for:", ENH_list), 
-                          gp = gpar(fontsize = 11, col="darkgreen", fontface = "bold")), 
+                          gp = gpar(fontsize = 12, col="darkgreen", fontface = "bold")), 
                  textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", 
-                          gp = gpar(fontsize = 9)), 
+                          gp = gpar(fontsize = 10)), 
                  p, 
                  heights = c(0.1, 0.1, 1))
 
@@ -374,9 +384,9 @@ p <-ggplot(data = df_plot[!is.na(df_plot$Num_SNP),],
   xlab("") +  ylab("")+coord_flip()+theme_minimal()+
   theme(axis.text.y = element_text(lineheight = 0.8, angle = 45,size = rel(0.8)))#, size=8
 f2<-grid.arrange(textGrob(paste("CoD per SNP * 10^5 for:", ENH_list), 
-                          gp = gpar(fontsize = 11, col="maroon4", fontface = "bold")), 
+                          gp = gpar(fontsize = 12, col="maroon4", fontface = "bold")), 
                  textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", 
-                          gp = gpar(fontsize = 9)), 
+                          gp = gpar(fontsize = 10)), 
                  p, 
                  heights = c(0.1, 0.1, 1))
 
@@ -399,9 +409,9 @@ p <- df_plot%>%
   theme(legend.position = "bottom",
         axis.text.y = element_text(lineheight = 0.8, angle = 45, size = rel(0.8)))
 f3<-grid.arrange(textGrob(paste("Relative number of SNPs, total CoD, and CoD per SNP for:", ENH_list), 
-                          gp = gpar(fontsize = 9, fontface = "bold")), 
+                          gp = gpar(fontsize = 12, fontface = "bold")), 
                  textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", 
-                          gp = gpar(fontsize = 7)), 
+                          gp = gpar(fontsize = 10)), 
                  p, 
                  heights = c(0.1, 0.1, 1))
 # ggsave(filename = CoD_per_SNP_plot_scaled, f3,  width = 8, height = 7)
@@ -535,7 +545,7 @@ p = ggplot(data = all_ORs , aes(y= OR, ymin = LCI, ymax=UCI, x=factor(quantile),
   theme_minimal()+theme(legend.position="bottom", strip.text.x = element_text(size = rel(0.8)))
 # dev.off()
 f4<-grid.arrange(textGrob(paste("Participant distribution by ",condition_name," OR by original PGC GWAS quantile\nand further by", ENH_list, "quantile"), 
-                          gp = gpar(fontsize = 9, fontface = "bold")), 
+                          gp = gpar(fontsize = 11, fontface = "bold")), 
                 #  textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", 
                 #           gp = gpar(fontsize = 7)), 
                  p, 
