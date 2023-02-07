@@ -314,6 +314,10 @@ CoD_per_SNP$CoD_per_SNP = (CoD_per_SNP$CoD / CoD_per_SNP$Num_SNP)*10^5
 # CoD_per_SNP$CoD_per_SNP <- scale(CoD_per_SNP$CoD_per_SNP, center = F)
 CoD_per_SNP
 
+addline_format <- function(x,...){
+  gsub('\\s|__','\n',x)
+}
+
 #create DF for plotting
 (df_plot<- data.frame(
   partition=c(factor(c("0",
@@ -349,18 +353,15 @@ colour=c("black",
   "green",
   "green"
 )) %>% left_join(CoD_per_SNP, by="partition") %>% dplyr::select(-CoD)  %>% 
-    mutate_at(c("Num_SNP"), ~replace_na(.,-1))
+    mutate_at(c("Num_SNP"), ~replace_na(.,-1)) %>%
+    mutate(xlabel=factor(paste0(addline_format(partition_name), "\nN_SNP ", Num_SNP)))
 )
-#invert order of rows
-# df_plot=df_plot[order(nrow(df_plot):1),]
-addline_format <- function(x,...){
-  gsub('\\s|__','\n',x)
-}
+
 
 p <- ggplot(data = df_plot, aes(
-  x=paste0(addline_format(partition_name), "\nN_SNP ", Num_SNP), #x=addline_format(partition_name), 
-  y=R2, 
-  label=paste0("CoD=",round(R2,4)))) +  
+                              x=reorder(xlabel, desc(xlabel)), #reorder(the_factor, desc(the_factor))
+                              y=R2, 
+                              label=paste0("CoD=",round(R2,4)))) +  
   geom_point(color=df_plot$colour, size=3) + ggrepel::geom_text_repel(size = rel(3)) +
   ylim(0, NA) + 
   xlab("") +  ylab("")+coord_flip()+theme_minimal()+
@@ -376,13 +377,14 @@ f1<-grid.arrange(textGrob(paste("Coefficients of determination for:", ENH_list),
 
 p <-ggplot(data = df_plot[!is.na(df_plot$Num_SNP),], 
            aes(
-             x=paste0(addline_format(partition_name),"\nCoD ",round(R2,4), " N_SNP ", Num_SNP), 
+             x=reorder(xlabel, desc(xlabel))#paste0(addline_format(partition_name),"\nCoD ",round(R2,4), " N_SNP ", Num_SNP), 
              y=CoD_per_SNP, 
              label=round(CoD_per_SNP,3))) +  
   geom_point(color="maroon4", size=3) + ggrepel::geom_text_repel(size = rel(3)) +
   ylim(0, NA) + 
   xlab("") +  ylab("")+coord_flip()+theme_minimal()+
   theme(axis.text.y = element_text(lineheight = 0.8, angle = 38,size = rel(1)))#, size=8
+  
 f2<-grid.arrange(textGrob(paste("CoD per SNP * 10^5 for:", ENH_list), 
                           gp = gpar(fontsize = 12, col="maroon4", fontface = "bold")), 
                  textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", 
