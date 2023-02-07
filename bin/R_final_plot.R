@@ -76,7 +76,7 @@ modif_name_2 = args[30]
 #set input variables
 number_quantiles = 5
 condition_name = "HCM"
-threshold = "0.05"
+threshold = "0.5"
 
 
 #OUTPUT
