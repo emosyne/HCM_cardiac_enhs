@@ -366,12 +366,13 @@ p <- ggplot(data = df_plot, aes(
   geom_point(color=df_plot$colour, size=3) + ggrepel::geom_text_repel(size = rel(3)) +
   ylim(0, NA) + 
   xlab("") +  ylab("")+coord_flip()+ theme_minimal()+
-  theme(axis.text.y = element_text(lineheight = 0.8, angle = 38,size = rel(1))
+  theme(axis.text.y = element_text(lineheight = 0.8, angle = 38, size = rel(1)),
   plot.margin = margin(1, 1, 1, 1, "cm"),
   plot.background = element_rect(
     colour = "black",
     linewidth = 1
-  ))
+  )
+  )
 
 
 f1<-grid.arrange(textGrob(paste("Coefficients of determination for:", ENH_list), 
