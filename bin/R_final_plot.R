@@ -365,8 +365,14 @@ p <- ggplot(data = df_plot, aes(
                               ) +  
   geom_point(color=df_plot$colour, size=3) + ggrepel::geom_text_repel(size = rel(3)) +
   ylim(0, NA) + 
-  xlab("") +  ylab("")+coord_flip()+theme_minimal()+
-  theme(axis.text.y = element_text(lineheight = 0.8, angle = 38,size = rel(1)))#, size=8
+  xlab("") +  ylab("")+coord_flip()+ theme_minimal()+
+  theme(axis.text.y = element_text(lineheight = 0.8, angle = 38,size = rel(1))
+  plot.margin = margin(1, 1, 1, 1, "cm"),
+  plot.background = element_rect(
+    colour = "black",
+    linewidth = 1
+  ))
+
 
 f1<-grid.arrange(textGrob(paste("Coefficients of determination for:", ENH_list), 
                           gp = gpar(fontsize = 12, col="darkgreen", fontface = "bold")), 
@@ -381,7 +387,7 @@ p <-ggplot(data = df_plot[!is.na(df_plot$Num_SNP),],
              x=reorder(xlabel, desc(xlabel)),#paste0(addline_format(partition_name),"\nCoD ",round(R2,4), " N_SNP ", Num_SNP), 
              y=CoD_per_SNP, 
              label=round(CoD_per_SNP,3))) +  
-  geom_point(color="maroon4", size=3) + ggrepel::geom_text_repel(size = rel(3)) +
+  geom_point(color=df_plot$colour, size=3) + ggrepel::geom_text_repel(size = rel(3)) +
   ylim(0, NA) + 
   xlab("") +  ylab("")+coord_flip()+theme_minimal()+
   theme(axis.text.y = element_text(lineheight = 0.8, angle = 38,size = rel(1)))#, size=8
