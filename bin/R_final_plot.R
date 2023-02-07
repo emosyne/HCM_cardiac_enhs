@@ -366,7 +366,7 @@ p <- ggplot(data = df_plot, aes(
   geom_point(color=df_plot$colour, size=3) + ggrepel::geom_text_repel(size = rel(3)) +
   ylim(0, NA) + 
   xlab("") +  ylab("")+coord_flip()+ theme_minimal()+
-  theme(axis.text.y = element_text(lineheight = 0.8, angle = 25, size = rel(0.8)),
+  theme(axis.text.y = element_text(lineheight = 0.8, angle = 25, size = rel(1)),
   plot.margin = margin(t = 0, r = 0, b = 1.5, l = 0, "cm"))
 
 
@@ -386,7 +386,7 @@ p <-ggplot(data = df_plot[!is.na(df_plot$Num_SNP),],
   geom_point(color=df_plot$colour, size=3) + ggrepel::geom_text_repel(size = rel(3)) +
   ylim(0, NA) + 
   xlab("") +  ylab("")+coord_flip()+theme_minimal()+
-  theme(axis.text.y = element_text(lineheight = 0.8, angle = 25, size = rel(0.8)),
+  theme(axis.text.y = element_text(lineheight = 0.8, angle = 25, size = rel(1)),
   plot.margin = margin(t = 0, r = 0, b = 1.5, l = 0, "cm"))
   
 f2<-grid.arrange(textGrob(paste("CoD per SNP * 10^5 for:", ENH_list), 
@@ -412,7 +412,7 @@ p <- df_plot%>%
   scale_fill_brewer(name="",palette="Set1")+
   coord_flip()+theme_minimal()+
   xlab("") +  ylab("")+
-  theme(axis.text.y = element_text(lineheight = 0.8, angle = 38, size = rel(1)),
+  theme(axis.text.y = element_text(lineheight = 0.8, angle = 25, size = rel(1)),
   plot.margin = margin(t = 0, r = 0, b = 0, l = 0, "cm"),
   legend.position = "bottom")
   
