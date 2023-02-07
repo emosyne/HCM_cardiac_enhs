@@ -213,7 +213,7 @@ pmv = glm(dx ~ merged_GWAS_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_parti
 (merged_GWAS_logistic_model_R2 = R2O*cv/(1+R2O*theta*cv))
 (CoD_per_SNP = rbind(
   CoD_per_SNP,
-  c("1",merged_GWAS_logistic_model_R2,
+  c("X",merged_GWAS_logistic_model_R2,
     summary_table[summary_table$compartment=="merged_GWAS_summary",]$Num_SNP, NA)
 ))
 
@@ -227,7 +227,7 @@ pmv = glm(dx ~ merged_GWAS_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_parti
 (residual_GWAS_compart_logistic_model_R2 = R2O*cv/(1+R2O*theta*cv))
 (CoD_per_SNP = rbind(
   CoD_per_SNP,
-  c("2",residual_GWAS_compart_logistic_model_R2,summary_table[summary_table$compartment=="residual_GWAS_compartment_summary",]$Num_SNP, NA)
+  c("1",residual_GWAS_compart_logistic_model_R2,summary_table[summary_table$compartment=="residual_GWAS_compartment_summary",]$Num_SNP, NA)
 ))
 
 (TS_ENH_originalOR_compart_logistic_model <- lrm(dx ~ TS_ENH_GWAS_compartment_originalOR_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_participant))
@@ -240,7 +240,7 @@ pmv = glm(dx ~ merged_GWAS_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_parti
 (TS_ENH_originalOR_compart_logistic_model_R2 = R2O*cv/(1+R2O*theta*cv))
 (CoD_per_SNP = rbind(
   CoD_per_SNP,
-  c("3",TS_ENH_originalOR_compart_logistic_model_R2,summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_originalOR_summary",]$Num_SNP, NA)
+  c("2",TS_ENH_originalOR_compart_logistic_model_R2,summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_originalOR_summary",]$Num_SNP, NA)
 ))
 
 (TS_ENH_OR_by_measure1_compart_logistic_model <- lrm(dx ~ TS_ENH_GWAS_compartment_OR_by_measure1_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_participant))
@@ -253,7 +253,7 @@ pmv = glm(dx ~ merged_GWAS_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_parti
 (TS_ENH_OR_by_measure1_compart_logistic_model_R2 = R2O*cv/(1+R2O*theta*cv))
 (CoD_per_SNP = rbind(
   CoD_per_SNP,
-  c("3b",TS_ENH_OR_by_measure1_compart_logistic_model_R2,
+  c("2b",TS_ENH_OR_by_measure1_compart_logistic_model_R2,
     summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_OR_by_measure1_summary",]$Num_SNP, NA)
 ))
 
@@ -268,7 +268,7 @@ pmv = glm(dx ~ merged_GWAS_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_parti
 (TS_ENH_OR_by_measure2_compart_logistic_model_R2 = R2O*cv/(1+R2O*theta*cv))
 (CoD_per_SNP = rbind(
   CoD_per_SNP,
-  c("3c",TS_ENH_OR_by_measure2_compart_logistic_model_R2,
+  c("2c",TS_ENH_OR_by_measure2_compart_logistic_model_R2,
     summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_OR_by_measure2_summary",]$Num_SNP, NA)
 ))
 
@@ -314,22 +314,23 @@ CoD_per_SNP$CoD_per_SNP = (CoD_per_SNP$CoD / CoD_per_SNP$Num_SNP)*10^5
 # CoD_per_SNP$CoD_per_SNP <- scale(CoD_per_SNP$CoD_per_SNP, center = F)
 CoD_per_SNP
 
-
+#create DF for plotting
 (df_plot<- data.frame(
   partition=c(factor(c("0",
-                      "1","2","3","3b","3c","4","4b","4c"))),
+                      #"1",
+                      "1","2","2b","2c","3","3b","3c"))),
   partition_name= factor(c("0-original_GWAS",
-  "1-merged_GWAS",
-  "2-residual_GWAS", 
-  "3-TS_ENH original_OR",
-  paste0("3b-TS_ENH_by ",modif_name_1),
-  paste0("3c-TS_ENH_by ",modif_name_2),
-  "4-residual_GWAS plus_TS_ENH_original_OR",
-  paste0("4b-residual_GWAS_plus_TS_ENH_OR_by ",modif_name_1),
-  paste0("4c-residual_GWAS_plus_TS_ENH_OR_by ",modif_name_2)
+  #"1-merged_GWAS",
+  "1-residual_GWAS", 
+  "2-TS_ENH original_OR",
+  paste0("2b-TS_ENH_by ",modif_name_1),
+  paste0("2c-TS_ENH_by ",modif_name_2),
+  "3-residual_GWAS plus_TS_ENH_original_OR",
+  paste0("3b-residual_GWAS_plus_TS_ENH_OR_by ",modif_name_1),
+  paste0("3c-residual_GWAS_plus_TS_ENH_OR_by ",modif_name_2)
 )),
 R2=c(original_GWAS_logistic_model_R2,
-  merged_GWAS_logistic_model_R2, #1
+  #merged_GWAS_logistic_model_R2, #1
   residual_GWAS_compart_logistic_model_R2,#2 
   TS_ENH_originalOR_compart_logistic_model_R2, #3
   TS_ENH_OR_by_measure1_compart_logistic_model_R2,
@@ -341,7 +342,7 @@ R2=c(original_GWAS_logistic_model_R2,
     mutate_at(c("Num_SNP"), ~replace_na(.,-1))
 )
 #invert order of rows
-df_plot=df_plot[order(nrow(df_plot):1),]
+df_plot=df_plot[order(1:nrow(df_plot)),]
 addline_format <- function(x,...){
   gsub('\\s|__','\n',x)
 }
