@@ -367,7 +367,7 @@ p <- ggplot(data = df_plot, aes(
   ylim(0, NA) + 
   xlab("") +  ylab("")+coord_flip()+ theme_minimal()+
   theme(axis.text.y = element_text(lineheight = 0.8, angle = 25, size = rel(1)),
-  plot.margin = margin(t = 0, r = 0, b = 1.5, l = 0, "cm"))
+  plot.margin = margin(t = 0, r = 0, b = 1, l = 0, "cm"))
 
 
 f1<-grid.arrange(textGrob(paste("Coefficients of determination for:", ENH_list), 
@@ -387,7 +387,7 @@ p <-ggplot(data = df_plot[!is.na(df_plot$Num_SNP),],
   ylim(0, NA) + 
   xlab("") +  ylab("")+coord_flip()+theme_minimal()+
   theme(axis.text.y = element_text(lineheight = 0.8, angle = 25, size = rel(1)),
-  plot.margin = margin(t = 0, r = 0, b = 1.5, l = 0, "cm"))
+  plot.margin = margin(t = 0, r = 0, b = 1, l = 0, "cm"))
   
 f2<-grid.arrange(textGrob(paste("CoD per SNP * 10^5 for:", ENH_list), 
                           gp = gpar(fontsize = 12, col="maroon4", fontface = "bold")), 
