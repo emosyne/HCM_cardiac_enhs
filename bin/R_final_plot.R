@@ -343,13 +343,13 @@ R2=c(original_GWAS_logistic_model_R2,
   residual_GWAS_plus_TS_ENH_OR_by_measure1_logistic_model_R2,
   residual_GWAS_plus_TS_ENH_OR_by_measure2_logistic_model_R2
 ),
-colour=c("black",
+colour=c("navyblue",
   #"darkgreen",
   "darkgreen",
   "darkgreen",
   "green",
   "green",
-  "darkgreen",
+  "navyblue",
   "green",
   "green"
 )) %>% left_join(CoD_per_SNP, by="partition") %>% dplyr::select(-CoD)  %>% 
