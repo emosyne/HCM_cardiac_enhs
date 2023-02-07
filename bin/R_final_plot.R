@@ -327,11 +327,11 @@ addline_format <- function(x,...){
   #"1-merged_GWAS",
   "1-residual_GWAS", 
   "2-TS_ENH original_OR",
-  paste0("2b-TS_ENH_by ",modif_name_1),
-  paste0("2c-TS_ENH_by ",modif_name_2),
-  "3-residual_GWAS plus_TS_ENH_original_OR",
-  paste0("3b-residual_GWAS_plus_TS_ENH_OR_by ",modif_name_1),
-  paste0("3c-residual_GWAS_plus_TS_ENH_OR_by ",modif_name_2)
+  paste0("2b-TS_ENH_OR* ",modif_name_1),
+  paste0("2c-TS_ENH_OR* ",modif_name_2),
+  "3-residual_GWAS+ TS_ENH_original_OR",
+  paste0("3b-residual_GWAS+ TS_ENH_OR*_",modif_name_1),
+  paste0("3c-residual_GWAS+ TS_ENH_OR*_",modif_name_2)
 )),
 R2=c(original_GWAS_logistic_model_R2,
   #merged_GWAS_logistic_model_R2, #1
