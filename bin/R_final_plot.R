@@ -385,8 +385,8 @@ p1 <- ggplot(data = df_plot, aes(
 
 f1<-grid.arrange(textGrob("A)", just = "left",
                           gp = gpar(fontsize = 18, fontface = "bold", col="black")), 
-                  textGrob(paste("Coefficients of determination for:", ENH_list), 
-                          gp = gpar(fontsize = 12, fontface = "bold", col="darkgreen")), 
+                  textGrob(paste("Coefficients of determination for:\n", ENH_list), 
+                          gp = gpar(fontsize = 16, fontface = "bold", col="darkgreen")), 
                   #textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", gp = gpar(fontsize = 10)), 
                   p1,
                   layout_matrix=rbind(c(1,2),
@@ -415,8 +415,8 @@ p2 <-ggplot(data = df_plot[!is.na(df_plot$Num_SNP),],
 
 f2<-grid.arrange(textGrob("B)", just = "left",
                           gp = gpar(fontsize = 18, fontface = "bold", col="black")), 
-                  textGrob(paste("CoD per SNP * 10^5 for:", ENH_list), 
-                          gp = gpar(fontsize = 12, fontface = "bold", col="darkblue")), 
+                  textGrob(paste("CoD per SNP * 10^5 for:\n", ENH_list), 
+                          gp = gpar(fontsize = 16, fontface = "bold", col="darkblue")), 
                   #textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", gp = gpar(fontsize = 10)), 
                   p2,
                   layout_matrix=rbind(c(1,2),
@@ -450,8 +450,8 @@ p3 <- df_plot%>%
   
 f3<-grid.arrange(textGrob("C)", just = "left",
                           gp = gpar(fontsize = 18, fontface = "bold", col="black")), 
-                  textGrob(paste("Relative number of SNPs, total CoD, and CoD per SNP for:", ENH_list), 
-                          gp = gpar(fontsize = 12, fontface = "bold", col="darkblue")), 
+                  textGrob(paste("Relative number of SNPs, total CoD, and CoD per SNP for:\n", ENH_list), 
+                          gp = gpar(fontsize = 16, fontface = "bold", col="darkblue")), 
                   #textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", gp = gpar(fontsize = 10)), 
                   p3,
                   layout_matrix=rbind(c(1,2),
@@ -569,7 +569,7 @@ p4 = ggplot(data = all_ORs , aes(y= OR, ymin = LCI, ymax=UCI, x=factor(quantile)
     strip.text.x = element_text(size = rel(0.8)),
     axis.text = element_text(size = rel(1.2)),
     axis.title = element_text(size = rel(1.5)),
-    # plot.margin = margin(t = 0, r = 0, b = 0, l = 0, "cm"),
+    plot.margin = margin(t = 0, r = 1, b = 0, l = 1, "cm"),
     legend.position = "bottom",
     panel.grid.major.x = element_blank()
     )
@@ -578,7 +578,7 @@ p4 = ggplot(data = all_ORs , aes(y= OR, ymin = LCI, ymax=UCI, x=factor(quantile)
 f4<-grid.arrange(textGrob("D)", just = "left",
                           gp = gpar(fontsize = 18, fontface = "bold", col="black")), 
                  textGrob(paste("Participant distribution by ",condition_name," OR by original PGC GWAS quantile\nand further by", ENH_list, "quantile"), 
-                          gp = gpar(fontsize = 12, fontface = "bold",col="maroon")), 
+                          gp = gpar(fontsize = 16, fontface = "bold",col="maroon")), 
                  p4,
                  layout_matrix=rbind(c(1,2),
                                      c(3,3)),
@@ -597,3 +597,63 @@ ggsave(filename = CoD_per_SNP_plot_scaled, arrangeGrob(f3, f4, ncol = 2),  width
 ggsave(filename = CoD_ALL_plots, 
         arrangeGrob(f1, f2, f3, f4, ncol = 2),  
         width = 17, height = 14)
+
+
+
+
+# ################
+# # R2 comparison plot
+# # Compare r2 BETWEEN PRSs:
+
+
+# (original<- cbind(
+#   data.table::fread(original_LOO_GWAS_prsice, select=c("Threshold","R2","Num_SNP")),
+#   dataset="Original GWAS"
+# ))
+
+
+# ADDPRS_clumpedOriginalGWAS_NoEPs_overlap_prsice<- cbind(
+#   data.table::fread(residual_GWAS_compartment_prsice, select=c("Threshold","R2","Num_SNP")),
+#   dataset="residual_GWAS_compartment"
+# )
+
+
+# TS_EPs_no_overlap_clumped<- cbind(
+#   data.table::fread(TS_ENH_GWAS_compartment_originalOR_prsice, select=c("Threshold","R2","Num_SNP")),
+#   dataset=paste(ENH_list," TS_ENH_compartment_originalOR")
+# )
+
+
+# #include both bests in thresholds
+# (all_PRS <- rbind(original,
+#                   ADDPRS_clumpedOriginalGWAS_NoEPs_overlap_prsice,
+#                   TS_EPs_no_overlap_clumped) %>% select(Threshold,R2,Num_SNP,dataset) %>% 
+#     mutate(dataset=stringr::str_remove_all(dataset, " ")) %>% 
+#     pivot_wider(id_cols  = Threshold, names_from=dataset,values_from = c(R2,Num_SNP),names_vary = "slowest", names_sep = ":") %>% 
+#     drop_na() %>% pivot_longer(!Threshold) %>% separate(col=name, into = c("val", "dataset"), sep=":") %>% 
+#     pivot_wider(id_cols  = c("Threshold", "dataset"), values_from = value, names_from = c("val")) %>% 
+#     mutate(Threshold=as.numeric(round(Threshold,4))) %>% 
+#     #remove dup thresholds
+#     group_by(Threshold, dataset) %>% slice_head(n = 1) %>% ungroup() %>% 
+#     mutate(dataset=factor(x = dataset), dataset=relevel(dataset, ref="OriginalGWAS"))
+  
+# )
+
+
+# pdf(file = PRS_comparison_figure_path, width = 10, height = 7)
+# ggplot(all_PRS, aes(x=factor(as.numeric(round(Threshold,2))), y=R2, #label=paste0("R2=",round(R2,3),",\n N=",Num_SNP),
+#                     fill=factor(dataset))) +theme_minimal()+
+#   # geom_dotplot(binaxis='y', position = position_dodge2(1)) +
+#   ylim(c(0,(1.2*max(all_PRS$R2))))+
+#   # geom_line(mapping=aes(group=factor(dataset)))+
+#   stat_summary_bin(fun = "mean", geom="bar", bins=20, position=position_dodge(1)) +
+#   # ggrepel::geom_text_repel(max.overlaps = 15, min.segment.length = 0,
+#   #                          size=10, lineheight = 0.7)+
+#   scale_fill_manual(values=c("red","orange","darkgreen"))+
+#   ggtitle("R2 calculated by PRSice at several thresholds",
+#           subtitle = paste("Original GWAS PRS, vs partitioned PRSs for", ENH_list) )+
+#   xlab(label = "PRSice p-value threshold")+labs(fill='PRS') +
+#   theme(legend.position="bottom",axis.text.x = element_text(angle = 30),
+#         plot.title = element_text(size=16))
+
+# dev.off()
