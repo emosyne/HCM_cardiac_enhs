@@ -47,9 +47,9 @@ enhancer_lists_bed_files =
         "34k_neg", 
         "notCardiac_40k",
         "9k_CARDIAC_NoFibro_significant",
-        // "6k_CARDIAC_NoFibro_significant_noGRB",
-        // "3k_CARDIAC_NoFibro_significant_GRB",
-        // "905_HEART_EP_eQTL"
+        "6k_CARDIAC_NoFibro_significant_noGRB",
+        "3k_CARDIAC_NoFibro_significant_GRB",
+        "905_HEART_EP_eQTL"
         )
         .map { ENH_list -> ["${ENH_list}", 
             file("./input/enh_bedfiles/${ENH_list}*.bed", checkIfExists: true)]
