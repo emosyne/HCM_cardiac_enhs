@@ -24,6 +24,7 @@ process R_final_plot {
         path(merged_GWAS_summary), path(merged_GWAS_prsice), path (merged_GWAS_best),\
         path(cohort_fam),\
         path(original_HCM_GWAS_summary), path(original_HCM_GWAS_prsice), path (original_HCM_GWAS_best),\
+        val(CTthreshold),\
         val(modif_name_1),val(modif_name_2)
 
     output:
@@ -40,7 +41,7 @@ process R_final_plot {
         ${merged_GWAS_summary} ${merged_GWAS_best}\
         ${TS_ENH_GWAS_compartment_originalOR_prsice} ${TS_ENH_GWAS_compartment_OR_by_measure1_prsice} ${TS_ENH_GWAS_compartment_OR_by_measure2_prsice} ${residual_GWAS_compartment_prsice} ${merged_GWAS_prsice}  \
         ${original_HCM_GWAS_summary} ${original_HCM_GWAS_prsice} ${original_HCM_GWAS_best}\
-        ${modif_name_1} ${modif_name_2}
+        ${modif_name_1} ${modif_name_2} ${CTthreshold}
     """
 }
     

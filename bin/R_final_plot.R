@@ -71,7 +71,7 @@ original_LOO_GWAS_prsice = args[27]
 
 modif_name_1 = args[29]
 modif_name_2 = args[30]
-
+threshold = args[31]
 
 #set input variables
 number_quantiles = 5
@@ -83,9 +83,10 @@ threshold = "0.5"
 analysis_output_txt = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_model_fit.txt")
 model_fit_plot      = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_MODEL_FIT_PLOT.pdf")
 PRS_double_QUANTILE_PLOT  = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_PRS_double_QUANTILE_PLOT.pdf")
-PRS_comparison_figure_path = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_PRS_comparison_plot.pdf")
+# PRS_comparison_figure_path = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_PRS_comparison_plot.pdf")
 CoD_per_SNP_plot_scaled= paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_scaled_CoD_per_snp_plot.pdf")
 CoD_ALL_plots = paste0("CoD_ALL_plots_", ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), ".pdf")
+
 
 
 
@@ -363,43 +364,64 @@ colour=c("navyblue",
 )
 
 
-p <- ggplot(data = df_plot, aes(
-                              x=reorder(xlabel, desc(xlabel)), #reorder(the_factor, desc(the_factor))
-                              y=R2, 
-                              label=paste0("CoD=",round(R2,4)))
+p1 <- ggplot(data = df_plot, aes(
+                              y=reorder(xlabel, desc(xlabel)), 
+                              x=R2, 
+                              label=round(R2,4))
                               ) +  
-  geom_point(color=df_plot$colour, size=3) + ggrepel::geom_text_repel(size = rel(3)) +
-  ylim(0, NA) + 
-  xlab("") +  ylab("")+coord_flip()+ theme_minimal()+
-  theme(axis.text.y = element_text(lineheight = 0.8, angle = 25, size = rel(1)),
-  plot.margin = margin(t = 0, r = 0, b = 1, l = 0, "cm"))
+  geom_segment(aes(yend = reorder(xlabel, desc(xlabel))), xend = 0, colour = "grey50") +                      
+  geom_point(color=df_plot$colour, size=4) + 
+  ggrepel::geom_label_repel(size = rel(3), fill = "azure", col="black",
+                            hjust = 1, nudge_y = -0.2, point.padding = NA, box.padding = 0.5)+ 
+  scale_x_continuous(limits = c(0, NA), expand = expansion(mult = c(0, .1))) + 
+  xlab("") +  ylab("")+
+  theme_bw() +
+  theme(
+    axis.text.y = element_text(lineheight = 0.8, angle = 25, size = rel(1)),
+    plot.margin = margin(t = 0, r = 0, b = 1, l = 0, "cm"),
+    panel.grid.major.y = element_blank()
+    )
 
 
-f1<-grid.arrange(textGrob(paste("Coefficients of determination for:", ENH_list), 
-                          gp = gpar(fontsize = 12, col="darkgreen", fontface = "bold")), 
-                 textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", 
-                          gp = gpar(fontsize = 10)), 
-                 p, 
-                 heights = c(0.1, 0.1, 1))
+f1<-grid.arrange(textGrob("A)", just = "left",
+                          gp = gpar(fontsize = 18, fontface = "bold", col="black")), 
+                  textGrob(paste("Coefficients of determination for:", ENH_list), 
+                          gp = gpar(fontsize = 12, fontface = "bold", col="darkgreen")), 
+                  #textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", gp = gpar(fontsize = 10)), 
+                  p1,
+                  layout_matrix=rbind(c(1,2),
+                                      c(3,3)),
+                  widths = c(0.1, 1), heights = c(0.1, 1))
 
 
-p <-ggplot(data = df_plot[!is.na(df_plot$Num_SNP),], 
+p2 <-ggplot(data = df_plot[!is.na(df_plot$Num_SNP),], 
            aes(
-             x=reorder(xlabel, desc(xlabel)),#paste0(addline_format(partition_name),"\nCoD ",round(R2,4), " N_SNP ", Num_SNP), 
-             y=CoD_per_SNP, 
+             y=reorder(xlabel, desc(xlabel)),
+             x=CoD_per_SNP, 
              label=round(CoD_per_SNP,3))) +  
-  geom_point(color=df_plot$colour, size=3) + ggrepel::geom_text_repel(size = rel(3)) +
-  ylim(0, NA) + 
-  xlab("") +  ylab("")+coord_flip()+theme_minimal()+
-  theme(axis.text.y = element_text(lineheight = 0.8, angle = 25, size = rel(1)),axis.text.x=element_blank(),
-  plot.margin = margin(t = 0, r = 0.5, b = 1, l = 0, "cm"))
+  geom_segment(aes(yend = reorder(xlabel, desc(xlabel))), xend = 0, colour = "grey50") +
+  geom_point(color=df_plot$colour, size=4) + 
+  ggrepel::geom_label_repel(size = rel(3), fill = "azure", col="black",
+                            hjust = 1, nudge_y = -0.2, point.padding = NA, box.padding = 0.5)+
+  scale_x_continuous(limits = c(0, NA), expand = expansion(mult = c(0, .1))) + 
+  xlab("") +  ylab("")+
+  theme_bw() +
+  theme(
+    axis.text.y = element_text(lineheight = 0.8, angle = 25, size = rel(1)),
+    plot.margin = margin(t = 0, r = 1, b = 1, l = 0, "cm"),
+    panel.grid.major.y = element_blank()
+    )
   
-f2<-grid.arrange(textGrob(paste("CoD per SNP * 10^5 for:", ENH_list), 
-                          gp = gpar(fontsize = 12, col="maroon4", fontface = "bold")), 
-                 textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", 
-                          gp = gpar(fontsize = 10)), 
-                 p, 
-                 heights = c(0.1, 0.1, 1))
+
+f2<-grid.arrange(textGrob("B)", just = "left",
+                          gp = gpar(fontsize = 18, fontface = "bold", col="black")), 
+                  textGrob(paste("CoD per SNP * 10^5 for:", ENH_list), 
+                          gp = gpar(fontsize = 12, fontface = "bold", col="darkblue")), 
+                  #textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", gp = gpar(fontsize = 10)), 
+                  p2,
+                  layout_matrix=rbind(c(1,2),
+                                      c(3,3)),
+                  widths = c(0.05, 1), heights = c(0.1, 1))
 
 
 #save all plots
@@ -408,27 +430,33 @@ ggsave(filename = model_fit_plot, arrangeGrob(f1, f2, ncol = 2),  width = 16, he
 
 #scaled plot
 scale1 <- function(x) scale(x, center = F)[,1]
-p <- df_plot%>% 
+p3 <- df_plot%>% 
   mutate(scaled_CoD = R2, scaled_N = Num_SNP, scaled_CoD_per_SNP = CoD_per_SNP) %>% 
   mutate_at(vars(contains("scaled")), scale1) %>% drop_na() %>% 
   dplyr::select("partition_name","scaled_CoD","scaled_N","scaled_CoD_per_SNP") %>% 
   pivot_longer(!partition_name) %>% 
-  ggplot(aes(y=value, fill=name, x=addline_format(partition_name))) + geom_col(position = "dodge") +
-  scale_fill_brewer(name="",palette="Set1")+
-  coord_flip()+theme_minimal()+
+  ggplot(aes(x=value, fill=name, y=addline_format(partition_name))) + 
+  geom_col(position = "dodge") +
+  scale_fill_brewer(name="",palette="Set1")+#coord_flip()+
+  theme_bw()+
   xlab("") +  ylab("")+
-  theme(axis.text.y = element_text(lineheight = 0.8, angle = 25, size = rel(1)),
-  plot.margin = margin(t = 0, r = 0, b = 0, l = 0, "cm"),
-  legend.position = "bottom")
+  theme(
+    axis.text.y = element_text(lineheight = 0.8, angle = 25, size = rel(1)),
+    plot.margin = margin(t = 0, r = 0, b = 0, l = 0, "cm"),
+    legend.position = "bottom",
+    panel.grid.major.y = element_blank()
+    )
+
   
-  
-f3<-grid.arrange(textGrob(paste("Relative number of SNPs, total CoD, and CoD per SNP for:", ENH_list), 
-                          gp = gpar(fontsize = 12, fontface = "bold")), 
-                 textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", 
-                          gp = gpar(fontsize = 10)), 
-                 p, 
-                 heights = c(0.1, 0.1, 1))
-# ggsave(filename = CoD_per_SNP_plot_scaled, f3,  width = 8, height = 7)
+f3<-grid.arrange(textGrob("C)", just = "left",
+                          gp = gpar(fontsize = 18, fontface = "bold", col="black")), 
+                  textGrob(paste("Relative number of SNPs, total CoD, and CoD per SNP for:", ENH_list), 
+                          gp = gpar(fontsize = 12, fontface = "bold", col="darkblue")), 
+                  #textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", gp = gpar(fontsize = 10)), 
+                  p3,
+                  layout_matrix=rbind(c(1,2),
+                                      c(3,3)),
+                  widths = c(0.1, 1), heights = c(0.1, 1))
 
 
 
@@ -526,105 +554,46 @@ ORs_OR_by_exp
       comp=factor(comp),
       comp=forcats::fct_relevel(comp)
     ))
-#   %>% mutate(
-#   var_col=ifelse(
-#     test = grepl(pattern="all_thresh", x = original_OR_quant), yes = "tomato", no = 
-#       ifelse(
-#         test = grepl(pattern="_q_1$", x = original_OR_quant, perl = T), yes = "#ccece6", no = 
-#           ifelse(
-#             test = grepl(pattern="_q_2$", x = original_OR_quant, perl = T), yes = "#99d8c9", no = 
-#               ifelse(
-#                 test = grepl(pattern="_q_3$", x = original_OR_quant, perl = T), yes = "#41ae76", no = 
-#                   ifelse(
-#                     test = grepl(pattern="_q_4$", x = original_OR_quant, perl = T), yes = "#006d2c", no = 
-#                       ifelse(
-#                         test = grepl(pattern="_q_5$", x = original_OR_quant, perl = T), yes = "#00441b", no = "black"
-#                       )
-#                   )
-#               )
-#           )
-#       )
-#   )
-# ))
 
 
 
 # pdf(file = PRS_double_QUANTILE_PLOT, width = 11, height = 7)
-p = ggplot(data = all_ORs , aes(y= OR, ymin = LCI, ymax=UCI, x=factor(quantile), colour=original_OR_quant, group=original_OR_quant)) + 
+p4 = ggplot(data = all_ORs , aes(y= OR, ymin = LCI, ymax=UCI, x=factor(quantile), colour=original_OR_quant, group=original_OR_quant)) + 
   facet_wrap(facets = vars(addline_format(comp)))+
   scale_colour_manual(name="ENH compartment quantile", values = c("tomato","#ccece6", "#99d8c9", "#41ae76","#006d2c", "#00441b",r_color))+
   geom_pointrange(position = position_dodge(width = 0.3))  + 
   ylab(paste0("OR for ",condition_name))+   xlab('Original PRS quantile')+
   # labs(title =  paste("Participant distribution by HCM OR by original PGC GWAS quantile\nand further by", ENH_list, "quantile"))+ 
-  theme_minimal()+theme(legend.position="bottom", strip.text.x = element_text(size = rel(0.8)))
+  theme_bw() +
+  theme(
+    strip.text.x = element_text(size = rel(0.8)),
+    axis.text = element_text(size = rel(1.2)),
+    axis.title = element_text(size = rel(1.5)),
+    # plot.margin = margin(t = 0, r = 0, b = 0, l = 0, "cm"),
+    legend.position = "bottom",
+    panel.grid.major.x = element_blank()
+    )
+    
 # dev.off()
-f4<-grid.arrange(textGrob(paste("Participant distribution by ",condition_name," OR by original PGC GWAS quantile\nand further by", ENH_list, "quantile"), 
-                          gp = gpar(fontsize = 11, fontface = "bold")), 
-                #  textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", 
-                #           gp = gpar(fontsize = 7)), 
-                 p, 
-                 heights = c(0.1, 1))
+f4<-grid.arrange(textGrob("D)", just = "left",
+                          gp = gpar(fontsize = 18, fontface = "bold", col="black")), 
+                 textGrob(paste("Participant distribution by ",condition_name," OR by original PGC GWAS quantile\nand further by", ENH_list, "quantile"), 
+                          gp = gpar(fontsize = 12, fontface = "bold",col="maroon")), 
+                 p4,
+                 layout_matrix=rbind(c(1,2),
+                                     c(3,3)),
+                 widths = c(0.1, 1), heights = c(0.1, 1))
 
 
 ggsave(filename = CoD_per_SNP_plot_scaled, arrangeGrob(f3, f4, ncol = 2),  width = 17, height = 7)
-ggsave(filename = CoD_ALL_plots, arrangeGrob(f1, f2, f3, f4, ncol = 2),  width = 17, height = 14)
 
 
+# uniq_fig = ggpubr::ggarrange(p1,p2,p3,p4, ncol = 2, labels = c("A)","B)","C)","D)"))
+# annotate_figure(uniq_fig,
+#                 top = text_grob("Visualizing mpg", color = "red", face = "bold", size = 14),
+#                 bottom = text_grob("Data source: \n mtcars data set", color = "blue",
+#                                    hjust = 1, x = 1, face = "italic", size = 10))
 
-
-################
-# R2 comparison plot
-# Compare r2 BETWEEN PRSs:
-
-
-(original<- cbind(
-  data.table::fread(original_LOO_GWAS_prsice, select=c("Threshold","R2","Num_SNP")),
-  dataset="Original GWAS"
-))
-
-
-ADDPRS_clumpedOriginalGWAS_NoEPs_overlap_prsice<- cbind(
-  data.table::fread(residual_GWAS_compartment_prsice, select=c("Threshold","R2","Num_SNP")),
-  dataset="residual_GWAS_compartment"
-)
-
-
-TS_EPs_no_overlap_clumped<- cbind(
-  data.table::fread(TS_ENH_GWAS_compartment_originalOR_prsice, select=c("Threshold","R2","Num_SNP")),
-  dataset=paste(ENH_list," TS_ENH_compartment_originalOR")
-)
-
-
-#include both bests in thresholds
-(all_PRS <- rbind(original,
-                  ADDPRS_clumpedOriginalGWAS_NoEPs_overlap_prsice,
-                  TS_EPs_no_overlap_clumped) %>% select(Threshold,R2,Num_SNP,dataset) %>% 
-    mutate(dataset=stringr::str_remove_all(dataset, " ")) %>% 
-    pivot_wider(id_cols  = Threshold, names_from=dataset,values_from = c(R2,Num_SNP),names_vary = "slowest", names_sep = ":") %>% 
-    drop_na() %>% pivot_longer(!Threshold) %>% separate(col=name, into = c("val", "dataset"), sep=":") %>% 
-    pivot_wider(id_cols  = c("Threshold", "dataset"), values_from = value, names_from = c("val")) %>% 
-    mutate(Threshold=as.numeric(round(Threshold,4))) %>% 
-    #remove dup thresholds
-    group_by(Threshold, dataset) %>% slice_head(n = 1) %>% ungroup() %>% 
-    mutate(dataset=factor(x = dataset), dataset=relevel(dataset, ref="OriginalGWAS"))
-  
-)
-
-
-pdf(file = PRS_comparison_figure_path, width = 10, height = 7)
-ggplot(all_PRS, aes(x=factor(as.numeric(round(Threshold,2))), y=R2, #label=paste0("R2=",round(R2,3),",\n N=",Num_SNP),
-                    fill=factor(dataset))) +theme_minimal()+
-  # geom_dotplot(binaxis='y', position = position_dodge2(1)) +
-  ylim(c(0,(1.2*max(all_PRS$R2))))+
-  # geom_line(mapping=aes(group=factor(dataset)))+
-  stat_summary_bin(fun = "mean", geom="bar", bins=20, position=position_dodge(1)) +
-  # ggrepel::geom_text_repel(max.overlaps = 15, min.segment.length = 0,
-  #                          size=10, lineheight = 0.7)+
-  scale_fill_manual(values=c("red","orange","darkgreen"))+
-  ggtitle("R2 calculated by PRSice at several thresholds",
-          subtitle = paste("Original GWAS PRS, vs partitioned PRSs for", ENH_list) )+
-  xlab(label = "PRSice p-value threshold")+labs(fill='PRS') +
-  theme(legend.position="bottom",axis.text.x = element_text(angle = 30),
-        plot.title = element_text(size=16))
-
-dev.off()
+ggsave(filename = CoD_ALL_plots, 
+        arrangeGrob(f1, f2, f3, f4, ncol = 2),  
+        width = 17, height = 14)

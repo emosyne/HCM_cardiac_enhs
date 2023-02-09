@@ -192,6 +192,7 @@ workflow HCM {
         .combine(R_extract_GWAS_SNPs_into_bed.out.clumped_GWAS)
         .combine(UKBB_covariates)
         .combine(LD_reference)
+        .map { [it, "0.5"].flatten() }         // ######################## SET CT THRESHOLD FOR PRSICE ##################
         .set{combined_splitlists_bedfile_QCeddata_LDdata}
     
     // combined_splitlists_bedfile_QCeddata_LDdata.view()
