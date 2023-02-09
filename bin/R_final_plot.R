@@ -383,7 +383,7 @@ p1 <- ggplot(data = df_plot, aes(
     )
 
 
-f1<-grid.arrange(textGrob("A)", just = "left",
+f1<-arrangeGrob(textGrob("A)", just = "left",
                           gp = gpar(fontsize = 18, fontface = "bold", col="black")), 
                   textGrob(paste("Coefficients of determination for:\n", ENH_list), 
                           gp = gpar(fontsize = 16, fontface = "bold", col="darkgreen")), 
@@ -413,7 +413,7 @@ p2 <-ggplot(data = df_plot[!is.na(df_plot$Num_SNP),],
     )
   
 
-f2<-grid.arrange(textGrob("B)", just = "left",
+f2<-arrangeGrob(textGrob("B)", just = "left",
                           gp = gpar(fontsize = 18, fontface = "bold", col="black")), 
                   textGrob(paste("CoD per SNP * 10^5 for:\n", ENH_list), 
                           gp = gpar(fontsize = 16, fontface = "bold", col="darkblue")), 
@@ -448,7 +448,7 @@ p3 <- df_plot%>%
     )
 
   
-f3<-grid.arrange(textGrob("C)", just = "left",
+f3<-arrangeGrob(textGrob("C)", just = "left",
                           gp = gpar(fontsize = 18, fontface = "bold", col="black")), 
                   textGrob(paste("Relative number of SNPs, total CoD, and CoD per SNP for:\n", ENH_list), 
                           gp = gpar(fontsize = 16, fontface = "bold", col="darkblue")), 
@@ -575,7 +575,7 @@ p4 = ggplot(data = all_ORs , aes(y= OR, ymin = LCI, ymax=UCI, x=factor(quantile)
     )
     
 # dev.off()
-f4<-grid.arrange(textGrob("D)", just = "left",
+f4<-arrangeGrob(textGrob("D)", just = "left",
                           gp = gpar(fontsize = 18, fontface = "bold", col="black")), 
                  textGrob(paste("Participant distribution by ",condition_name," OR by original PGC GWAS quantile\nand further by", ENH_list, "quantile"), 
                           gp = gpar(fontsize = 16, fontface = "bold",col="maroon")), 
