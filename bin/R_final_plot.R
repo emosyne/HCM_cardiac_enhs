@@ -76,7 +76,6 @@ threshold = args[31]
 #set input variables
 number_quantiles = 5
 condition_name = "HCM"
-threshold = "0.5"
 
 
 #OUTPUT
