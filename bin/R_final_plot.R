@@ -84,7 +84,7 @@ model_fit_plot      = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", mod
 PRS_double_QUANTILE_PLOT  = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_PRS_double_QUANTILE_PLOT.pdf")
 # PRS_comparison_figure_path = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_PRS_comparison_plot.pdf")
 CoD_per_SNP_plot_scaled= paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_scaled_CoD_per_snp_plot.pdf")
-CoD_ALL_plots = paste0("CoD_ALL_plots_", ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), ".pdf")
+CoD_ALL_plots = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), ".pdf")
 
 
 
@@ -129,7 +129,7 @@ r_color <- colors()
 
 
 (scaled_BEST_PRS_score_per_UKBB_participant <- BEST_PRS_score_per_UKBB_participant)
-scaled_BEST_PRS_score_per_UKBB_participant[,c(2:7)] <-  data.frame(scale(BEST_PRS_score_per_UKBB_participant[,c(2:7)]))+10
+scaled_BEST_PRS_score_per_UKBB_participant[,c(2:7)] <-  data.frame(scale(BEST_PRS_score_per_UKBB_participant[,c(2:7)], center=T, scale=F))+10
 head(scaled_BEST_PRS_score_per_UKBB_participant)
 
 (scaled_BEST_PRS_score_per_UKBB_participant<-
@@ -171,11 +171,11 @@ head(scaled_BEST_PRS_score_per_UKBB_participant)
 (ncase = NROW(diagnosis[diagnosis$dx==2,]))
 # ncont = number of controls
 (ncont = NROW(diagnosis[diagnosis$dx==1,]))
-# thd = the threshold on the normal distribution which truncates the proportion of disease prevalence
 # pop_prev = population prevalence
 pop_prev = 0.007
 # case_prev_in_sample = proportion of cases in the case-control samples
 (case_prev_in_sample = ncase/nt)
+# thd = the threshold on the normal distribution which truncates the proportion of disease prevalence
 (thd = -qnorm(pop_prev,0,1))
 (zv = dnorm(thd)) #z (normal density)
 (mv = zv/pop_prev) #mean liability for case
@@ -207,20 +207,20 @@ pmv = glm(dx ~ original_LOO_GWAS_best_PRS, data = scaled_BEST_PRS_score_per_UKBB
 ))
 
 
-(merged_GWAS_logistic_model <- lrm(dx ~ merged_GWAS_best_PRS, 
-                                   data = scaled_BEST_PRS_score_per_UKBB_participant))
-#logistic model
-# (lmv = glm(dx ~ merged_GWAS_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_participant, family = binomial(logit)))
-pmv = glm(dx ~ merged_GWAS_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_participant,family = binomial(probit)) #probit model
-# R2 on the liability scale using the transformation
-(R2O = var(pmv$fitted.values)/(ncase/nt*ncont/nt))
-#R2 on the observed scale
-(merged_GWAS_logistic_model_R2 = R2O*cv/(1+R2O*theta*cv))
-(CoD_per_SNP = rbind(
-  CoD_per_SNP,
-  c("X",merged_GWAS_logistic_model_R2,
-    summary_table[summary_table$compartment=="merged_GWAS_summary",]$Num_SNP, NA)
-))
+# (merged_GWAS_logistic_model <- lrm(dx ~ merged_GWAS_best_PRS, 
+#                                    data = scaled_BEST_PRS_score_per_UKBB_participant))
+# #logistic model
+# # (lmv = glm(dx ~ merged_GWAS_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_participant, family = binomial(logit)))
+# pmv = glm(dx ~ merged_GWAS_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_participant,family = binomial(probit)) #probit model
+# # R2 on the liability scale using the transformation
+# (R2O = var(pmv$fitted.values)/(ncase/nt*ncont/nt))
+# #R2 on the observed scale
+# (merged_GWAS_logistic_model_R2 = R2O*cv/(1+R2O*theta*cv))
+# (CoD_per_SNP = rbind(
+#   CoD_per_SNP,
+#   c("X",merged_GWAS_logistic_model_R2,
+#     summary_table[summary_table$compartment=="merged_GWAS_summary",]$Num_SNP, NA)
+# ))
 
 (residual_GWAS_compart_logistic_model <- lrm(dx ~ residual_GWAS_compartment_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_participant))
 #logistic model
@@ -316,7 +316,6 @@ sink()
 colnames(CoD_per_SNP)=c("partition","CoD","Num_SNP","CoD_per_SNP")
 CoD_per_SNP[c(2:4)]<-sapply(CoD_per_SNP[c(2:4)],as.numeric)
 CoD_per_SNP$CoD_per_SNP = (CoD_per_SNP$CoD / CoD_per_SNP$Num_SNP)*10^5
-# CoD_per_SNP$CoD_per_SNP <- scale(CoD_per_SNP$CoD_per_SNP, center = F)
 CoD_per_SNP
 
 addline_format <- function(x,...){
@@ -384,13 +383,13 @@ p1 <- ggplot(data = df_plot, aes(
 
 f1<-arrangeGrob(textGrob("A)", just = "left",
                           gp = gpar(fontsize = 18, fontface = "bold", col="black")), 
-                  textGrob(paste("Coefficients of determination for:\n", ENH_list), 
+                  textGrob(paste("Coefficients of determination"), 
                           gp = gpar(fontsize = 16, fontface = "bold", col="darkgreen")), 
                   #textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", gp = gpar(fontsize = 10)), 
                   p1,
                   layout_matrix=rbind(c(1,2),
                                       c(3,3)),
-                  widths = c(0.1, 1), heights = c(0.1, 1))
+                  widths = c(0.05, 1), heights = c(0.05, 1))
 
 
 p2 <-ggplot(data = df_plot[!is.na(df_plot$Num_SNP),], 
@@ -414,13 +413,13 @@ p2 <-ggplot(data = df_plot[!is.na(df_plot$Num_SNP),],
 
 f2<-arrangeGrob(textGrob("B)", just = "left",
                           gp = gpar(fontsize = 18, fontface = "bold", col="black")), 
-                  textGrob(paste("CoD per SNP * 10^5 for:\n", ENH_list), 
+                  textGrob(paste("Coefficients of determination per SNP * 10^5"), 
                           gp = gpar(fontsize = 16, fontface = "bold", col="darkblue")), 
                   #textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", gp = gpar(fontsize = 10)), 
                   p2,
                   layout_matrix=rbind(c(1,2),
                                       c(3,3)),
-                  widths = c(0.05, 1), heights = c(0.1, 1))
+                  widths = c(0.05, 1), heights = c(0.05, 1))
 
 
 #save all plots
@@ -449,13 +448,13 @@ p3 <- df_plot%>%
   
 f3<-arrangeGrob(textGrob("C)", just = "left",
                           gp = gpar(fontsize = 18, fontface = "bold", col="black")), 
-                  textGrob(paste("Relative number of SNPs, total CoD, and CoD per SNP for:\n", ENH_list), 
+                  textGrob(paste("Relative number of SNPs, total CoD, and CoD per SNP"), 
                           gp = gpar(fontsize = 16, fontface = "bold", col="darkblue")), 
                   #textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", gp = gpar(fontsize = 10)), 
                   p3,
                   layout_matrix=rbind(c(1,2),
                                       c(3,3)),
-                  widths = c(0.1, 1), heights = c(0.1, 1))
+                  widths = c(0.05, 1), heights = c(0.05, 1))
 
 
 
@@ -581,20 +580,26 @@ f4<-arrangeGrob(textGrob("D)", just = "left",
                  p4,
                  layout_matrix=rbind(c(1,2),
                                      c(3,3)),
-                 widths = c(0.1, 1), heights = c(0.1, 1))
+                 widths = c(0.05, 1), heights = c(0.1, 1))
 
 
 ggsave(filename = CoD_per_SNP_plot_scaled, arrangeGrob(f3, f4, ncol = 2),  width = 17, height = 7)
 
 
-# uniq_fig = ggpubr::ggarrange(p1,p2,p3,p4, ncol = 2, labels = c("A)","B)","C)","D)"))
-# annotate_figure(uniq_fig,
-#                 top = text_grob("Visualizing mpg", color = "red", face = "bold", size = 14),
-#                 bottom = text_grob("Data source: \n mtcars data set", color = "blue",
-#                                    hjust = 1, x = 1, face = "italic", size = 10))
-
-ggsave(filename = CoD_ALL_plots, 
-        arrangeGrob(f1, f2, f3, f4, ncol = 2),  
+## save overall plot, adding threshold, date, 
+ggsave(filename = paste0("CoD_ALL_plots_score_avg_",CoD_ALL_plots), 
+        arrangeGrob(
+          textGrob(ENH_list,
+                   gp = gpar(fontsize = 18, fontface = "bold",col="navyblue")),
+          f1, f2, f3, f4, 
+          textGrob(paste("PRSice --score avg - C+T threshold:",threshold,"plot created on:",Sys.Date()),
+                   gp = gpar(fontsize = 10, col="maroon")),
+                          layout_matrix=rbind(c(1,1),
+                                              c(2,3),
+                                              c(4,5),
+                                              c(6,6)),
+                          heights = c(0.08, 0.5, 0.5, 0.04)
+                                     ),  
         width = 17, height = 14)
 
 

@@ -19,14 +19,17 @@ noclump_TS_ENH_GWAS_compartment = args[11]
 EP_ES_gene_brain_exp = args[12]
 
 
+pdivby = 100000
+ES_multiplier = args[13]
+
+
 # #OUTPUT
-    # tuple val(ENH_list_cohort), path("*_clumped_TS_ENH_GWAS_compartment.tsv.gz"), path("*_clumped_residual_GWAS_compartment.tsv.gz"), path("*_clumped_merged_GWAS"),       emit: partitioned
 clumped_residual_GWAS_compartment_out = paste0(ENH_list_cohort, "_clumped_residual_GWAS_compartment.tsv.gz")
-clumped_TS_ENH_GWAS_compartment_out = paste0(ENH_list_cohort, "_clumped_TS_ENH_GWAS_compartment.tsv.gz")
+clumped_TS_ENH_GWAS_compartment_out = paste0(ENH_list_cohort,"_X_", ES_multiplier,"_clumped_TS_ENH_GWAS_compartment.tsv.gz")
 clumped_merged_GWAS_out = paste0(ENH_list_cohort, "_clumped_merged_GWAS.tsv.gz")
 
 
-pdivby = 100000
+
 
 #import clumped SNP list
 (clumped_SNPs <- fread(clumped_SNPs, select=c("CHR","SNP")))
@@ -42,8 +45,8 @@ pdivby = 100000
     ############################################################ SCALE ES         ############################
     # mutate(measure1=scales::rescale(log_max_ES_perEnh_contact_1_3, to=c(1,10))) %>% 
     # elog_max_ES_perEnh_contact_X_10
-    mutate(measure1= log_max_ES_perEnh_contact_1_3 * 5)%>%
-    mutate(measure2= log_TS_FANTOM_enh_tpm_1_4 * 5)%>%
+    mutate(measure1= log_max_ES_perEnh_contact_1_3 * ES_multiplier)%>%
+    mutate(measure2= log_TS_FANTOM_enh_tpm_1_4 * ES_multiplier)%>%
     # dplyr::filter(brain_exp_more_than_brain_median==1) %>% # N = 28100
     # dplyr::filter(brain_exp_more_than_brain_median==1 & brain_exp_more_than_other_tissues==1) %>% # N = 9176
     # dplyr::filter(brain_exp_tissue_specific==1) %>% # N = 7157
