@@ -192,7 +192,7 @@ workflow HCM {
         .combine(R_extract_GWAS_SNPs_into_bed.out.clumped_GWAS)
         .combine(UKBB_covariates)
         .combine(LD_reference)
-        .map { [it, "0.05"].flatten() }         // ######################## SET CT THRESHOLD FOR PRSICE ##################
+        .map { [it, "0.5"].flatten() }         // ######################## SET CT THRESHOLD FOR PRSICE ##################
         .set{combined_splitlists_bedfile_QCeddata_LDdata}
     
     // combined_splitlists_bedfile_QCeddata_LDdata.view()
@@ -209,8 +209,8 @@ workflow HCM {
             .join(PRSice_calculate_PRS_split_partitions.out.clumped_residual_GWAS_compartment_PRS)
             .join(PRSice_calculate_PRS_split_partitions.out.clumped_merged_GWAS_PRS)
             .join(PRSice_calculate_PRS_split_partitions.out.clumped_original_HCM_GWAS_PRS)
-            .map { [it, "enh_ES_*10",
-                        "enh_TS_tpm_*10"].flatten() }
+            .map { [it, "enh_ES_*5",
+                        "enh_TS_tpm_*5"].flatten() }
 
 
     // PRS_results.view()

@@ -42,8 +42,8 @@ pdivby = 100000
     ############################################################ SCALE ES         ############################
     # mutate(measure1=scales::rescale(log_max_ES_perEnh_contact_1_3, to=c(1,10))) %>% 
     # elog_max_ES_perEnh_contact_X_10
-    mutate(measure1= log_max_ES_perEnh_contact_1_3 * 10)%>%
-    mutate(measure2= log_TS_FANTOM_enh_tpm_1_4 * 10)%>%
+    mutate(measure1= log_max_ES_perEnh_contact_1_3 * 5)%>%
+    mutate(measure2= log_TS_FANTOM_enh_tpm_1_4 * 5)%>%
     # dplyr::filter(brain_exp_more_than_brain_median==1) %>% # N = 28100
     # dplyr::filter(brain_exp_more_than_brain_median==1 & brain_exp_more_than_other_tissues==1) %>% # N = 9176
     # dplyr::filter(brain_exp_tissue_specific==1) %>% # N = 7157
