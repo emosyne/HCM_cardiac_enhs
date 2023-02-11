@@ -212,12 +212,12 @@ workflow HCM {
             .map { [it, "enh_ES", "enh_TS_tpm"].flatten() }
 
 
-    PRS_results.view()
+    // PRS_results.view()
     
     
-    // R_final_plot (
-    //     PRS_results
-    // )
+    R_final_plot (
+        PRS_results
+    )
 
 }
 
