@@ -28,7 +28,8 @@ process R_final_plot {
         val(modif_name_1),val(modif_name_2)
 
     output:
-    tuple path("*.txt"), path("*.pdf")
+    path("*.txt")
+    // path("*.pdf")
 
     script:
     """
