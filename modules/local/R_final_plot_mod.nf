@@ -1,7 +1,7 @@
 process R_final_plot {
     // debug true
     container 'emosyne/r_docker:1.94'
-    label 'process_high_resource_short'
+    label 'process_high'
     tag "$ENH_list"
     cache "lenient"
     // errorStrategy 'ignore'
