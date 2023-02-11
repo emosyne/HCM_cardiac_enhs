@@ -82,16 +82,14 @@ ES_annotated_overlaps$EP_ES_gene_brain_exp_info <- NULL
 #multiply OR by ES for overlapping SNPs - only if measure1 or 2 are != 1
 clumped_TS_ENH_GWAS_compartment$OR_by_measure1 <- ifelse(
     test= clumped_TS_ENH_GWAS_compartment$measure1 == 1, 
-    yes = exp(log(clumped_TS_ENH_GWAS_compartment$OR) * 10),#clumped_TS_ENH_GWAS_compartment$OR, 
+    yes = clumped_TS_ENH_GWAS_compartment$OR, 
     no  = exp(log(clumped_TS_ENH_GWAS_compartment$OR) * (clumped_TS_ENH_GWAS_compartment$measure1))
 )
 clumped_TS_ENH_GWAS_compartment$OR_by_measure2 <- ifelse(
     test= clumped_TS_ENH_GWAS_compartment$measure2 == 1, 
-    yes = exp(log(clumped_TS_ENH_GWAS_compartment$OR) * 10),#clumped_TS_ENH_GWAS_compartment$OR, 
+    yes = clumped_TS_ENH_GWAS_compartment$OR, 
     no  = exp(log(clumped_TS_ENH_GWAS_compartment$OR) * (clumped_TS_ENH_GWAS_compartment$measure2))
-) 
-# clumped_TS_ENH_GWAS_compartment$OR_by_measure2 <- 
-    # exp(log(clumped_TS_ENH_GWAS_compartment$OR) * (clumped_TS_ENH_GWAS_compartment$measure2))
+)
 
 
 clumped_TS_ENH_GWAS_compartment <- clumped_TS_ENH_GWAS_compartment %>%
