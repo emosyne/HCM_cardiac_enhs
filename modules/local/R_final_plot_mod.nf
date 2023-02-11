@@ -28,7 +28,7 @@ process R_final_plot {
         val(modif_name_1),val(modif_name_2)
 
     output:
-    path("*.txt")
+    // path("*.txt")
     path("*.pdf")
 
     script:
