@@ -29,7 +29,7 @@ process R_final_plot {
 
     output:
     path("*.txt")
-    // path("*.pdf")
+    path("*.pdf")
 
     script:
     """
