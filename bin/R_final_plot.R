@@ -130,7 +130,7 @@ r_color <- colors()
 
 (scaled_BEST_PRS_score_per_UKBB_participant <- BEST_PRS_score_per_UKBB_participant)
 # fwrite(BEST_PRS_score_per_UKBB_participant,"BEST_PRS_score_per_UKBB_participant.txt")
-# scaled_BEST_PRS_score_per_UKBB_participant[,c(2:7)] <-  data.frame(scale(BEST_PRS_score_per_UKBB_participant[,c(2:7)], center = T, scale = F))+10
+scaled_BEST_PRS_score_per_UKBB_participant[,c(2:7)] <-  data.frame(scale(BEST_PRS_score_per_UKBB_participant[,c(2:7)], center = T, scale = T))+10
 # head(scaled_BEST_PRS_score_per_UKBB_participant)
 # fwrite(scaled_BEST_PRS_score_per_UKBB_participant,"scaled_BEST_PRS_score_per_UKBB_participant.txt")
 
