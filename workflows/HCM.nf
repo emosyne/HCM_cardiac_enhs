@@ -183,7 +183,7 @@ workflow HCM {
         // ##################################################### GENERATE MODIFIED ORS MULT BY ES OR EXP       ###########################################################
         // ##################################################### CAN MULTIPLY P BY VALUE TO RESTORE ENH SNPS P ###########################################################
         // output separate lists to calculate split PRSs and also merged one
-        PLINK_clump.out.clumped_SNPs_and_noclump_lists.map { [it, "10"].flatten() }, //######################## multiplier can be set here ########################
+        PLINK_clump.out.clumped_SNPs_and_noclump_lists.map { [it, "15"].flatten() }, //######################## multiplier can be set here ########################
         Channel.fromPath( "./input/ES_multipliers/2023-02-01_CARDIAC_NoFibro_significant_ES_significant_contact_EPs_ANNOT_plus_100_noOverlap.csv.gz", checkIfExists: true)
     )
 
@@ -209,7 +209,7 @@ workflow HCM {
             .join(PRSice_calculate_PRS_split_partitions.out.clumped_residual_GWAS_compartment_PRS)
             .join(PRSice_calculate_PRS_split_partitions.out.clumped_merged_GWAS_PRS)
             .join(PRSice_calculate_PRS_split_partitions.out.clumped_original_HCM_GWAS_PRS)
-            .map { [it, "enh_ES_*10", "enh_TS_tpm_*10"].flatten() }
+            .map { [it, "enh_ES_*10", "ENH part OR = 2"].flatten() }
 
 
     // PRS_results.view()

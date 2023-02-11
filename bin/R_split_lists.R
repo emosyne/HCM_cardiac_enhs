@@ -46,7 +46,7 @@ clumped_merged_GWAS_out = paste0(ENH_list_cohort, "_clumped_merged_GWAS.tsv.gz")
     # mutate(measure1=scales::rescale(log_max_ES_perEnh_contact_1_3, to=c(1,10))) %>% 
     # elog_max_ES_perEnh_contact_X_10
     mutate(measure1= log_max_ES_perEnh_contact_1_3 * ES_multiplier)%>%
-    mutate(measure2= log_TS_FANTOM_enh_tpm_1_4 * ES_multiplier)%>%
+    mutate(measure2= 2)%>%
     # dplyr::filter(brain_exp_more_than_brain_median==1) %>% # N = 28100
     # dplyr::filter(brain_exp_more_than_brain_median==1 & brain_exp_more_than_other_tissues==1) %>% # N = 9176
     # dplyr::filter(brain_exp_tissue_specific==1) %>% # N = 7157
@@ -85,13 +85,12 @@ clumped_TS_ENH_GWAS_compartment$OR_by_measure1 <- ifelse(
     yes = clumped_TS_ENH_GWAS_compartment$OR, 
     no  = exp(log(clumped_TS_ENH_GWAS_compartment$OR) * (clumped_TS_ENH_GWAS_compartment$measure1))
 )
-clumped_TS_ENH_GWAS_compartment$OR_by_measure2 <- ifelse(
-    test= clumped_TS_ENH_GWAS_compartment$measure2 == 1, 
-    yes = clumped_TS_ENH_GWAS_compartment$OR, 
-    no  = exp(log(clumped_TS_ENH_GWAS_compartment$OR) * (clumped_TS_ENH_GWAS_compartment$measure2))
-) 
-# clumped_TS_ENH_GWAS_compartment$OR_by_measure2 <- 
-    # exp(log(clumped_TS_ENH_GWAS_compartment$OR) * (clumped_TS_ENH_GWAS_compartment$measure2))
+clumped_TS_ENH_GWAS_compartment$OR_by_measure2 <- 2
+# ifelse(
+#     test= clumped_TS_ENH_GWAS_compartment$measure2 == 1, 
+#     yes = clumped_TS_ENH_GWAS_compartment$OR, 
+#     no  = exp(log(clumped_TS_ENH_GWAS_compartment$OR) * (clumped_TS_ENH_GWAS_compartment$measure2))
+# )
 
 
 clumped_TS_ENH_GWAS_compartment <- clumped_TS_ENH_GWAS_compartment %>%
