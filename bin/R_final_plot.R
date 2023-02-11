@@ -587,7 +587,7 @@ ggsave(filename = CoD_per_SNP_plot_scaled, arrangeGrob(f3, f4, ncol = 2),  width
 
 
 ## save overall plot, adding threshold, date, 
-ggsave(filename = paste0("CoD_ALL_plots_score_avg_",CoD_ALL_plots), 
+ggsave(filename = paste0("CoD_ALL_plots_",CoD_ALL_plots), 
         arrangeGrob(
           textGrob(ENH_list,
                    gp = gpar(fontsize = 18, fontface = "bold",col="navyblue")),
