@@ -20,7 +20,7 @@ EP_ES_gene_brain_exp = args[12]
 
 
 pdivby = 100000
-ES_multiplier = args[13]
+(ES_multiplier = as.numeric(args[13]))
 
 
 # #OUTPUT
