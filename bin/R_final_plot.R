@@ -542,7 +542,7 @@ ORs_OR_by_ES
 ORs_OR_by_exp <- ORs
 for  (i in 1:number_quantiles) {
   print(i)
-  logistic<-glm(formula = dx ~ merged_GWAS_q, 
+  logistic<-glm(formula = dx ~ original_GWAS_q, 
                 data = scaled_BEST_PRS_score_per_UKBB_participant[scaled_BEST_PRS_score_per_UKBB_participant$TS_ENH_compartment_OR_by_measure2_q==i,], 
                 family = binomial, na.action = "na.omit")
   (OR<-exp(cbind(coef(logistic), confint(logistic))) %>% as_tibble(rownames = "quant"))
