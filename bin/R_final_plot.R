@@ -433,7 +433,8 @@ f2<-arrangeGrob(textGrob("B)", just = "left",
 
 #save all plots
 ggsave(filename = model_fit_plot, f1,  width = 8, height = 7)
-ggsave(filename = paste0("9k_CARDIAC_significant_11Feb23_example_files/",ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_MODEL_FIT_PLOT_per_snp.pdf"), f2,  width = 8, height = 7)
+ggsave(filename = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_MODEL_FIT_PLOT_per_snp.pdf"), 
+        f2,  width = 8, height = 7)
 
 
 
