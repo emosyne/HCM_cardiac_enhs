@@ -512,9 +512,9 @@ for  (i in 1:number_quantiles) {
   
   ORs_original_OR<-rbind(ORs_original_OR,OR)
 }
-ORs_original_OR$comp=paste0("1-TS_ENH_compartment_originalOR","__thresh_",
-                            summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_originalOR_summary",c("Threshold")],
-                            "_N=",NROW(scaled_BEST_PRS_score_per_UKBB_participant[scaled_BEST_PRS_score_per_UKBB_participant$TS_ENH_compartment_originalOR_q==i,]))
+ORs_original_OR$comp=paste0("2) TS_ENH: Original OR",#"__thresh_",
+                            #summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_originalOR_summary",c("Threshold")],
+                            "\nSNP N=",NROW(scaled_BEST_PRS_score_per_UKBB_participant[scaled_BEST_PRS_score_per_UKBB_participant$TS_ENH_compartment_originalOR_q==i,]))
 ORs_original_OR
 
 
@@ -533,9 +533,9 @@ for  (i in 1:number_quantiles) {
   
   ORs_OR_by_ES<-rbind(ORs_OR_by_ES,OR)
 }
-ORs_OR_by_ES$comp=paste0("2-TS_ENH by_",modif_name_1,"__thresh_",
-                         summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_OR_by_measure1_summary",c("Threshold")],
-                         "_N=",NROW(scaled_BEST_PRS_score_per_UKBB_participant[scaled_BEST_PRS_score_per_UKBB_participant$TS_ENH_compartment_OR_by_measure1_q==i,]))
+ORs_OR_by_ES$comp=paste0("2b) TS_ENH OR * ",modif_name_1,#"__thresh_",
+                         #summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_OR_by_measure1_summary",c("Threshold")],
+                         "\nSNP N=",NROW(scaled_BEST_PRS_score_per_UKBB_participant[scaled_BEST_PRS_score_per_UKBB_participant$TS_ENH_compartment_OR_by_measure1_q==i,]))
 ORs_OR_by_ES
 
 
@@ -553,9 +553,9 @@ for  (i in 1:number_quantiles) {
   
   ORs_OR_by_exp<-rbind(ORs_OR_by_exp,OR)
 }
-ORs_OR_by_exp$comp=paste0("3-TS_ENH by_",modif_name_2,"__thresh_",
-                          summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_OR_by_measure2_summary",c("Threshold")],
-                          "_N=",NROW(scaled_BEST_PRS_score_per_UKBB_participant[scaled_BEST_PRS_score_per_UKBB_participant$TS_ENH_compartment_OR_by_measure2_q==i,]))
+ORs_OR_by_exp$comp=paste0("2c) TS_ENH OR * ",modif_name_2,#"__thresh_",
+                          #summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_OR_by_measure2_summary",c("Threshold")],
+                          "\nSNP N=",NROW(scaled_BEST_PRS_score_per_UKBB_participant[scaled_BEST_PRS_score_per_UKBB_participant$TS_ENH_compartment_OR_by_measure2_q==i,]))
 ORs_OR_by_exp
 
 (all_ORs<-rbind(
@@ -564,20 +564,21 @@ ORs_OR_by_exp
       comp=factor(comp),
       comp=forcats::fct_relevel(comp)
     ))
-
+table(all_ORs$comp)
 
 
 # pdf(file = PRS_double_QUANTILE_PLOT, width = 11, height = 7)
-p4 = ggplot(data = all_ORs , aes(y= OR, ymin = LCI, ymax=UCI, x=factor(quantile), colour=original_OR_quant, group=original_OR_quant)) + 
-  facet_wrap(facets = vars(addline_format(comp)))+
+p4 = ggplot(data = all_ORs , aes(y= OR, ymin = LCI, ymax=UCI, 
+                                 x=factor(quantile), colour=original_OR_quant, group=original_OR_quant)) + 
+  facet_wrap(facets = vars((comp)))+
   scale_colour_manual(name="ENH compartment quantile", values = c("tomato","#ccece6", "#99d8c9", "#41ae76","#006d2c", "#00441b",r_color))+
   geom_pointrange(position = position_dodge(width = 0.3))  + 
   ylab(paste0("OR for ",condition_name))+   xlab('Original PRS quantile')+
   # labs(title =  paste("Participant distribution by HCM OR by original PGC GWAS quantile\nand further by", ENH_list, "quantile"))+ 
   theme_bw() +
   theme(
-    strip.text.x = element_text(size = rel(0.8)),
-    axis.text = element_text(size = rel(1.2)),
+    strip.text.x = element_text(size = rel(1.5)),
+    axis.text = element_text(size = rel(0.95)),
     axis.title = element_text(size = rel(1.5)),
     plot.margin = margin(t = 0, r = 1, b = 0, l = 1, "cm"),
     legend.position = "bottom",
@@ -593,6 +594,7 @@ f4<-arrangeGrob(textGrob("D)", just = "left",
                 layout_matrix=rbind(c(1,2),
                                     c(3,3)),
                 widths = c(0.05, 1), heights = c(0.1, 1))
+
 
 
 ggsave(filename = CoD_per_SNP_plot_scaled, arrangeGrob(f3, f4, ncol = 2),  width = 17, height = 7)
