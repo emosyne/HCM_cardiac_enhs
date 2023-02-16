@@ -414,6 +414,7 @@ p2 <-ggplot(data = df_plot[!is.na(df_plot$Num_SNP),],
   ggrepel::geom_label_repel(size = rel(3), fill = "azure", col="black",
                             hjust = 1, nudge_y = -0.2, point.padding = NA, box.padding = 0.5)+
   scale_x_continuous(limits = c(0, NA), expand = expansion(mult = c(0, .1))) + 
+  scale_y_discrete(expand = expansion(add = .7)) + #.6 is default - add a little spacing to the sides
   xlab("") +  ylab("")+
   theme_bw() +
   theme(
