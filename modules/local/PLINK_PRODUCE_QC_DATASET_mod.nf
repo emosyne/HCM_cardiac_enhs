@@ -8,10 +8,10 @@ process PLINK_PRODUCE_QC_DATASET {
 
     input:
     //[GWAS_ENH_SNPs_hg19_ALLCHR.bed, GWAS_ENH_SNPs_hg19_ALLCHR.bim, GWAS_ENH_SNPs_hg19_ALLCHR.fam, GWAS_QC.gz, UKBB_het_valid_out_vs_HCM_GWAS.sample, UKBB_a1_cohort_bim_vs_HCM_GWAS, UKBB_mismatching_SNPs_vs_HCM_GWAS]
-    tuple path(bed), path(bim), path(fam), path(HCM_GWAS_QC), path (het_valid), path (a1_bim), path(mismatch)
+    tuple path(bed), path(bim), path(fam), path(HCM_GWAS_QC), path (het_valid), path (a1_bim), path(mismatch), val(condition)
 
     output:
-    tuple path ("*_QC.bed"), path ("*_QC.bim"), path ("*_QC.fam"), path(HCM_GWAS_QC),           emit: target_QC
+    tuple path ("*_QC.bed"), path ("*_QC.bim"), path ("*_QC.fam"), path(HCM_GWAS_QC), val(condition),           emit: target_QC
     path ("*.log")
 
 
@@ -27,7 +27,7 @@ process PLINK_PRODUCE_QC_DATASET {
         --exclude ${mismatch} \\
         --threads $task.cpus \\
         --memory $mem_mb \\
-        --out ${bed.simpleName}_QC
+        --out ${bed.simpleName}_${condition}_QC
     
 
     """

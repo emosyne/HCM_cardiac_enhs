@@ -16,7 +16,7 @@ process PRSice_calculate_PRS_split_partitions {
     // non_missing_10PCs_Jun22.covariate.gz, 
     // EUR_phase3_autosomes_hg19.bed, EUR_phase3_autosomes_hg19.bim, EUR_phase3_autosomes_hg19.fam]
     tuple path(cohort_bed_QC),  path(cohort_bim_QC), path(cohort_fam_QC), val(ENH_list), \
-        path(clumped_TS_ENH_GWAS_compartment), path(clumped_residual_GWAS_compartment), path(clumped_merged_GWAS), val(multiplier), \
+        path(clumped_TS_ENH_GWAS_compartment), path(clumped_residual_GWAS_compartment), path(clumped_merged_GWAS), val(multiplier),val(condition),  \
         path(clumped_GWAS_QC_nodups), \
         path(UKBB_covariates), \
         path(LD_ref_bed), path(LD_ref_bim), path(LD_ref_fam), val(CTthreshold)
@@ -28,7 +28,7 @@ process PRSice_calculate_PRS_split_partitions {
              emit: clumped_residual_GWAS_compartment_PRS
     tuple val("${ENH_list}"), path("*_clumped_merged_GWAS.summary"), path("*_clumped_merged_GWAS.prsice"), path("*_clumped_merged_GWAS.best"),  path(cohort_fam_QC),                     \
              emit: clumped_merged_GWAS_PRS
-    tuple val("${ENH_list}"), path("*_original_HCM_GWAS.summary"), path("*_original_HCM_GWAS.prsice"), path("*_original_HCM_GWAS.best"), val(CTthreshold),                               \
+    tuple val("${ENH_list}"), path("*_original_HCM_GWAS.summary"), path("*_original_HCM_GWAS.prsice"), path("*_original_HCM_GWAS.best"), val(CTthreshold), val(condition),               \
              emit: clumped_original_HCM_GWAS_PRS
     tuple  path("*.png"), path("*.txt"), path("*.log") //figures, quantiles text and log
 
@@ -57,7 +57,7 @@ process PRSice_calculate_PRS_split_partitions {
         --thread $max_cpus \\
         --memory ${mem_Gb}Gb \\
         --snp SNP --chr CHR --bp POS --A1 A1 --A2 A2 --pvalue P --stat OR --or \\
-        --out ${ENH_list}_${CTthreshold}_clumped_TS_ENH_GWAS_compartment_originalOR
+        --out ${condition}_${ENH_list}_${CTthreshold}_clumped_TS_ENH_GWAS_compartment_originalOR
 
     echo clumped_TS_ENH_GWAS_compartment  - OR by measure 1
     #CHR	POS	SNP	A1	A2	P	OR	measure1	measure2	OR_by_measure1	OR_by_measure2
@@ -74,7 +74,7 @@ process PRSice_calculate_PRS_split_partitions {
         --thread $max_cpus \\
         --memory ${mem_Gb}Gb \\
         --snp SNP --chr CHR --bp POS --A1 A1 --A2 A2 --pvalue P --stat OR_by_measure1 --or \\
-        --out ${ENH_list}_${CTthreshold}_mult_${multiplier}_clumped_TS_ENH_GWAS_compartment_OR_by_measure1
+        --out ${condition}_${ENH_list}_${CTthreshold}_mult_${multiplier}_clumped_TS_ENH_GWAS_compartment_OR_by_measure1
     
     echo clumped_TS_ENH_GWAS_compartment  - OR by measure 2
     #CHR	POS	SNP	A1	A2	P	OR	measure1	measure2	OR_by_measure1	OR_by_measure2
@@ -91,7 +91,7 @@ process PRSice_calculate_PRS_split_partitions {
         --thread $max_cpus \\
         --memory ${mem_Gb}Gb \\
         --snp SNP --chr CHR --bp POS --A1 A1 --A2 A2 --pvalue P --stat OR_by_measure2 --or \\
-        --out ${ENH_list}_${CTthreshold}_mult_${multiplier}_clumped_TS_ENH_GWAS_compartment_OR_by_measure2
+        --out ${condition}_${ENH_list}_${CTthreshold}_mult_${multiplier}_clumped_TS_ENH_GWAS_compartment_OR_by_measure2
 
     echo clumped_residual_GWAS_compartment - original OR
     PRSice.R \\
@@ -107,7 +107,7 @@ process PRSice_calculate_PRS_split_partitions {
         --thread $max_cpus \\
         --memory ${mem_Gb}Gb \\
         --snp SNP --chr CHR --bp POS --A1 A1 --A2 A2 --pvalue P --stat OR --or \\
-        --out ${ENH_list}_${CTthreshold}_clumped_residual_GWAS_compartment
+        --out ${condition}_${ENH_list}_${CTthreshold}_clumped_residual_GWAS_compartment
         
     
     echo clumped_merged_GWAS - original OR
@@ -124,7 +124,7 @@ process PRSice_calculate_PRS_split_partitions {
         --cov covariates.pheno --cov-factor sex \\
         --thread $max_cpus \\
         --memory ${mem_Gb}Gb \\
-        --out ${ENH_list}_${CTthreshold}_clumped_merged_GWAS
+        --out ${condition}_${ENH_list}_${CTthreshold}_clumped_merged_GWAS
     
     echo ORIGINAL GWAS LOO
     PRSice.R \\

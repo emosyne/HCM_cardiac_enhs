@@ -72,10 +72,14 @@ original_LOO_GWAS_prsice = args[27]
 modif_name_1 = args[29]
 modif_name_2 = args[30]
 threshold = args[31]
+condition_name = args[32] #SCZ or HCM
 
 #set input variables
 number_quantiles = 5
-condition_name = "HCM"
+
+# pop_prev = population prevalence
+pop_prev = ifelse(test = condition_name == "SCZ", yes = 0.01, no = 0.007)
+
 
 
 #OUTPUT
@@ -170,8 +174,6 @@ scaled_BEST_PRS_score_per_UKBB_participant[,c(2:6)] <-  data.frame(scale(BEST_PR
 (ncase = NROW(diagnosis[diagnosis$dx==2,]))
 # ncont = number of controls
 (ncont = NROW(diagnosis[diagnosis$dx==1,]))
-# pop_prev = population prevalence
-pop_prev = 0.007
 # case_prev_in_sample = proportion of cases in the case-control samples
 (case_prev_in_sample = ncase/nt)
 # thd = the threshold on the normal distribution which truncates the proportion of disease prevalence
@@ -336,8 +338,8 @@ addline_format <- function(x,...){
 (df_plot<- data.frame(
   partition=c(factor(c("0",
                        #"1",
-                       "1","2","2b","2c","3","3b"
-                       #,"3c"
+                       "1","2","2b","2c","3","3b",
+                       "3c"
                        ))),
   partition_name= factor(c("0-original_GWAS",
                            #"1-merged_GWAS",
@@ -346,8 +348,8 @@ addline_format <- function(x,...){
                            paste0("2b-TS_ENH_OR* ",modif_name_1),
                            paste0("2c-TS_ENH_OR* ",modif_name_2),
                            "3-residual_GWAS+ TS_ENH_original_OR",
-                           "3b-residual_GWAS*TS_ENH_original_OR (FFD)"
-                           #"3c-residual_GWAS*TS_ENH_original_OR FFD+quadratic_factors"
+                           "3b-residual_GWAS*TS_ENH_original_OR (FFD)",
+                           "3c-residual_GWAS*TS_ENH_original_OR FFD+quadratic_factors"
   )),
   R2=c(original_GWAS_logistic_model_R2,
        #merged_GWAS_logistic_model_R2, #1
@@ -356,7 +358,7 @@ addline_format <- function(x,...){
        TS_ENH_OR_by_measure1_compart_logistic_model_R2,
        TS_ENH_OR_by_measure2_compart_logistic_model_R2,
        residual_GWAS_plus_TS_ENH_originalOR_logistic_model_R2, #4
-       logistic_full_factorial_design_model_R2#,logistic_full_factorial_design_nonlinear_interactions_model_R2
+       logistic_full_factorial_design_model_R2,logistic_full_factorial_design_nonlinear_interactions_model_R2
   ),
             colour=c("navyblue",
                      "green",
@@ -364,7 +366,7 @@ addline_format <- function(x,...){
                      "green",
                      "green",
                      "darkgreen",
-                     "darkgreen"#,                   "darkgreen"
+                     "darkgreen",                   "darkgreen"
   )) %>% left_join(CoD_per_SNP, by="partition") %>% dplyr::select(-CoD)  %>% 
     mutate_at(c("Num_SNP"), ~replace_na(.,-1)) %>%
     mutate(xlabel=factor(paste0(addline_format(partition_name), "\nN_SNP ", Num_SNP)))
@@ -380,7 +382,8 @@ p1 <- ggplot(data = df_plot, aes(
   geom_point(color=df_plot$colour, size=4) + 
   ggrepel::geom_label_repel(size = rel(3), fill = "azure", col="black",
                             hjust = 1, nudge_y = -0.2, point.padding = NA, box.padding = 0.5)+ 
-  scale_x_continuous(limits = c(0, NA), expand = expansion(mult = c(0, .1))) + 
+  scale_x_continuous(limits = c(0, NA), expand = expansion(mult = c(0, .15))) + 
+  scale_y_discrete(expand = expansion(add = .7)) + #.6 is default - add a little spacing to the sides
   xlab("") +  ylab("")+
   theme_bw() +
   theme(
@@ -577,8 +580,8 @@ p4 = ggplot(data = all_ORs , aes(y= OR, ymin = LCI, ymax=UCI,
   # labs(title =  paste("Participant distribution by HCM OR by original PGC GWAS quantile\nand further by", ENH_list, "quantile"))+ 
   theme_bw() +
   theme(
-    strip.text.x = element_text(size = rel(1.5)),
-    axis.text = element_text(size = rel(0.95)),
+    strip.text.x = element_text(size = rel(1.3)),
+    axis.text = element_text(size = rel(1)),
     axis.title = element_text(size = rel(1.5)),
     plot.margin = margin(t = 0, r = 1, b = 0, l = 1, "cm"),
     legend.position = "bottom",
@@ -594,7 +597,6 @@ f4<-arrangeGrob(textGrob("D)", just = "left",
                 layout_matrix=rbind(c(1,2),
                                     c(3,3)),
                 widths = c(0.05, 1), heights = c(0.1, 1))
-
 
 
 ggsave(filename = CoD_per_SNP_plot_scaled, arrangeGrob(f3, f4, ncol = 2),  width = 17, height = 7)

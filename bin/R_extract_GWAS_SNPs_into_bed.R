@@ -16,10 +16,11 @@ print(args[9])
 GWAS_QC_nodups <- fread(file = args[8])
 collected_bed_files_for_enhancers <- read_lines(args[9])
 clumped_SNPs <-fread(file = args[10], select=c("CHR","SNP"))
+condition = args[11]
 
 #outputs
-(SNPs_to_extract_out <- "clumped_GWAS_SNPs_plus_those_in_bed_files.bed")
-clumped_GWAS_out <- "clumped_GWAS_QC_nodups.tsv.gz"
+(SNPs_to_extract_out <- paste0(condition,"_clumped_GWAS_SNPs_plus_those_in_bed_files.bed"))
+clumped_GWAS_out <- paste0(condition,"_clumped_GWAS_QC_nodups.tsv.gz")
 
 
 

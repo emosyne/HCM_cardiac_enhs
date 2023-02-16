@@ -26,7 +26,6 @@ genotype_chr_files = Channel
 // genotype_chr_files.view()
 
 UKBBethinicityRelatedness = Channel.fromPath( './input/biobank/EIDs_nonBritIrish_includingsecondary_or_related_over_king125.tsv' , checkIfExists: true)
-HCM_UKBB_pheno =    Channel.fromPath("./input/biobank/HCM.pheno", checkIfExists: true)
 UKBB_covariates =   Channel.fromPath('./input/biobank/non_missing_10PCs_Jun22.covariate.gz', checkIfExists: true)
 
 
@@ -36,29 +35,44 @@ LD_reference = Channel.from("bed","bim","fam")
             .collect()
 
 
+// full_GWAS_hg19 = Channel
+//     .fromPath("$GWAS_dir/hcm.gwama.sumstats_hg19_24Feb21.gz", checkIfExists: true) 
+//     // .fromPath("$GWAS_dir/hcm_GWAS_sample.tsv.gz", checkIfExists: true) 
+// dx_UKBB_pheno =    Channel.fromPath("./input/biobank/HCM.pheno", checkIfExists: true)
+// enhancer_lists_bed_files = 
+//     Channel.from(
+//         "34k_neg", 
+//         "notCardiac_40k",
+//         "9k_CARDIAC_NoFibro_significant"//,
+//         // "6k_CARDIAC_NoFibro_significant_noGRB",
+//         // "3k_CARDIAC_NoFibro_significant_GRB",
+//         // "905_HEART_EP_eQTL"
+//         )
+//         .map { ENH_list -> ["${ENH_list}", 
+//             file("./input/enh_bedfiles/${ENH_list}*.bed", checkIfExists: true)]
+//             } 
+// annotations = Channel.fromPath( "./input/ES_multipliers/2023-02-01_CARDIAC_NoFibro_significant_ES_significant_contact_EPs_ANNOT_plus_100_noOverlap.csv.gz", checkIfExists: true)
+
+//  SCHIZO and neural lists ##############
 full_GWAS_hg19 = Channel
-    .fromPath("$GWAS_dir/hcm.gwama.sumstats_hg19_24Feb21.gz", checkIfExists: true) 
-    // .fromPath("$GWAS_dir/hcm_GWAS_sample.tsv.gz", checkIfExists: true) 
-
-
-
+    .fromPath("$GWAS_dir/PGC3_SCZ_wave3.european.autosome.public.v3_HCM_format.tsv.gz", checkIfExists: true) 
+dx_UKBB_pheno =    Channel.fromPath("./input/biobank/SCZ.pheno", checkIfExists: true)
 enhancer_lists_bed_files = 
     Channel.from(
-        "34k_neg", 
-        "notCardiac_40k",
-        "9k_CARDIAC_NoFibro_significant"//,
-        // "6k_CARDIAC_NoFibro_significant_noGRB",
-        // "3k_CARDIAC_NoFibro_significant_GRB",
-        // "905_HEART_EP_eQTL"
-        )
-        .map { ENH_list -> ["${ENH_list}", 
-            file("./input/enh_bedfiles/${ENH_list}*.bed", checkIfExists: true)]
+        "18k_PsychENCODE_PFCortex", 
+        "NEURAL_21k_significant_EPs",
+        "NEURAL_8k_GRB_significant_EPs",
+        "20k_notNeural",
+        "34k_neg")
+            .map { ENH_list -> ["${ENH_list}", 
+                file("./input/enh_bedfiles/${ENH_list}*.bed", checkIfExists: true)]
             } 
-    
+annotations = Channel.fromPath( "./input/ES_multipliers/2023-01-18_NEURAL_ENH_EXP_significant_ES_significant_contact_EPs_gene_brain_exp_plus_100_noOverlap.csv.gz", checkIfExists: true)
+condition = "SCZ" // SCZ or HCM
 
 
 workflow HCM {
-    // BASE =   SEAN HCM GWAS
+    // BASE =   GWAS
     // TARGET = UKBB
 
 
@@ -67,6 +81,7 @@ workflow HCM {
     PLINK_base_GWAS_QC_and_clump (
         full_GWAS_hg19
             .combine(LD_reference)
+            .combine(condition)
     )
 
 
@@ -76,6 +91,7 @@ workflow HCM {
         enhancer_lists_bed_files.map{it -> it[1]}.collect(),
         PLINK_base_GWAS_QC_and_clump.out.GWAS_QC_noClump
             .combine(PLINK_base_GWAS_QC_and_clump.out.clumped_SNPs)
+            .combine(condition)
         
         )
     // R_extract_GWAS_SNPs_into_bed.out.clumped_GWAS_SNPs_plus_those_in_bed_files
@@ -103,7 +119,7 @@ workflow HCM {
         // merge all bed files into one:
         PLINK2_EXTRACT.out.SNPextracted_by_chromosome.collect(),
         UKBBethinicityRelatedness,
-        HCM_UKBB_pheno
+        dx_UKBB_pheno
         //out tuplepath ("*.bed"), path ("*.bim"), path ("*.fam"),  emit: all_chromosomes_extracted
         )
     // PLINK_MERGE.out.all_chromosomes_extracted.view()
@@ -124,6 +140,7 @@ workflow HCM {
     R_PRS_QC ( // calculates mismatching SNPs and recodes all alleles to GWAS base
         PLINK2_QC_PRUNE_HET.out.pruned_variants_het
             .combine(PLINK_base_GWAS_QC_and_clump.out.GWAS_QC_noClump)
+            .combine(condition)
     )
     // R_PRS_QC.out.QC_het_a1_mismatch.view()
     //[/Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/GWAS_ENH_SNPs_hg19_ALLCHR.bed, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/GWAS_ENH_SNPs_hg19_ALLCHR.bim, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/GWAS_ENH_SNPs_hg19_ALLCHR.fam, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/GWAS_QC.gz, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/UKBB_het_valid_out_vs_HCM_GWAS.sample, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/UKBB_a1_cohort_bim_vs_HCM_GWAS, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/UKBB_mismatching_SNPs_vs_HCM_GWAS]
@@ -184,7 +201,7 @@ workflow HCM {
         // ##################################################### CAN MULTIPLY P BY VALUE TO RESTORE ENH SNPS P ###########################################################
         // output separate lists to calculate split PRSs and also merged one
         PLINK_clump.out.clumped_SNPs_and_noclump_lists.map { [it, "1"].flatten() }, //######################## multiplier can be set here ########################
-        Channel.fromPath( "./input/ES_multipliers/2023-02-01_CARDIAC_NoFibro_significant_ES_significant_contact_EPs_ANNOT_plus_100_noOverlap.csv.gz", checkIfExists: true)
+        annotations
     )
 
     

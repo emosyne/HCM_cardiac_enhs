@@ -7,12 +7,11 @@ process PLINK_clump {
 
     input:
     // [GWAS_ENH_SNPs_hg19_ALLCHR_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, 34k_neg, UKBB_34k_neg_noclump_TS_ENH_GWAS_compartment.tsv.gz, UKBB_34k_neg_noclump_residual_GWAS_compartment.tsv.gz, /Users/eosimo/large_files_not_to_back_up/LD_ref/EUR_phase3_autosomes_hg19.bed, /Users/eosimo/large_files_not_to_back_up/LD_ref/EUR_phase3_autosomes_hg19.bim, /Users/eosimo/large_files_not_to_back_up/LD_ref/EUR_phase3_autosomes_hg19.fam]
-    tuple path(bed_QC),  path(bim_QC), path(fam_QC), val(ENH_list), path(noclump_TS_ENH_GWAS_compartment),  path(noclump_residual_GWAS_compartment), path(LD_ref_bed), path(LD_ref_bim), path(LD_ref_fam)
-
+    tuple path(bed_QC),  path(bim_QC), path(fam_QC), val(ENH_list), path(noclump_TS_ENH_GWAS_compartment),  path(noclump_residual_GWAS_compartment), val(condition), path(LD_ref_bed), path(LD_ref_bim), path(LD_ref_fam)
 
 
     output:
-    tuple path(bed_QC),  path(bim_QC), path(fam_QC), val(ENH_list), path(noclump_TS_ENH_GWAS_compartment),  path(noclump_residual_GWAS_compartment), path("clumped_SNPs.clumped"), emit: clumped_SNPs_and_noclump_lists
+    tuple path(bed_QC),  path(bim_QC), path(fam_QC), val(ENH_list), path(noclump_TS_ENH_GWAS_compartment),  path(noclump_residual_GWAS_compartment), path("clumped_SNPs.clumped"),val(condition),    emit: clumped_SNPs_and_noclump_lists
     path("*.log")
 
 
