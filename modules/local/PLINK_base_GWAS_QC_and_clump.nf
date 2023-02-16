@@ -23,7 +23,7 @@ process PLINK_base_GWAS_QC_and_clump {
     zcat ${HCM_GWAS} | awk 'NR==1 || (\$6 < 0.99) {print}' | awk '!seen[\$1]++' | sed -E 's/,/\t/g' | gzip > ${condition}_GWAS_QC_nodups.tsv.gz
 
     plink  \\
-       --clump GWAS_QC_nodups.tsv.gz \\
+       --clump ${condition}_GWAS_QC_nodups.tsv.gz \\
        --clump-p1 1 --clump-p2 1 \\
        --clump-kb 500 --clump-r2 0.1 \\
        --maf 0.01 \\
