@@ -143,8 +143,8 @@ workflow HCM {
             .combine(PLINK_base_GWAS_QC_and_clump.out.GWAS_QC_noClump)
             .map { [it, condition].flatten() }
     )
-    R_PRS_QC.out.QC_het_a1_mismatch.view()
-    //[/Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/GWAS_ENH_SNPs_hg19_ALLCHR.bed, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/GWAS_ENH_SNPs_hg19_ALLCHR.bim, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/GWAS_ENH_SNPs_hg19_ALLCHR.fam, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/GWAS_QC.gz, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/UKBB_het_valid_out_vs_HCM_GWAS.sample, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/UKBB_a1_cohort_bim_vs_HCM_GWAS, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/UKBB_mismatching_SNPs_vs_HCM_GWAS]
+    // R_PRS_QC.out.QC_het_a1_mismatch.view()
+    //[/rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/16/7e26f02ebc884d13aa58e154e8c3a7/GWAS_ENH_SNPs_hg19_ALLCHR.bed, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/16/7e26f02ebc884d13aa58e154e8c3a7/GWAS_ENH_SNPs_hg19_ALLCHR.bim, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/16/7e26f02ebc884d13aa58e154e8c3a7/GWAS_ENH_SNPs_hg19_ALLCHR.fam, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/16/7e26f02ebc884d13aa58e154e8c3a7/SCZ_GWAS_QC_nodups.tsv.gz, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/16/7e26f02ebc884d13aa58e154e8c3a7/SCZ_het_valid_out_vs_HCM_GWAS.sample, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/16/7e26f02ebc884d13aa58e154e8c3a7/SCZ_a1_cohort_bim_vs_HCM_GWAS, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/16/7e26f02ebc884d13aa58e154e8c3a7/SCZ_mismatching_SNPs_vs_HCM_GWAS, SCZ]
 
     // TARGET QC 3:  
     // Remove individuals with heterozigosity F coefficients that are more than 3 standard deviation (SD) units from the mean
@@ -164,7 +164,7 @@ workflow HCM {
         .map { it.flatten() }
         .set{cohort_GWAS_enh_list}
     
-    // cohort_GWAS_enh_list.view()
+    cohort_GWAS_enh_list.view()
     // [GWAS_ENH_SNPs_hg19_ALLCHR_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, GWAS_QC.gz, 34k_neg, ./input/enh_bedfiles/34k_neg.bed]
     // [GWAS_ENH_SNPs_hg19_ALLCHR_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, GWAS_QC.gz, notCardiac_40k, ./input/enh_bedfiles/notCardiac_40k.bed]
     // [GWAS_ENH_SNPs_hg19_ALLCHR_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, GWAS_QC.gz, 9k_CARDIAC_NoFibro_significant, ./input/enh_bedfiles/9k_CARDIAC_NoFibro_significant.bed]

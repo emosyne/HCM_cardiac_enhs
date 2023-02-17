@@ -7,7 +7,7 @@ process PLINK_PRODUCE_QC_DATASET {
 
 
     input:
-    //[GWAS_ENH_SNPs_hg19_ALLCHR.bed, GWAS_ENH_SNPs_hg19_ALLCHR.bim, GWAS_ENH_SNPs_hg19_ALLCHR.fam, GWAS_QC.gz, UKBB_het_valid_out_vs_HCM_GWAS.sample, UKBB_a1_cohort_bim_vs_HCM_GWAS, UKBB_mismatching_SNPs_vs_HCM_GWAS]
+    //[/rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/16/7e26f02ebc884d13aa58e154e8c3a7/GWAS_ENH_SNPs_hg19_ALLCHR.bed, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/16/7e26f02ebc884d13aa58e154e8c3a7/GWAS_ENH_SNPs_hg19_ALLCHR.bim, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/16/7e26f02ebc884d13aa58e154e8c3a7/GWAS_ENH_SNPs_hg19_ALLCHR.fam, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/16/7e26f02ebc884d13aa58e154e8c3a7/SCZ_GWAS_QC_nodups.tsv.gz, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/16/7e26f02ebc884d13aa58e154e8c3a7/SCZ_het_valid_out_vs_HCM_GWAS.sample, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/16/7e26f02ebc884d13aa58e154e8c3a7/SCZ_a1_cohort_bim_vs_HCM_GWAS, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/16/7e26f02ebc884d13aa58e154e8c3a7/SCZ_mismatching_SNPs_vs_HCM_GWAS, SCZ]
     tuple path(bed), path(bim), path(fam), path(HCM_GWAS_QC), path (het_valid), path (a1_bim), path(mismatch), val(condition)
 
     output:
