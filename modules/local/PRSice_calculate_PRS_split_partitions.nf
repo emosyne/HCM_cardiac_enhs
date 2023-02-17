@@ -10,13 +10,13 @@ process PRSice_calculate_PRS_split_partitions {
 
 
     input:
-    // [GWAS_ENH_SNPs_hg19_ALLCHR_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, 6k_CARDIAC_NoFibro_significant_noGRB, 
-    // 6k_CARDIAC_NoFibro_significant_noGRB_clumped_TS_ENH_GWAS_compartment.tsv.gz, 6k_CARDIAC_NoFibro_significant_noGRB_clumped_residual_GWAS_compartment.tsv.gz, 6k_CARDIAC_NoFibro_significant_noGRB_clumped_merged_GWAS.tsv.gz, 
-    // clumped_GWAS_QC_nodups.tsv.gz, 
-    // non_missing_10PCs_Jun22.covariate.gz, 
-    // EUR_phase3_autosomes_hg19.bed, EUR_phase3_autosomes_hg19.bim, EUR_phase3_autosomes_hg19.fam]
+    // [GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, 20k_notNeural, 
+        // 20k_notNeural_SCZ_X_1_clumped_TS_ENH_GWAS_compartment.tsv.gz, 20k_notNeural_SCZ_clumped_residual_GWAS_compartment.tsv.gz, 20k_notNeural_SCZ_clumped_merged_GWAS.tsv.gz, 1, SCZ, 
+        // SCZ_clumped_GWAS_QC_nodups.tsv.gz, 
+        // non_missing_10PCs_Jun22.covariate.gz, 
+        // /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.bed, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.bim, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.fam, 0.5]
     tuple path(cohort_bed_QC),  path(cohort_bim_QC), path(cohort_fam_QC), val(ENH_list), \
-        path(clumped_TS_ENH_GWAS_compartment), path(clumped_residual_GWAS_compartment), path(clumped_merged_GWAS), val(multiplier),val(condition),  \
+        path(clumped_TS_ENH_GWAS_compartment), path(clumped_residual_GWAS_compartment), path(clumped_merged_GWAS), val(multiplier), val(condition),  \
         path(clumped_GWAS_QC_nodups), \
         path(UKBB_covariates), \
         path(LD_ref_bed), path(LD_ref_bim), path(LD_ref_fam), val(CTthreshold)
@@ -28,8 +28,8 @@ process PRSice_calculate_PRS_split_partitions {
              emit: clumped_residual_GWAS_compartment_PRS
     tuple val("${ENH_list}"), path("*_clumped_merged_GWAS.summary"), path("*_clumped_merged_GWAS.prsice"), path("*_clumped_merged_GWAS.best"),  path(cohort_fam_QC),                     \
              emit: clumped_merged_GWAS_PRS
-    tuple val("${ENH_list}"), path("*_original_HCM_GWAS.summary"), path("*_original_HCM_GWAS.prsice"), path("*_original_HCM_GWAS.best"), val(CTthreshold), val(condition),               \
-             emit: clumped_original_HCM_GWAS_PRS
+    tuple val("${ENH_list}"), path("*_original_GWAS.summary"), path("*_original_GWAS.prsice"), path("*_original_GWAS.best"), val(CTthreshold), val(condition),               \
+             emit: clumped_original_GWAS_PRS
     tuple  path("*.png"), path("*.txt"), path("*.log") //figures, quantiles text and log
 
     script:
@@ -141,7 +141,7 @@ process PRSice_calculate_PRS_split_partitions {
         --cov covariates.pheno --cov-factor sex \\
         --thread $max_cpus \\
         --memory ${mem_Gb}Gb \\
-        --out ${ENH_list}_original_HCM_GWAS
+        --out ${condition}_${ENH_list}_original_GWAS
     """
 
 }
