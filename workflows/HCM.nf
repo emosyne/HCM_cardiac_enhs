@@ -84,10 +84,7 @@ workflow HCM {
             .combine(LD_reference)
             .map { [it, condition].flatten() }
     )
-    full_GWAS_hg19
-            .combine(LD_reference)
-            .map { [it, condition].flatten() }
-            .view()
+    
 
     R_extract_GWAS_SNPs_into_bed ( 
         // THIS MODULE IMPORTS 
@@ -146,7 +143,7 @@ workflow HCM {
             .combine(PLINK_base_GWAS_QC_and_clump.out.GWAS_QC_noClump)
             .map { [it, condition].flatten() }
     )
-    // R_PRS_QC.out.QC_het_a1_mismatch.view()
+    R_PRS_QC.out.QC_het_a1_mismatch.view()
     //[/Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/GWAS_ENH_SNPs_hg19_ALLCHR.bed, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/GWAS_ENH_SNPs_hg19_ALLCHR.bim, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/GWAS_ENH_SNPs_hg19_ALLCHR.fam, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/GWAS_QC.gz, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/UKBB_het_valid_out_vs_HCM_GWAS.sample, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/UKBB_a1_cohort_bim_vs_HCM_GWAS, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/7d/9374f235cb5d2bb5e641c8a63511ba/UKBB_mismatching_SNPs_vs_HCM_GWAS]
 
     // TARGET QC 3:  
