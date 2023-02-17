@@ -8,8 +8,8 @@ process R_split_lists {
     
 
     input:
-    // [GWAS_ENH_SNPs_hg19_ALLCHR_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, 6k_CARDIAC_NoFibro_significant_noGRB, 
-    // UKBB_6k_CARDIAC_NoFibro_significant_noGRB_noclump_TS_ENH_GWAS_compartment.tsv.gz, UKBB_6k_CARDIAC_NoFibro_significant_noGRB_noclump_residual_GWAS_compartment.tsv.gz, clumped_SNPs.clumped]
+    // // [GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, 18k_PsychENCODE_PFCortex,
+        //  SCZ_18k_PsychENCODE_PFCortex_noclump_TS_ENH_GWAS_compartment.tsv.gz, SCZ_18k_PsychENCODE_PFCortex_noclump_residual_GWAS_compartment.tsv.gz, SCZ_18k_PsychENCODE_PFCortex_clumped_SNPs.clumped, SCZ]
     tuple path(bed_QC),  path(bim_QC), path(fam_QC), val(ENH_list), \
         path(noclump_TS_ENH_GWAS_compartment),  path(noclump_residual_GWAS_compartment),  path(clumped_SNPs), val(condition)
     each path(EP_ES_gene_brain_exp)

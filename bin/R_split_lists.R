@@ -17,10 +17,10 @@ clumped_SNPs = args[9]
 noclump_residual_GWAS_compartment = args[10]
 noclump_TS_ENH_GWAS_compartment = args[11]
 EP_ES_gene_brain_exp = args[12]
-
+(ES_multiplier = as.numeric(args[13]))
 
 pdivby = 100000
-(ES_multiplier = as.numeric(args[13]))
+
 
 
 # #OUTPUT
