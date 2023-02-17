@@ -83,12 +83,12 @@ pop_prev = ifelse(test = condition_name == "SCZ", yes = 0.01, no = 0.007)
 
 
 #OUTPUT
-analysis_output_txt = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_model_fit.txt")
-model_fit_plot      = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_MODEL_FIT_PLOT.pdf")
-PRS_double_QUANTILE_PLOT  = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_PRS_double_QUANTILE_PLOT.pdf")
-# PRS_comparison_figure_path = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_PRS_comparison_plot.pdf")
-CoD_per_SNP_plot_scaled= paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_scaled_CoD_per_snp_plot.pdf")
-CoD_ALL_plots = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), ".pdf")
+analysis_output_txt = paste0(condition_name, "_",condition_name, "_",ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_model_fit.txt")
+model_fit_plot      = paste0(condition_name, "_",ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_MODEL_FIT_PLOT.pdf")
+PRS_double_QUANTILE_PLOT  = paste0(condition_name, "_",ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_PRS_double_QUANTILE_PLOT.pdf")
+# PRS_comparison_figure_path = paste0(condition_name, "_",ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_PRS_comparison_plot.pdf")
+CoD_per_SNP_plot_scaled= paste0(condition_name, "_",ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), "_scaled_CoD_per_snp_plot.pdf")
+CoD_ALL_plots = paste0(condition_name, "_",ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(), ".pdf")
 
 
 
@@ -437,7 +437,7 @@ f2<-arrangeGrob(textGrob("B)", just = "left",
 
 #save all plots
 ggsave(filename = model_fit_plot, f1,  width = 8, height = 7)
-ggsave(filename = paste0(ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_MODEL_FIT_PLOT_per_snp.pdf"), 
+ggsave(filename = paste0(condition_name, "_",ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_MODEL_FIT_PLOT_per_snp.pdf"), 
         f2,  width = 8, height = 7)
 
 
