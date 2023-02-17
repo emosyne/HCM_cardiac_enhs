@@ -17,7 +17,7 @@ process R_split_lists {
 
     output:
     tuple path(bed_QC),  path(bim_QC), path(fam_QC), val(ENH_list), \
-        path("*_clumped_TS_ENH_GWAS_compartment.tsv.gz"), path("*_clumped_residual_GWAS_compartment.tsv.gz"), path("*_clumped_merged_GWAS.tsv.gz"), "1", val(condition),       emit: partitioned
+        path("*_clumped_TS_ENH_GWAS_compartment.tsv.gz"), path("*_clumped_residual_GWAS_compartment.tsv.gz"), path("*_clumped_merged_GWAS.tsv.gz"), val("1"), val(condition),       emit: partitioned
     
     
     
