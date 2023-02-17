@@ -84,7 +84,10 @@ workflow HCM {
             .combine(LD_reference)
             .map { [it, condition].flatten() }
     )
-
+    full_GWAS_hg19
+            .combine(LD_reference)
+            .map { [it, condition].flatten() }
+            .view()
 
     R_extract_GWAS_SNPs_into_bed ( 
         // THIS MODULE IMPORTS 
