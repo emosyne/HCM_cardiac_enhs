@@ -201,7 +201,7 @@ workflow HCM {
         // ##################################################### GENERATE MODIFIED ORS MULT BY ES OR EXP       ###########################################################
         // ##################################################### CAN MULTIPLY P BY VALUE TO RESTORE ENH SNPS P ###########################################################
         // output separate lists to calculate split PRSs and also merged one
-        PLINK_clump.out.clumped_SNPs_and_noclump_lists.map { [it, "1"].flatten() }, //######################## multiplier can be set here ########################
+        PLINK_clump.out.clumped_SNPs_and_noclump_lists//.map { [it, "1"].flatten() }, //######################## multiplier can be set here ########################
         annotations
     )
 
