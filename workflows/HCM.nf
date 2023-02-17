@@ -164,14 +164,11 @@ workflow HCM {
         .map { it.flatten() }
         .set{cohort_GWAS_enh_list}
     
-    cohort_GWAS_enh_list.view()
-    // [GWAS_ENH_SNPs_hg19_ALLCHR_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, GWAS_QC.gz, 34k_neg, ./input/enh_bedfiles/34k_neg.bed]
-    // [GWAS_ENH_SNPs_hg19_ALLCHR_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, GWAS_QC.gz, notCardiac_40k, ./input/enh_bedfiles/notCardiac_40k.bed]
-    // [GWAS_ENH_SNPs_hg19_ALLCHR_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, GWAS_QC.gz, 9k_CARDIAC_NoFibro_significant, ./input/enh_bedfiles/9k_CARDIAC_NoFibro_significant.bed]
-    // [GWAS_ENH_SNPs_hg19_ALLCHR_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, GWAS_QC.gz, 6k_CARDIAC_NoFibro_significant_noGRB, ./input/enh_bedfiles/6k_CARDIAC_NoFibro_significant_noGRB.bed]
-    // [GWAS_ENH_SNPs_hg19_ALLCHR_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, GWAS_QC.gz, 3k_CARDIAC_NoFibro_significant_GRB, ./input/enh_bedfiles/3k_CARDIAC_NoFibro_significant_GRB.bed]
-    // [GWAS_ENH_SNPs_hg19_ALLCHR_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, GWAS_QC.gz, 905_HEART_EP_eQTL, ./input/enh_bedfiles/905_HEART_EP_eQTL.bed]
-    
+    // cohort_GWAS_enh_list.view()
+    // [/rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/3a/ae3a303ab84df51da0f936e223c1d7/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bed, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/3a/ae3a303ab84df51da0f936e223c1d7/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bim, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/3a/ae3a303ab84df51da0f936e223c1d7/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/3a/ae3a303ab84df51da0f936e223c1d7/SCZ_GWAS_QC_nodups.tsv.gz, SCZ, NEURAL_8k_GRB_significant_EPs, ./input/enh_bedfiles/NEURAL_8k_GRB_significant_EPs.bed]
+    // [/rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/3a/ae3a303ab84df51da0f936e223c1d7/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bed, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/3a/ae3a303ab84df51da0f936e223c1d7/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bim, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/3a/ae3a303ab84df51da0f936e223c1d7/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/3a/ae3a303ab84df51da0f936e223c1d7/SCZ_GWAS_QC_nodups.tsv.gz, SCZ, 20k_notNeural, ./input/enh_bedfiles/20k_notNeural.bed]
+    // [/rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/3a/ae3a303ab84df51da0f936e223c1d7/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bed, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/3a/ae3a303ab84df51da0f936e223c1d7/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bim, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/3a/ae3a303ab84df51da0f936e223c1d7/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/3a/ae3a303ab84df51da0f936e223c1d7/SCZ_GWAS_QC_nodups.tsv.gz, SCZ, 34k_neg, ./input/enh_bedfiles/34k_neg.bed]    
+
     // BASE subsetting
     R_prepare_lists_for_clump (
         // SUBSETS GWAS SNPS INTO ENH COMPARTMENT AND RESIDUAL COMPARTMENT.
@@ -180,9 +177,9 @@ workflow HCM {
     )
     
     
-//    R_prepare_lists_for_clump.out.lists_before_clump
-//         .combine(LD_reference)
-//         .view()
+   R_prepare_lists_for_clump.out.lists_before_clump
+        .combine(LD_reference)
+        .view()
     // [/Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/19/7c212b3986ba4f46dcd8ea629c5630/GWAS_ENH_SNPs_hg19_ALLCHR_QC.bed, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/19/7c212b3986ba4f46dcd8ea629c5630/GWAS_ENH_SNPs_hg19_ALLCHR_QC.bim, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/19/7c212b3986ba4f46dcd8ea629c5630/GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, 6k_CARDIAC_NoFibro_significant_noGRB, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/19/7c212b3986ba4f46dcd8ea629c5630/UKBB_6k_CARDIAC_NoFibro_significant_noGRB_noclump_TS_ENH_GWAS_compartment.tsv.gz, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/19/7c212b3986ba4f46dcd8ea629c5630/UKBB_6k_CARDIAC_NoFibro_significant_noGRB_noclump_residual_GWAS_compartment.tsv.gz, /Users/eosimo/large_files_not_to_back_up/LD_ref/EUR_phase3_autosomes_hg19.bed, /Users/eosimo/large_files_not_to_back_up/LD_ref/EUR_phase3_autosomes_hg19.bim, /Users/eosimo/large_files_not_to_back_up/LD_ref/EUR_phase3_autosomes_hg19.fam]
     
     PLINK_clump (
