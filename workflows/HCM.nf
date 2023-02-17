@@ -177,18 +177,20 @@ workflow HCM {
     )
     
     
-   R_prepare_lists_for_clump.out.lists_before_clump
-        .combine(LD_reference)
-        .view()
-    // [/Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/19/7c212b3986ba4f46dcd8ea629c5630/GWAS_ENH_SNPs_hg19_ALLCHR_QC.bed, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/19/7c212b3986ba4f46dcd8ea629c5630/GWAS_ENH_SNPs_hg19_ALLCHR_QC.bim, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/19/7c212b3986ba4f46dcd8ea629c5630/GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, 6k_CARDIAC_NoFibro_significant_noGRB, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/19/7c212b3986ba4f46dcd8ea629c5630/UKBB_6k_CARDIAC_NoFibro_significant_noGRB_noclump_TS_ENH_GWAS_compartment.tsv.gz, /Users/eosimo/GoogleDrive/WORK/CF_PhD/NF_2HH/HCM_cardiac_enhs/work/19/7c212b3986ba4f46dcd8ea629c5630/UKBB_6k_CARDIAC_NoFibro_significant_noGRB_noclump_residual_GWAS_compartment.tsv.gz, /Users/eosimo/large_files_not_to_back_up/LD_ref/EUR_phase3_autosomes_hg19.bed, /Users/eosimo/large_files_not_to_back_up/LD_ref/EUR_phase3_autosomes_hg19.bim, /Users/eosimo/large_files_not_to_back_up/LD_ref/EUR_phase3_autosomes_hg19.fam]
+//    R_prepare_lists_for_clump.out.lists_before_clump
+//         .combine(LD_reference)
+//         .view()
+    // [/rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/36/bf081900a69b45cca3a65ece2e46af/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bed, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/36/bf081900a69b45cca3a65ece2e46af/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bim, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/36/bf081900a69b45cca3a65ece2e46af/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, NEURAL_8k_GRB_significant_EPs, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/36/bf081900a69b45cca3a65ece2e46af/SCZ_NEURAL_8k_GRB_significant_EPs_noclump_TS_ENH_GWAS_compartment.tsv.gz, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/36/bf081900a69b45cca3a65ece2e46af/SCZ_NEURAL_8k_GRB_significant_EPs_noclump_residual_GWAS_compartment.tsv.gz, SCZ, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.bed, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.bim, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.fam]
+    // [/rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/32/8b1a7419f3343722f9ca4094fdbc39/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bed, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/32/8b1a7419f3343722f9ca4094fdbc39/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bim, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/32/8b1a7419f3343722f9ca4094fdbc39/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, 20k_notNeural, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/32/8b1a7419f3343722f9ca4094fdbc39/SCZ_20k_notNeural_noclump_TS_ENH_GWAS_compartment.tsv.gz, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/32/8b1a7419f3343722f9ca4094fdbc39/SCZ_20k_notNeural_noclump_residual_GWAS_compartment.tsv.gz, SCZ, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.bed, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.bim, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.fam]
+    // [/rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/b2/4a149c4188f7278835fc78b74fe44b/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bed, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/b2/4a149c4188f7278835fc78b74fe44b/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bim, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/b2/4a149c4188f7278835fc78b74fe44b/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, 34k_neg, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/b2/4a149c4188f7278835fc78b74fe44b/SCZ_34k_neg_noclump_TS_ENH_GWAS_compartment.tsv.gz, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/b2/4a149c4188f7278835fc78b74fe44b/SCZ_34k_neg_noclump_residual_GWAS_compartment.tsv.gz, SCZ, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.bed, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.bim, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.fam]
     
     PLINK_clump (
         //CLUMPING of enhancer-based SNP compartments together 
         R_prepare_lists_for_clump.out.lists_before_clump
             .combine(LD_reference)
     )
-    // PLINK_clump.out.clumped_SNPs_and_noclump_lists
-    //     .view()
+    PLINK_clump.out.clumped_SNPs_and_noclump_lists
+        .view()
     // [GWAS_ENH_SNPs_hg19_ALLCHR_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_QC.fam, 6k_CARDIAC_NoFibro_significant_noGRB, UKBB_6k_CARDIAC_NoFibro_significant_noGRB_noclump_TS_ENH_GWAS_compartment.tsv.gz, UKBB_6k_CARDIAC_NoFibro_significant_noGRB_noclump_residual_GWAS_compartment.tsv.gz, clumped_SNPs.clumped]
     
     
