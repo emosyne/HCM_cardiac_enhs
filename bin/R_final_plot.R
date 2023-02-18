@@ -14,15 +14,15 @@ args = commandArgs()
 
 print(args)                                                                                                
 
-# logistic_and_quantile_compare.R $task.cpus ${ENH_list} ${cohort_fam} \
-#     ${TS_ENH_GWAS_compartment_originalOR_summary} ${TS_ENH_GWAS_compartment_originalOR_best}\
-#     ${TS_ENH_GWAS_compartment_OR_by_measure1_summary} ${TS_ENH_GWAS_compartment_OR_by_measure1_best}\
-#     ${TS_ENH_GWAS_compartment_OR_by_measure2_summary} ${TS_ENH_GWAS_compartment_OR_by_measure2_best}\
-#     ${residual_GWAS_compartment_summary} ${residual_GWAS_compartment_best}\
-#     ${merged_GWAS_summary} ${merged_GWAS_best}\
-#     ${TS_ENH_GWAS_compartment_originalOR_prsice} ${TS_ENH_GWAS_compartment_OR_by_measure1_prsice} ${TS_ENH_GWAS_compartment_OR_by_measure2_prsice} ${residual_GWAS_compartment_prsice} ${merged_GWAS_prsice}  \
-#     ${original_LOO_GWAS_summary} ${original_LOO_GWAS_prsice} ${original_LOO_GWAS_best}\
-#     ${modif_name_1} ${modif_name_2}
+# R_final_plot.R $task.cpus "${ENH_list}_${condition}" ${cohort_fam} \
+        # ${TS_ENH_GWAS_compartment_originalOR_summary} ${TS_ENH_GWAS_compartment_originalOR_best}\
+        # ${TS_ENH_GWAS_compartment_OR_by_measure1_summary} ${TS_ENH_GWAS_compartment_OR_by_measure1_best}\
+        # ${TS_ENH_GWAS_compartment_OR_by_measure2_summary} ${TS_ENH_GWAS_compartment_OR_by_measure2_best}\
+        # ${residual_GWAS_compartment_summary} ${residual_GWAS_compartment_best}\
+        # ${merged_GWAS_summary} ${merged_GWAS_best}\
+        # ${TS_ENH_GWAS_compartment_originalOR_prsice} ${TS_ENH_GWAS_compartment_OR_by_measure1_prsice} ${TS_ENH_GWAS_compartment_OR_by_measure2_prsice} ${residual_GWAS_compartment_prsice} ${merged_GWAS_prsice}  \
+        # ${original_GWAS_summary} ${original_GWAS_prsice} ${original_GWAS_best}\
+        # ${modif_name_1} ${modif_name_2} ${CTthreshold} ${condition}
 nthreads = as.numeric(args[8])
 #set max CPU processes
 setDTthreads(nthreads)
@@ -51,23 +51,26 @@ residual_GWAS_compartment_summary = args[17]
 residual_GWAS_compartment_best = 
   fread(args[18], select=c("FID", "IID", "PRS"))  %>% 
   dplyr::rename(residual_GWAS_compartment_best_PRS = PRS)
-
+        # ${merged_GWAS_summary} ${merged_GWAS_best}\
+        # ${TS_ENH_GWAS_compartment_originalOR_prsice} ${TS_ENH_GWAS_compartment_OR_by_measure1_prsice} ${TS_ENH_GWAS_compartment_OR_by_measure2_prsice} ${residual_GWAS_compartment_prsice} 
+        # ${merged_GWAS_prsice}  \
+        # ${original_GWAS_summary} ${original_GWAS_prsice} ${original_GWAS_best}\
+        # ${modif_name_1} ${modif_name_2} ${CTthreshold} ${condition}
 merged_GWAS_summary = args[19]
 merged_GWAS_best = 
   fread(args[20], select=c("FID", "IID", "PRS")) %>% 
   dplyr::rename(merged_GWAS_best_PRS = PRS)
 
-# ${TS_ENH_GWAS_compartment_originalOR_prsice} ${TS_ENH_GWAS_compartment_OR_by_measure1_prsice} ${TS_ENH_GWAS_compartment_OR_by_measure2_prsice} ${residual_GWAS_compartment_prsice} ${merged_GWAS_prsice}  
 TS_ENH_GWAS_compartment_originalOR_prsice = args[21]
 TS_ENH_GWAS_compartment_OR_by_measure1_prsice = args[22]
 TS_ENH_GWAS_compartment_OR_by_measure2_prsice = args[23]
 residual_GWAS_compartment_prsice = args[24]
 merged_GWAS_prsice = args[25]
 
-original_LOO_GWAS_summary = args[26]
-original_LOO_GWAS_prsice = args[27]
-(original_LOO_GWAS_best = fread(args[28], select=c("FID", "IID", "PRS"))  %>% 
-  dplyr::rename(original_LOO_GWAS_best_PRS = PRS))
+original_GWAS_summary = args[26]
+original_GWAS_prsice = args[27]
+(original_GWAS_best = fread(args[28], select=c("FID", "IID", "PRS"))  %>% 
+  dplyr::rename(original_GWAS_best_PRS = PRS))
 
 modif_name_1 = args[29]
 modif_name_2 = args[30]
@@ -108,8 +111,8 @@ r_color <- colors()
         data.frame(fread(TS_ENH_GWAS_compartment_OR_by_measure2_summary, select=c("Threshold", "PRS.R2","Num_SNP"))),#"PRS.R2.adj",
       "residual_GWAS_compartment_summary"=
         data.frame(fread(residual_GWAS_compartment_summary, select=c("Threshold", "PRS.R2","Num_SNP"))),#"PRS.R2.adj",
-      "original_LOO_GWAS_summary"=
-        data.frame(fread(original_LOO_GWAS_summary, select=c("Threshold", "PRS.R2","Num_SNP")))#"PRS.R2.adj",
+      "original_GWAS_summary"=
+        data.frame(fread(original_GWAS_summary, select=c("Threshold", "PRS.R2","Num_SNP")))#"PRS.R2.adj",
     ) %>%  rownames_to_column(var = "compartment"))
 
 
@@ -121,7 +124,7 @@ r_color <- colors()
     left_join(TS_ENH_GWAS_compartment_OR_by_measure2_best) %>%
     left_join(residual_GWAS_compartment_best) %>%
     # left_join(merged_GWAS_best) %>%
-    left_join(original_LOO_GWAS_best) %>%
+    left_join(original_GWAS_best) %>%
     left_join(diagnosis) %>%
     mutate(dx=factor(dx), IID=factor(IID)) %>%
     select(-FID) %>%
@@ -143,7 +146,7 @@ scaled_BEST_PRS_score_per_UKBB_participant[,c(2:6)] <-  data.frame(scale(BEST_PR
     remove_missing() %>% 
     #generate quantiles
     mutate(original_GWAS_q = 
-             factor(ntile(original_LOO_GWAS_best_PRS, n = number_quantiles))) %>% 
+             factor(ntile(original_GWAS_best_PRS, n = number_quantiles))) %>% 
     # mutate(merged_GWAS_q = 
     #          factor(ntile(merged_GWAS_best_PRS, n = number_quantiles))) %>% 
     mutate(residual_GWAS_compartment_q = 
@@ -193,10 +196,10 @@ summary_table
 
 # sink(analysis_output_txt)
 # ## original_GWAS
-lrm(dx ~ original_LOO_GWAS_best_PRS, 
+lrm(dx ~ original_GWAS_best_PRS, 
                                       data = scaled_BEST_PRS_score_per_UKBB_participant)
 #logistic model
-(pmv = glm(dx ~ original_LOO_GWAS_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_participant,family = binomial(probit))) #probit model
+(pmv = glm(dx ~ original_GWAS_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_participant,family = binomial(probit))) #probit model
 summary(pmv)
 # R2 on the liability scale using the transformation
 (R2O = var(pmv$fitted.values)/(ncase/nt*ncont/nt))
@@ -205,7 +208,7 @@ summary(pmv)
 (CoD_per_SNP = rbind(
   CoD_per_SNP,
   c("0",original_GWAS_logistic_model_R2,
-    summary_table[summary_table$compartment=="original_LOO_GWAS_summary",]$Num_SNP, NA)
+    summary_table[summary_table$compartment=="original_GWAS_summary",]$Num_SNP, NA)
 ))
 
 
@@ -498,7 +501,7 @@ original_GWAS_q_OR
 (ORs <- original_GWAS_q_OR)
 ORs[1,]<-list("1",1,1,1)
 ORs[,1]<-list(1:nrow(ORs))
-ORs$original_OR_quant <- paste("all_thresh:",summary_table[summary_table$compartment=="original_LOO_GWAS_summary",c("Threshold")],"_N=", summary_table[summary_table$compartment=="original_LOO_GWAS_summary",c("Num_SNP")])
+ORs$original_OR_quant <- paste("all_thresh:",summary_table[summary_table$compartment=="original_GWAS_summary",c("Threshold")],"_N=", summary_table[summary_table$compartment=="original_GWAS_summary",c("Num_SNP")])
 ORs
 
 
