@@ -1,7 +1,7 @@
 process R_prepare_lists_for_clump {
     // debug true
     errorStrategy 'terminate'
-    container 'emosyne/r_docker:1.94'
+    container 'emosyne/r_docker:1.96'
     // container 'emosyne/simpler:1.1'
     label 'process_high'
     tag "${ENH_list}"
