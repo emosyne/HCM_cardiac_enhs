@@ -42,15 +42,12 @@ LD_reference = Channel.from("bed","bim","fam")
 // dx_UKBB_pheno =    Channel.fromPath("./input/biobank/HCM.pheno", checkIfExists: true)
 // enhancer_lists_bed_files = 
 //     Channel.from(
-//         "34k_neg", 
-//         "notCardiac_40k",
-//         "9k_CARDIAC_NoFibro_significant"//,
-//         // "6k_CARDIAC_NoFibro_significant_noGRB",
-//         // "3k_CARDIAC_NoFibro_significant_GRB",
-//         // "905_HEART_EP_eQTL"
+//         "Non-associated_enh", 
+//         "Non-cardiac_enh",
+//         "Cardiac_significant_enh"
 //         )
 //         .map { ENH_list -> ["${ENH_list}", 
-//             file("./input/enh_bedfiles/${ENH_list}*.bed", checkIfExists: true)]
+//             file("./input/enh_bedfiles/${ENH_list}.bed", checkIfExists: true)]
 //             } 
 // annotations = Channel.fromPath( "./input/ES_multipliers/2023-02-01_CARDIAC_NoFibro_significant_ES_significant_contact_EPs_ANNOT_plus_100_noOverlap.csv.gz", checkIfExists: true)
 // condition = "HCM" // SCZ or HCM
@@ -61,13 +58,13 @@ full_GWAS_hg19 = Channel
 dx_UKBB_pheno =    Channel.fromPath("./input/biobank/SCZ.pheno", checkIfExists: true)
 enhancer_lists_bed_files = 
     Channel.from(
-        "18k_PsychENCODE_PFCortex", 
-        "NEURAL_21k_significant_EPs",
-        "NEURAL_8k_GRB_significant_EPs",
-        "20k_notNeural",
-        "34k_neg")
+        // "18k_PsychENCODE_PFCortex", 
+        "Neural_significant_enh",
+        "Neural_significant_enh_GRB",
+        "Non-neural_enh",
+        "Non-associated_enh")
             .map { ENH_list -> ["${ENH_list}", 
-                file("./input/enh_bedfiles/${ENH_list}*.bed", checkIfExists: true)]
+                file("./input/enh_bedfiles/${ENH_list}.bed", checkIfExists: true)]
             } 
 annotations = Channel.fromPath( "./input/ES_multipliers/2023-01-18_2023-02-17_NEURAL_ENH_EXP_significant_plus_100_noOverlap_HCMformat.csv.gz", checkIfExists: true)
 condition = "SCZ" // SCZ or HCM
