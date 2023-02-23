@@ -35,8 +35,8 @@ process R_final_plot {
 
     output:
     // path("*.txt")
-    path("0.05/*.pdf")
-    path("0.5/*.pdf")
+    path("*/*.pdf")
+    
 
     script:
     """
