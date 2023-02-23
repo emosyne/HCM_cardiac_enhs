@@ -83,7 +83,7 @@ pop_prev = ifelse(test = condition_name == "SCZ", yes = 0.01, no = 0.007)
 
 
 #OUTPUT_prefix
-OUTPUT_prefix = paste0(threshold"/")
+OUTPUT_prefix = paste0(threshold,"/")
 
 
 
