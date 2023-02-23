@@ -373,12 +373,12 @@ addline_format <- function(x,...){
   ))),
   partition_name= factor(x = c("0","1","2","2b","2c","3","3b","3c"), labels = c("Original GWAS PRS",
                            "Residual partition PRS", 
-                           paste0(ENH_list,"\nENH partition PRS\nOriginal OR"),
-                           paste0(ENH_list,"\nENH partition PRS\nOR* ",modif_name_1),
-                           paste0(ENH_list,"\nENH partition PRS\nOR* ",modif_name_2),
-                           paste0("Residual +\n",ENH_list,"\nENH partition PRS"),
-                           paste0("Residual *\n",ENH_list,"\nENH partition PRS"),
-                           paste0("Residual *\n",ENH_list,"\nENH partition PRS +\nquadratic terms")), ordered = T),
+                           paste0(ENH_list,"\npartition PRS\nOriginal OR"),
+                           paste0(ENH_list,"\npartition PRS\nOR* ",modif_name_1),
+                           paste0(ENH_list,"\npartition PRS\nOR* ",modif_name_2),
+                           paste0("Residual +\n",ENH_list,"\npartition PRS"),
+                           paste0("Residual *\n",ENH_list,"\npartition PRS"),
+                           paste0("Residual *\n",ENH_list,"\npartition PRS +\nquadratic terms")), ordered = T),
   R2=c(original_GWAS_logistic_model_R2,
        #merged_GWAS_logistic_model_R2, #1
        residual_GWAS_compart_logistic_model_R2,#2 
