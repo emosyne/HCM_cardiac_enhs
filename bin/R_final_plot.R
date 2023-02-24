@@ -446,7 +446,7 @@ pos = position_dodge(width = 0.5)
                   colour=R2type,
                   label=round(R2*100,2))
 ) +  
-    geom_pointrange(position=pos, size=1, lwd=2) + 
+    geom_pointrange(position=pos, size=1, lwd=1) + 
     # geom_linerange(position=pos, 
     #                aes(xmin = 0, xmax=R2*100 )) +
     scale_color_manual(values=MetBrewer::met.brewer("Johnson", 2),
@@ -535,7 +535,7 @@ ggsave(
                 colour=R2type,group=R2type,
                 label=round(R2*100,2)
               )) +  
-    geom_pointrange(position=pos, size=1, lwd=2) + 
+    geom_pointrange(position=pos, size=1, lwd=1) + 
     scale_color_manual(values=MetBrewer::met.brewer("Johnson", 2),
                        name = "R2 formula")+
     ggrepel::geom_label_repel(position = pos, size = rel(4),  show.legend = F,min.segment.length = 0,
@@ -572,7 +572,7 @@ ggsave(
                 x=R2*100, xmin = LCL*100, xmax=UCL*100, 
                 colour=R2type,group=R2type,
                 label=round(R2*100,2))) +  
-    geom_pointrange(position=pos, size=1, lwd=2) + 
+    geom_pointrange(position=pos, size=1, lwd=1) + 
     scale_color_manual(values=MetBrewer::met.brewer("Johnson", 2),
                        name = "R2 formula")+
     ggrepel::geom_label_repel(position = pos, size = rel(4),  show.legend = F,min.segment.length = 0,
