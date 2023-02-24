@@ -446,10 +446,12 @@ pos = position_dodge(width = 0.5)
                   colour=R2type,
                   label=round(R2*100,2))
 ) +  
-    geom_pointrange(position=pos, size=0.6) + 
+    geom_pointrange(position=pos, size=1, lwd=2) + 
+    # geom_linerange(position=pos, 
+    #                aes(xmin = 0, xmax=R2*100 )) +
     scale_color_manual(values=MetBrewer::met.brewer("Johnson", 2),
                        name = "R2 formula")+
-    ggrepel::geom_label_repel(position = pos, size = rel(3),  show.legend = F,min.segment.length = 0,
+    ggrepel::geom_label_repel(position = pos, size = rel(4),  show.legend = F,min.segment.length = 0,
                               vjust = 0.2, point.padding = NA, box.padding = 0.5)+ #nudge_y = -0.2, 
     scale_x_continuous(limits = c(0, NA), expand = expansion(mult = c(0, .15))) + 
     scale_y_discrete(expand = expansion(add = .7)) + #.6 is default - add a little spacing to the sides
@@ -482,10 +484,10 @@ pos = position_dodge(width = 0.5)
                colour=R2type, group=R2type,
                label=round(CoD_per_SNP,2))) +  
     geom_point(position=pos, size=3) +     
-    geom_linerange(position=pos) +
+    #geom_linerange(position=pos) +
     scale_color_manual(values=MetBrewer::met.brewer("Johnson", 2),
                        name = "R2 formula")+
-    ggrepel::geom_label_repel(position = pos, size = rel(3),  show.legend = F,min.segment.length = 0,
+    ggrepel::geom_label_repel(position = pos, size = rel(4),  show.legend = F,min.segment.length = 0,
                               vjust = 0.2, point.padding = NA, box.padding = 0.5)+
     scale_x_continuous(limits = c(0, NA), expand = expansion(mult = c(0, .1))) + 
     scale_y_discrete(expand = expansion(add = .7)) + #.6 is default - add a little spacing to the sides
@@ -533,10 +535,10 @@ ggsave(
                 colour=R2type,group=R2type,
                 label=round(R2*100,2)
               )) +  
-    geom_pointrange(position=pos, size=0.6) + 
+    geom_pointrange(position=pos, size=1, lwd=2) + 
     scale_color_manual(values=MetBrewer::met.brewer("Johnson", 2),
                        name = "R2 formula")+
-    ggrepel::geom_label_repel(position = pos, size = rel(3),  show.legend = F,min.segment.length = 0,
+    ggrepel::geom_label_repel(position = pos, size = rel(4),  show.legend = F,min.segment.length = 0,
                               vjust = 0.2, point.padding = NA, box.padding = 0.5)+ #nudge_y = -0.2, 
     scale_x_continuous(limits = c(0, NA), expand = expansion(mult = c(0, .15))) + 
     scale_y_discrete(expand = expansion(add = .7)) + #.6 is default - add a little spacing to the sides
@@ -570,10 +572,10 @@ ggsave(
                 x=R2*100, xmin = LCL*100, xmax=UCL*100, 
                 colour=R2type,group=R2type,
                 label=round(R2*100,2))) +  
-    geom_pointrange(position=pos, size=0.6) + 
+    geom_pointrange(position=pos, size=1, lwd=2) + 
     scale_color_manual(values=MetBrewer::met.brewer("Johnson", 2),
                        name = "R2 formula")+
-    ggrepel::geom_label_repel(position = pos, size = rel(3),  show.legend = F,min.segment.length = 0,
+    ggrepel::geom_label_repel(position = pos, size = rel(4),  show.legend = F,min.segment.length = 0,
                               vjust = 0.2, point.padding = NA, box.padding = 0.5)+ 
     scale_x_continuous(limits = c(0, NA), expand = expansion(mult = c(0, .15))) + 
     scale_y_discrete(expand = expansion(add = .7)) + #.6 is default - add a little spacing to the sides
