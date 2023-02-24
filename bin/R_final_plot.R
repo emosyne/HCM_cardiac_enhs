@@ -432,7 +432,7 @@ addline_format <- function(x,...){
                                                                                 paste0("Residual *\n",ENH_list,"\npartition PRS +\nquadratic terms")), ordered = T)
 ) %>% 
     left_join(CoD_per_SNP, by="partition", multiple = "all") %>% 
-    mutate(xlabel=factor(paste0(addline_format(partition_name), "\nSNP number= ", Num_SNP)))
+    mutate(xlabel=factor(paste0(addline_format(partition_name), " (SNP N=", Num_SNP,")")))
   
 )
 
@@ -458,7 +458,7 @@ pos = position_dodge(width = 0.5)
     xlab("") +  ylab(paste0(condition_name," diagnosis ~"))+
     theme_bw() +
     theme(
-      legend.position = "bottom",  
+      legend.position = "none",  
       axis.text.y = element_text(lineheight = 0.8, angle = 0, size = rel(2), color = "gray8"),
       axis.title.y = element_text(angle = 90, size = rel(2),
                                   margin = margin(t = 0, r = 20, b = 0, l = 0), color = "gray8"),
@@ -494,7 +494,7 @@ pos = position_dodge(width = 0.5)
     xlab("") +  ylab("")+
     theme_bw() +
     theme(
-      legend.position = "bottom",  
+      legend.position = "right",  
       axis.text.y = element_blank(),#element_text(lineheight = 0.8, angle = 0, size = rel(1.3)),
       #plot.margin = margin(t = 0, r = 1, b = 1, l = 0.3, "cm"),
       panel.grid.major.y = element_blank()
@@ -528,7 +528,7 @@ ggsave(
 
 ## FIGURE 2, COD FOR ENH PARTITIONS
 
-(p3 <- ggplot(data = df_plot[c(5:10),], 
+(fig2 <- ggplot(data = df_plot[c(5:10),], 
               aes(
                 y=reorder(xlabel, desc(partition)), 
                 x=R2*100, xmin = LCL*100, xmax=UCL*100, 
@@ -551,22 +551,22 @@ ggsave(
       panel.grid.major.y = element_blank()
     ))
 
-f3 = arrangeGrob(
+fig2_grob = arrangeGrob(
   textGrob(paste("CoDs % and 95% CIs for the three enhancer partitions:\nOriginal OR, enhanced by ES, enhanced by expression"), gp = gpar(fontsize = 22, fontface = "bold", col="darkblue")), 
-  p3, 
+  fig2, 
   ncol=1, heights = c(0.2,1)
 )
 
 ggsave(
   filename = paste0(OUTPUT_prefix,condition_name, "_",ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_CoD_enh_partitions.pdf"), 
-  f3,  
+  fig2_grob,  
   width = 10, height = 4, device = "pdf", scale = 1.5)
 
 
 
 ## FIGURE 3, COD FOR original,  PARTITIONS
 
-(p3 <- ggplot(data = df_plot[c(1,2,11:16),], 
+(fig3 <- ggplot(data = df_plot[c(1,2,11:16),], 
               aes(
                 y=reorder(xlabel, desc(partition)), 
                 x=R2*100, xmin = LCL*100, xmax=UCL*100, 
@@ -589,15 +589,15 @@ ggsave(
       panel.grid.major.y = element_blank()
     ))
 
-f4= arrangeGrob(
+fig3_grob= arrangeGrob(
   textGrob(paste("CoDs % and 95% CIs for the Original GWAS PRS vs\nAdditive Models Including the Residual and Enhancer Partitions"), gp = gpar(fontsize = 22, fontface = "bold", col="darkred")), 
-  p3, 
+  fig3, 
   ncol=1, heights = c(0.2,1)
 )
 
 ggsave(
   filename = paste0(OUTPUT_prefix,condition_name, "_",ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_CoD_original_vs_partitioned_models.pdf"), 
-  f4,  
+  fig3_grob,  
   width = 10, height = 5, device = "pdf", scale = 1.5)
 
 
@@ -607,7 +607,7 @@ ggsave(filename = paste0(OUTPUT_prefix,condition_name, "_",ENH_list, "_",thresho
        arrangeGrob(
          textGrob(addline_format(ENH_list),
                   gp = gpar(fontsize = 18, fontface = "bold",col="navyblue")),
-         f1, f2, f3, f4, 
+         f1, f2, fig2_grob, fig3_grob, 
          textGrob(paste("PRSice --score avg - C+T threshold:",threshold,"plot created on:",Sys.Date()),
                   gp = gpar(fontsize = 10, col="maroon")),
          layout_matrix=rbind(c(1,1),
@@ -699,3 +699,6 @@ f4<-arrangeGrob(
 
 ggsave(filename = paste0(OUTPUT_prefix,condition_name, "_",ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_Quant_by_quant_plot.pdf"),
        f4,  width = 9, height = 7)
+
+
+
