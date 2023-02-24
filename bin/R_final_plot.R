@@ -26,7 +26,7 @@ print(args)
 nthreads = as.numeric(args[8])
 #set max CPU processes
 setDTthreads(nthreads)
-threads_fst(nr_of_threads = round(nthreads/3*2))
+#threads_fst(nr_of_threads = round(nthreads/3*2))
 
 (ENH_list = args[9])
 (diagnosis = fread(args[10], header=F, col.names = c("FID", "IID", "IIDf", "IIDm", "sex", "dx" )) %>%
