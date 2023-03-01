@@ -194,6 +194,9 @@ ChoiMe <- function(x,...){
 # Start writing to an output file
 (CoD_per_SNP = data.frame())
 
+#Write output to file
+sink(paste0(OUTPUT_prefix, ENH_list, "_", Sys.Date(),"_logfile.log"))
+
 # ## original_GWAS
 #logistic model
 logit = glm(dx ~ original_GWAS_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_participant,family = binomial(logit))
@@ -435,7 +438,7 @@ addline_format <- function(x,...){
     mutate(xlabel=factor(paste0(addline_format(partition_name), " (SNP N=", Num_SNP,")")))
   
 )
-
+sink()
 
 ## FIGURE 1, COD AND COD PER SNP FOR ORIGINAL, ENHANCER AND RESIDUAL PARTITIONS
 # pos <- position_jitter(width = 0, height = 0.1, seed = 2345)
@@ -514,7 +517,7 @@ pos = position_dodge(width = 0.5)
 
 
 ggsave(
-  filename = paste0(OUTPUT_prefix,condition_name, "_",ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_CoD_main_partitions.pdf"), 
+  filename = paste0(OUTPUT_prefix, "_",ENH_list, "_", Sys.Date(),"_CoD_main_partitions.pdf"), 
   arrangeGrob(
     textGrob(paste("Coefficients of determination for the main three partitions: original, enhancer and residual"), 
              gp = gpar(fontsize = 22, fontface = "bold", col="darkgreen")), 
@@ -558,7 +561,7 @@ fig2_grob = arrangeGrob(
 )
 
 ggsave(
-  filename = paste0(OUTPUT_prefix,condition_name, "_",ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_CoD_enh_partitions.pdf"), 
+  filename = paste0(OUTPUT_prefix, "_",ENH_list, "_", Sys.Date(),"_CoD_enh_partitions.pdf"), 
   fig2_grob,  
   width = 10, height = 4, device = "pdf", scale = 1.5)
 
@@ -596,14 +599,14 @@ fig3_grob= arrangeGrob(
 )
 
 ggsave(
-  filename = paste0(OUTPUT_prefix,condition_name, "_",ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_CoD_original_vs_partitioned_models.pdf"), 
+  filename = paste0(OUTPUT_prefix, "_",ENH_list, "_", Sys.Date(),"_CoD_original_vs_partitioned_models.pdf"), 
   fig3_grob,  
   width = 10, height = 5, device = "pdf", scale = 1.5)
 
 
 
 ## save overall plot, adding threshold, date, 
-ggsave(filename = paste0(OUTPUT_prefix,condition_name, "_",ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_all_plots.pdf"), 
+ggsave(filename = paste0(OUTPUT_prefix, "_",ENH_list, "_", Sys.Date(),"_all_plots.pdf"), 
        arrangeGrob(
          textGrob(addline_format(ENH_list),
                   gp = gpar(fontsize = 18, fontface = "bold",col="navyblue")),
@@ -697,7 +700,7 @@ f4<-arrangeGrob(
   heights = c(0.1, 1))
 
 
-ggsave(filename = paste0(OUTPUT_prefix,condition_name, "_",ENH_list, "_",threshold, "_", modif_name_1,"_", modif_name_2,"_", Sys.Date(),"_Quant_by_quant_plot.pdf"),
+ggsave(filename = paste0(OUTPUT_prefix, "_",ENH_list, "_", Sys.Date(),"_Quant_by_quant_plot.pdf"),
        f4,  width = 9, height = 7)
 
 
