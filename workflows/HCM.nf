@@ -35,39 +35,39 @@ LD_reference = Channel.from("bed","bim","fam")
             .collect()
 
 
-// ## HCM
-full_GWAS_hg19 = Channel
-    .fromPath("$GWAS_dir/hcm.gwama.sumstats_hg19_24Feb21.gz", checkIfExists: true) 
-    // .fromPath("$GWAS_dir/hcm_GWAS_sample.tsv.gz", checkIfExists: true) 
-dx_UKBB_pheno =    Channel.fromPath("./input/biobank/HCM.pheno", checkIfExists: true)
-enhancer_lists_bed_files = 
-    Channel.from(
-        "Non-associated_enh", 
-        "Non-cardiac_enh",
-        "Cardiac_significant_enh"
-        )
-        .map { ENH_list -> ["${ENH_list}", 
-            file("./input/enh_bedfiles/${ENH_list}.bed", checkIfExists: true)]
-            } 
-annotations = Channel.fromPath( "./input/ES_multipliers/2023-02-01_CARDIAC_NoFibro_significant_ES_significant_contact_EPs_ANNOT_plus_100_noOverlap.csv.gz", checkIfExists: true)
-condition = "HCM" // SCZ or HCM
-
-// //  SCHIZO and neural lists ##############
+// // ## HCM
 // full_GWAS_hg19 = Channel
-//     .fromPath("$GWAS_dir/PGC3_SCZ_wave3.european.autosome.public.v3_HCM_format.tsv.gz", checkIfExists: true) 
-// dx_UKBB_pheno =    Channel.fromPath("./input/biobank/SCZ.pheno", checkIfExists: true)
+//     .fromPath("$GWAS_dir/hcm.gwama.sumstats_hg19_24Feb21.gz", checkIfExists: true) 
+//     // .fromPath("$GWAS_dir/hcm_GWAS_sample.tsv.gz", checkIfExists: true) 
+// dx_UKBB_pheno =    Channel.fromPath("./input/biobank/HCM.pheno", checkIfExists: true)
 // enhancer_lists_bed_files = 
 //     Channel.from(
-//         // "18k_PsychENCODE_PFCortex", 
-//         "Neural_significant_enh",
-//         "Neural_significant_enh_GRB",
-//         "Non-neural_enh",
-//         "Non-associated_enh")
-//             .map { ENH_list -> ["${ENH_list}", 
-//                 file("./input/enh_bedfiles/${ENH_list}.bed", checkIfExists: true)]
+//         "Non-associated_enh", 
+//         "Non-cardiac_enh",
+//         "Cardiac_significant_enh"
+//         )
+//         .map { ENH_list -> ["${ENH_list}", 
+//             file("./input/enh_bedfiles/${ENH_list}.bed", checkIfExists: true)]
 //             } 
-// annotations = Channel.fromPath( "./input/ES_multipliers/2023-01-18_2023-02-17_NEURAL_ENH_EXP_significant_plus_100_noOverlap_HCMformat.csv.gz", checkIfExists: true)
-// condition = "SCZ" // SCZ or HCM
+// annotations = Channel.fromPath( "./input/ES_multipliers/2023-02-01_CARDIAC_NoFibro_significant_ES_significant_contact_EPs_ANNOT_plus_100_noOverlap.csv.gz", checkIfExists: true)
+// condition = "HCM" // SCZ or HCM
+
+//  SCHIZO and neural lists ##############
+full_GWAS_hg19 = Channel
+    .fromPath("$GWAS_dir/PGC3_SCZ_wave3.european.autosome.public.v3_HCM_format.tsv.gz", checkIfExists: true) 
+dx_UKBB_pheno =    Channel.fromPath("./input/biobank/SCZ.pheno", checkIfExists: true)
+enhancer_lists_bed_files = 
+    Channel.from(
+        // "18k_PsychENCODE_PFCortex", 
+        "Neural_significant_enh",
+        "Neural_significant_enh_GRB",
+        "Non-neural_enh",
+        "Non-associated_enh")
+            .map { ENH_list -> ["${ENH_list}", 
+                file("./input/enh_bedfiles/${ENH_list}.bed", checkIfExists: true)]
+            } 
+annotations = Channel.fromPath( "./input/ES_multipliers/2023-01-18_2023-02-17_NEURAL_ENH_EXP_significant_plus_100_noOverlap_HCMformat.csv.gz", checkIfExists: true)
+condition = "SCZ" // SCZ or HCM
 
 
 workflow HCM {
