@@ -206,7 +206,7 @@ summary(logit)
 (pseudo_R2 = as.numeric(fmsb::NagelkerkeR2(logit)[2]))
 ## linear model
 linear = lm(as.numeric(as.character(dx)) ~ original_GWAS_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_participant)
-summary(linear)
+#summary(linear)
 # R2 on the liability scale using the transformation
 (R2O = var(linear$fitted.values)/(ncase/nt*ncont/nt))
 #R2 on the observed scale
@@ -236,7 +236,7 @@ summary(logit)
 ## linear model
 linear = lm(as.numeric(as.character(dx)) ~ residual_GWAS_compartment_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
-summary(linear)
+#summary(linear)
 # R2 on the liability scale using the transformation
 (R2O = var(linear$fitted.values)/(ncase/nt*ncont/nt))
 #R2 on the observed scale
@@ -264,7 +264,7 @@ summary(logit)
 ## linear model
 linear = lm(as.numeric(as.character(dx)) ~ TS_ENH_GWAS_compartment_originalOR_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
-summary(linear)
+#summary(linear)
 # R2 on the liability scale using the transformation
 (R2O = var(linear$fitted.values)/(ncase/nt*ncont/nt))
 #R2 on the observed scale
@@ -292,7 +292,7 @@ summary(logit)
 ## linear model
 linear = lm(as.numeric(as.character(dx)) ~ TS_ENH_GWAS_compartment_OR_by_measure1_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
-summary(linear)
+#summary(linear)
 # R2 on the liability scale using the transformation
 (R2O = var(linear$fitted.values)/(ncase/nt*ncont/nt))
 #R2 on the observed scale
@@ -320,7 +320,7 @@ summary(logit)
 ## linear model
 linear = lm(as.numeric(as.character(dx)) ~ TS_ENH_GWAS_compartment_OR_by_measure2_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
-summary(linear)
+#summary(linear)
 # R2 on the liability scale using the transformation
 (R2O = var(linear$fitted.values)/(ncase/nt*ncont/nt))
 #R2 on the observed scale
@@ -350,7 +350,7 @@ summary(logit)
 ## linear model
 linear = lm(as.numeric(as.character(dx)) ~ residual_GWAS_compartment_best_PRS + TS_ENH_GWAS_compartment_originalOR_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
-summary(linear)
+#summary(linear)
 # R2 on the liability scale using the transformation
 (R2O = var(linear$fitted.values)/(ncase/nt*ncont/nt))
 #R2 on the observed scale
@@ -379,7 +379,7 @@ summary(logit)
 ## linear model
 linear = lm(as.numeric(as.character(dx)) ~ residual_GWAS_compartment_best_PRS*TS_ENH_GWAS_compartment_originalOR_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
-summary(linear)
+#summary(linear)
 # R2 on the liability scale using the transformation
 (R2O = var(linear$fitted.values)/(ncase/nt*ncont/nt))
 #R2 on the observed scale
@@ -409,7 +409,7 @@ summary(logit)
 linear = lm(as.numeric(as.character(dx)) ~ residual_GWAS_compartment_best_PRS*TS_ENH_GWAS_compartment_originalOR_best_PRS +
               I(residual_GWAS_compartment_best_PRS^2) + I(TS_ENH_GWAS_compartment_originalOR_best_PRS^2), 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
-summary(linear)
+#summary(linear)
 # R2 on the liability scale using the transformation
 (R2O = var(linear$fitted.values)/(ncase/nt*ncont/nt))
 #R2 on the observed scale
