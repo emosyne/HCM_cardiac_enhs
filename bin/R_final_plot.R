@@ -77,7 +77,7 @@ condition_name = args[32] #SCZ or HCM
 number_quantiles = 3
 
 # pop_prev = population prevalence
-pop_prev = ifelse(test = condition_name == "SCZ", yes = 0.01, no = 0.007)
+pop_prev = ifelse(test = condition_name == "SCZ", yes = 0.01, no = 0.00225)
 
 
 
