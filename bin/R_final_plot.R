@@ -74,7 +74,7 @@ threshold = args[31]
 condition_name = args[32] #SCZ or HCM
 
 #set input variables
-number_quantiles = 5
+number_quantiles = 3
 
 # pop_prev = population prevalence
 pop_prev = ifelse(test = condition_name == "SCZ", yes = 0.01, no = 0.007)
@@ -163,6 +163,9 @@ scaled_BEST_PRS_score_per_UKBB_participant[,c(2:6)] <-  data.frame(scale(BEST_PR
 # scaled_BEST_PRS_score_per_UKBB_participant[rowSums(is.na(scaled_BEST_PRS_score_per_UKBB_participant)) > 0,]
 
 
+#Write output to file
+sink(paste0(OUTPUT_prefix, ENH_list, "_", Sys.Date(),"_logfile.log"))
+print("measures of model fit:")
 #### measures of model fit 
 ## https://onlinelibrary.wiley.com/doi/full/10.1002/gepi.21614
 # nt = total number of the sample
@@ -194,15 +197,16 @@ ChoiMe <- function(x,...){
 # Start writing to an output file
 (CoD_per_SNP = data.frame())
 
-#Write output to file
-sink(paste0(OUTPUT_prefix, ENH_list, "_", Sys.Date(),"_logfile.log"))
+
 
 # ## original_GWAS
 #logistic model
 logit = glm(dx ~ original_GWAS_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_participant,family = binomial(logit))
+summary(logit)
 (pseudo_R2 = as.numeric(fmsb::NagelkerkeR2(logit)[2]))
 ## linear model
 linear = lm(as.numeric(as.character(dx)) ~ original_GWAS_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_participant)
+summary(linear)
 # R2 on the liability scale using the transformation
 (R2O = var(linear$fitted.values)/(ncase/nt*ncont/nt))
 #R2 on the observed scale
@@ -227,10 +231,12 @@ linear = lm(as.numeric(as.character(dx)) ~ original_GWAS_best_PRS, data = scaled
 ##residual
 #logistic model
 logit = glm(dx ~ residual_GWAS_compartment_best_PRS, data = scaled_BEST_PRS_score_per_UKBB_participant, family = binomial(logit))
+summary(logit)
 (pseudo_R2 = as.numeric(fmsb::NagelkerkeR2(logit)[2]))
 ## linear model
 linear = lm(as.numeric(as.character(dx)) ~ residual_GWAS_compartment_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
+summary(linear)
 # R2 on the liability scale using the transformation
 (R2O = var(linear$fitted.values)/(ncase/nt*ncont/nt))
 #R2 on the observed scale
@@ -253,10 +259,12 @@ residual_GWAS_compart_logistic_model_R2 = rbind(cbind(psychometric::CI.Rsq(pseud
 #logistic model
 logit = glm(dx ~ TS_ENH_GWAS_compartment_originalOR_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant, family = binomial(logit))
+summary(logit)
 (pseudo_R2 = as.numeric(fmsb::NagelkerkeR2(logit)[2]))
 ## linear model
 linear = lm(as.numeric(as.character(dx)) ~ TS_ENH_GWAS_compartment_originalOR_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
+summary(linear)
 # R2 on the liability scale using the transformation
 (R2O = var(linear$fitted.values)/(ncase/nt*ncont/nt))
 #R2 on the observed scale
@@ -277,12 +285,14 @@ TS_ENH_originalOR_compart_logistic_model_R2 = rbind(cbind(psychometric::CI.Rsq(p
 
 # TS ENH  OR by measure 1
 #logistic model
-(logit = glm(dx ~ TS_ENH_GWAS_compartment_OR_by_measure1_best_PRS, 
-             data = scaled_BEST_PRS_score_per_UKBB_participant, family = binomial(logit))) 
+logit = glm(dx ~ TS_ENH_GWAS_compartment_OR_by_measure1_best_PRS, 
+             data = scaled_BEST_PRS_score_per_UKBB_participant, family = binomial(logit))
+summary(logit)
 (pseudo_R2 = as.numeric(fmsb::NagelkerkeR2(logit)[2]))
 ## linear model
 linear = lm(as.numeric(as.character(dx)) ~ TS_ENH_GWAS_compartment_OR_by_measure1_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
+summary(linear)
 # R2 on the liability scale using the transformation
 (R2O = var(linear$fitted.values)/(ncase/nt*ncont/nt))
 #R2 on the observed scale
@@ -305,10 +315,12 @@ TS_ENH_OR_by_measure1_compart_logistic_model_R2 = rbind(cbind(psychometric::CI.R
 #logistic model
 logit = glm(dx ~ TS_ENH_GWAS_compartment_OR_by_measure2_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant, family = binomial(logit))
+summary(logit)
 (pseudo_R2 = as.numeric(fmsb::NagelkerkeR2(logit)[2]))
 ## linear model
 linear = lm(as.numeric(as.character(dx)) ~ TS_ENH_GWAS_compartment_OR_by_measure2_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
+summary(linear)
 # R2 on the liability scale using the transformation
 (R2O = var(linear$fitted.values)/(ncase/nt*ncont/nt))
 #R2 on the observed scale
@@ -333,10 +345,12 @@ TS_ENH_OR_by_measure2_compart_logistic_model_R2 = rbind(cbind(psychometric::CI.R
 #logistic model
 logit = glm(dx ~ residual_GWAS_compartment_best_PRS + TS_ENH_GWAS_compartment_originalOR_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant, family = binomial(logit)) 
+summary(logit)
 (pseudo_R2 = as.numeric(fmsb::NagelkerkeR2(logit)[2]))
 ## linear model
 linear = lm(as.numeric(as.character(dx)) ~ residual_GWAS_compartment_best_PRS + TS_ENH_GWAS_compartment_originalOR_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
+summary(linear)
 # R2 on the liability scale using the transformation
 (R2O = var(linear$fitted.values)/(ncase/nt*ncont/nt))
 #R2 on the observed scale
@@ -360,10 +374,12 @@ residual_GWAS_plus_TS_ENH_originalOR_logistic_model_R2 =  rbind(cbind(psychometr
 #logistic model
 logit = glm(dx ~ residual_GWAS_compartment_best_PRS*TS_ENH_GWAS_compartment_originalOR_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant, family = binomial(logit))
+summary(logit)
 (pseudo_R2 = as.numeric(fmsb::NagelkerkeR2(logit)[2]))
 ## linear model
 linear = lm(as.numeric(as.character(dx)) ~ residual_GWAS_compartment_best_PRS*TS_ENH_GWAS_compartment_originalOR_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
+summary(linear)
 # R2 on the liability scale using the transformation
 (R2O = var(linear$fitted.values)/(ncase/nt*ncont/nt))
 #R2 on the observed scale
@@ -387,11 +403,13 @@ logistic_full_factorial_design_model_R2 = rbind(cbind(psychometric::CI.Rsq(pseud
 logit = glm(dx ~ residual_GWAS_compartment_best_PRS*TS_ENH_GWAS_compartment_originalOR_best_PRS +
               I(residual_GWAS_compartment_best_PRS^2) + I(TS_ENH_GWAS_compartment_originalOR_best_PRS^2), 
             data = scaled_BEST_PRS_score_per_UKBB_participant, family = binomial(logit))
+summary(logit)
 (pseudo_R2 = as.numeric(fmsb::NagelkerkeR2(logit)[2]))
 ## linear model
 linear = lm(as.numeric(as.character(dx)) ~ residual_GWAS_compartment_best_PRS*TS_ENH_GWAS_compartment_originalOR_best_PRS +
               I(residual_GWAS_compartment_best_PRS^2) + I(TS_ENH_GWAS_compartment_originalOR_best_PRS^2), 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
+summary(linear)
 # R2 on the liability scale using the transformation
 (R2O = var(linear$fitted.values)/(ncase/nt*ncont/nt))
 #R2 on the observed scale
@@ -443,7 +461,9 @@ sink()
 ## FIGURE 1, COD AND COD PER SNP FOR ORIGINAL, ENHANCER AND RESIDUAL PARTITIONS
 # pos <- position_jitter(width = 0, height = 0.1, seed = 2345)
 pos = position_dodge(width = 0.5)
-(p1 <- ggplot(data = df_plot[c(1:6),], 
+(p1 <- ggplot(data = df_plot[df_plot$partition == "0" |
+                               df_plot$partition == "1" |
+                               df_plot$partition == "2",], 
               aes(y=reorder(xlabel, desc(partition)), 
                   x=R2*100, xmin = LCL*100, xmax=UCL*100, 
                   colour=R2type,
@@ -480,7 +500,9 @@ pos = position_dodge(width = 0.5)
                  widths = c(0.1, 1), heights = c(0.1, 1)))
 
 
-(p2 <-ggplot(data = df_plot[c(1:6),], 
+(p2 <-ggplot(data = df_plot[df_plot$partition == "0" |
+                               df_plot$partition == "1" |
+                               df_plot$partition == "2",], 
              aes(
                y=reorder(xlabel, desc(partition)),
                x=CoD_per_SNP, xmax=CoD_per_SNP, xmin=0,
@@ -515,23 +537,23 @@ pos = position_dodge(width = 0.5)
                  widths = c(0.1, 1), heights = c(0.1, 1)))
 
 
-
-ggsave(
-  filename = paste0(OUTPUT_prefix, "_",ENH_list, "_", Sys.Date(),"_CoD_main_partitions.pdf"), 
-  arrangeGrob(
+fig1grob<- arrangeGrob(
     textGrob(paste("Coefficients of determination for the main three partitions: original, enhancer and residual"), 
              gp = gpar(fontsize = 22, fontface = "bold", col="darkgreen")), 
     f1, f2, 
     layout_matrix=rbind(c(1,1),
                         c(2,3)),
     widths = c(1, 0.6), heights = c(0.1,1)
-  ),  
+  )
+ggsave(
+  filename = paste0(OUTPUT_prefix, ENH_list, "_", Sys.Date(),"_CoD_main_partitions.pdf"), 
+  fig1grob,  
   width = 17, height = 5)
 
 
 ## FIGURE 2, COD FOR ENH PARTITIONS
 
-(fig2 <- ggplot(data = df_plot[c(5:10),], 
+(fig2 <- ggplot(data = df_plot[grepl(pattern = "^2", perl = T, x=df_plot$partition) ,], 
               aes(
                 y=reorder(xlabel, desc(partition)), 
                 x=R2*100, xmin = LCL*100, xmax=UCL*100, 
@@ -561,7 +583,7 @@ fig2_grob = arrangeGrob(
 )
 
 ggsave(
-  filename = paste0(OUTPUT_prefix, "_",ENH_list, "_", Sys.Date(),"_CoD_enh_partitions.pdf"), 
+  filename = paste0(OUTPUT_prefix, ENH_list, "_", Sys.Date(),"_CoD_enh_partitions.pdf"), 
   fig2_grob,  
   width = 10, height = 4, device = "pdf", scale = 1.5)
 
@@ -569,11 +591,11 @@ ggsave(
 
 ## FIGURE 3, COD FOR original,  PARTITIONS
 
-(fig3 <- ggplot(data = df_plot[c(1,2,11:16),], 
+(fig3 <- ggplot(data = df_plot[grepl(pattern = "^0|^3", perl = T, x=df_plot$partition) ,], 
               aes(
                 y=reorder(xlabel, desc(partition)), 
                 x=R2*100, xmin = LCL*100, xmax=UCL*100, 
-                colour=R2type,group=R2type,
+                colour=R2type, group=R2type,
                 label=round(R2*100,2))) +  
     geom_pointrange(position=pos, size=1, lwd=1) + 
     scale_color_manual(values=MetBrewer::met.brewer("Johnson", 2),
@@ -598,28 +620,45 @@ fig3_grob= arrangeGrob(
   ncol=1, heights = c(0.2,1)
 )
 
+
 ggsave(
-  filename = paste0(OUTPUT_prefix, "_",ENH_list, "_", Sys.Date(),"_CoD_original_vs_partitioned_models.pdf"), 
+  filename = paste0(OUTPUT_prefix, ENH_list, "_", Sys.Date(),"_CoD_original_vs_partitioned_models.pdf"), 
   fig3_grob,  
   width = 10, height = 5, device = "pdf", scale = 1.5)
 
 
 
-## save overall plot, adding threshold, date, 
-ggsave(filename = paste0(OUTPUT_prefix, "_",ENH_list, "_", Sys.Date(),"_all_plots.pdf"), 
+## OVERALL PLOT ###
+fig2_grob_modif = arrangeGrob(
+  textGrob("C)", just = "left",
+           gp = gpar(fontsize = 18, fontface = "bold", col="black")), 
+  textGrob(paste("CoDs % and 95% CIs for the three enhancer partitions:\nOriginal OR, enhanced by ES, enhanced by expression"), gp = gpar(fontsize = 22, fontface = "bold", col="darkblue")), 
+  fig2 + theme(legend.position = "none"), 
+  layout_matrix=rbind(c(1,2),
+                      c(3,3)),
+  widths = c(0.1, 1), heights = c(0.15, 1)
+)
+fig3_modif <- fig3 + theme(axis.title.y =element_blank(),
+                              legend.position = "none")
+fig3_grob_modif= arrangeGrob(
+  textGrob("D)", just = "left",
+           gp = gpar(fontsize = 18, fontface = "bold", col="black")), 
+  textGrob(paste("CoDs % and 95% CIs for the Original GWAS PRS vs\nAdditive Models Including the Residual and Enhancer Partitions"), gp = gpar(fontsize = 20, fontface = "bold", col="darkred")), 
+  fig3_modif, 
+  layout_matrix=rbind(c(1,2),
+                      c(3,3)),
+  widths = c(0.05, 1), heights = c(0.15, 1)
+)
+ggsave(filename = paste0(OUTPUT_prefix, ENH_list, "_", Sys.Date(),"_all_plots.pdf"), 
        arrangeGrob(
          textGrob(addline_format(ENH_list),
-                  gp = gpar(fontsize = 18, fontface = "bold",col="navyblue")),
-         f1, f2, fig2_grob, fig3_grob, 
-         textGrob(paste("PRSice --score avg - C+T threshold:",threshold,"plot created on:",Sys.Date()),
-                  gp = gpar(fontsize = 10, col="maroon")),
+                  gp = gpar(fontsize = 24, fontface = "bold",col="navyblue")),
+         fig1grob, fig2_grob_modif, fig3_grob_modif, 
          layout_matrix=rbind(c(1,1),
-                             c(2,3),
-                             c(4,5),
-                             c(6,6)),
-         heights = c(0.08, 0.5, 0.5, 0.04)
-       ),  
-       width = 19, height = 14, device = "pdf", scale = 1)
+                             c(2,2),
+                             c(3,4)),
+         heights = c(0.08, 0.5, 0.5, 0.04), widths = c(1,1)       ),  
+       width = 20, height = 14, device = "pdf", scale = 1)
 
 
 
@@ -700,8 +739,5 @@ f4<-arrangeGrob(
   heights = c(0.1, 1))
 
 
-ggsave(filename = paste0(OUTPUT_prefix, "_",ENH_list, "_", Sys.Date(),"_Quant_by_quant_plot.pdf"),
+ggsave(filename = paste0(OUTPUT_prefix, ENH_list, "_", Sys.Date(),"_Quant_by_quant_plot.pdf"),
        f4,  width = 9, height = 7)
-
-
-
