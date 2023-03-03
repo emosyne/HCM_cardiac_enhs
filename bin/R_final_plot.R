@@ -665,7 +665,6 @@ ggsave(filename = paste0(OUTPUT_prefix, ENH_list, "_", Sys.Date(),"_all_plots.pd
 
 
 
-
 # OR based plots
 # double quantile plot for interactions
 
@@ -679,28 +678,28 @@ scaled_BEST_PRS_score_per_UKBB_participant
 summary(logistic<-glm(formula = dx ~ original_GWAS_q, 
                       data = scaled_BEST_PRS_score_per_UKBB_participant, family = binomial, na.action = "na.omit"))
 (original_GWAS_q_OR<-exp(cbind(coef(logistic), confint(logistic))) %>% as_tibble(rownames = "quant"))
-colnames(original_GWAS_q_OR) <- c("quantile", "OR", "LCI", "UCI")
+colnames(original_GWAS_q_OR) <- c("ENH_compartment_quantile", "OR", "LCI", "UCI")
 original_GWAS_q_OR
 
 (ORs <- original_GWAS_q_OR)
 ORs[1,]<-list("1",1,1,1)
 ORs[,1]<-list(1:nrow(ORs))
-ORs$original_OR_quant <- "Original GWAS quantile"
+ORs$original_OR_quant <- "All"
 ORs
 
-sink(paste0(OUTPUT_prefix, ENH_list, "_", Sys.Date(),"_ORs.log"))
+
 ORs_original_OR <- ORs
 for  (i in 1:number_quantiles) {
   print(i)
   logistic<-glm(formula = dx ~ original_GWAS_q, 
-                data = scaled_BEST_PRS_score_per_UKBB_participant[scaled_BEST_PRS_score_per_UKBB_participant$TS_ENH_compartment_originalOR_q==i,], 
+                data = scaled_BEST_PRS_score_per_UKBB_participant[scaled_BEST_PRS_score_per_UKBB_participant$TS_ENH_compartment_originalOR_q==i,],
                 family = binomial, na.action = "na.omit")
   (OR<-exp(cbind(coef(logistic), confint(logistic))) %>% as_tibble(rownames = "quant"))
   OR[1,]<-list("1",1,1,1)
   OR[,1]<-list(1:nrow(OR))
-  colnames(OR) <- c("quantile", "OR", "LCI", "UCI")
-  OR
+  colnames(OR) <- c("ENH_compartment_quantile", "OR", "LCI", "UCI")
   OR$original_OR_quant <- paste0("Enh q",i)
+  OR
   
   ORs_original_OR<-rbind(ORs_original_OR,OR)
 }
@@ -711,12 +710,11 @@ ORs_original_OR
 (all_ORs<-
     ORs_original_OR)
 all_ORs$original_OR_quant = factor(all_ORs$original_OR_quant)
-all_ORs$original_OR_quant = relevel(all_ORs$original_OR_quant, ref = "Original GWAS quantile")
-sink()
+all_ORs$original_OR_quant = relevel(all_ORs$original_OR_quant, ref = "All")
 
 # pdf(file = PRS_double_QUANTILE_PLOT, width = 11, height = 7)
 (p4 = ggplot(data = all_ORs , aes(y= OR, ymin = LCI, ymax=UCI, 
-                                  x=factor(quantile), colour=original_OR_quant, group=original_OR_quant)) + 
+                                  x=factor(ENH_compartment_quantile), colour=original_OR_quant, group=original_OR_quant)) + 
     # facet_wrap(facets = vars((comp)))+
     scale_colour_manual(name="ENH compartment quantile", values = c("tomato",MetBrewer::met.brewer("Hokusai2",number_quantiles)))+
     geom_pointrange(position = position_dodge(width = 0.3))  + 
