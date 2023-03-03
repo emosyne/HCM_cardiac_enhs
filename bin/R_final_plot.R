@@ -687,7 +687,7 @@ ORs[,1]<-list(1:nrow(ORs))
 ORs$original_OR_quant <- "All"
 ORs
 
-
+sink(paste0(OUTPUT_prefix, ENH_list, "_", Sys.Date(),"_ORs.log"))
 ORs_original_OR <- ORs
 for  (i in 1:number_quantiles) {
   print(i)
@@ -711,6 +711,7 @@ ORs_original_OR
     ORs_original_OR)
 all_ORs$original_OR_quant = factor(all_ORs$original_OR_quant)
 all_ORs$original_OR_quant = relevel(all_ORs$original_OR_quant, ref = "All")
+sink()
 
 # pdf(file = PRS_double_QUANTILE_PLOT, width = 11, height = 7)
 (p4 = ggplot(data = all_ORs , aes(y= OR, ymin = LCI, ymax=UCI, 
@@ -740,3 +741,4 @@ f4<-arrangeGrob(
 
 ggsave(filename = paste0(OUTPUT_prefix, ENH_list, "_", Sys.Date(),"_Quant_by_quant_plot.pdf"),
        f4,  width = 9, height = 7)
+
