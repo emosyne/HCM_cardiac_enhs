@@ -445,22 +445,24 @@ addline_format <- function(x,...){
   partition=c(factor(c("0","1","2","2b","2c","3","3b","3c"), ordered = T)),
   partition_name= factor(x = c("0","1","2","2b","2c","3","3b","3c"), labels = c("Original GWAS PRS",
                                                                                 "Residual partition PRS", 
-                                                                                paste0(ENH_list,"\npartition PRS\nOriginal OR"),
-                                                                                paste0(ENH_list,"\npartition PRS\nOR* ",modif_name_1),
-                                                                                paste0(ENH_list,"\npartition PRS\nOR* ",modif_name_2),
-                                                                                paste0("Residual +\n",ENH_list,"\npartition PRS"),
-                                                                                paste0("Residual *\n",ENH_list,"\npartition PRS"),
-                                                                                paste0("Residual *\n",ENH_list,"\npartition PRS +\nquadratic terms")), ordered = T)
+                                                                                paste0(ENH_list," partition PRS Original OR"),
+                                                                                paste0(ENH_list," partition PRS OR \u00D7 ",modif_name_1),
+                                                                                paste0(ENH_list," partition PRS OR \u00D7 ",modif_name_2),
+                                                                                paste0("Residual + ",ENH_list," partition PRS"),
+                                                                                paste0("Residual \u00D7 ",ENH_list," partition PRS"),
+                                                                                paste0("Residual \u00D7 ",ENH_list," partition PRS + quadratic terms")), ordered = T)
 ) %>% 
     left_join(CoD_per_SNP, by="partition", multiple = "all") %>% 
-    mutate(xlabel=factor(paste0(addline_format(partition_name), " (SNP N=", Num_SNP,")")))
+    mutate(xlabel=factor(stringr::str_wrap(paste0(addline_format(partition_name), " (SNP N=", Num_SNP,")"),
+                                           width=30)))
   
 )
 sink()
 
 ## FIGURE 1, COD AND COD PER SNP FOR ORIGINAL, ENHANCER AND RESIDUAL PARTITIONS
 # pos <- position_jitter(width = 0, height = 0.1, seed = 2345)
-pos = position_dodge(width = 0.5)
+# pos = position_dodge(width = 0.5)
+pos = position_identity()
 (p1 <- ggplot(data = df_plot[df_plot$partition == "0" |
                                df_plot$partition == "1" |
                                df_plot$partition == "2",], 
@@ -473,19 +475,20 @@ pos = position_dodge(width = 0.5)
     # geom_linerange(position=pos, 
     #                aes(xmin = 0, xmax=R2*100 )) +
     scale_color_manual(values=MetBrewer::met.brewer("Johnson", 2),
-                       name = "R2 formula")+
+                       name = expression(paste(R^2)))+ #labels=c(a=expression(paste(Delta^2))
     ggrepel::geom_label_repel(position = pos, size = rel(4),  show.legend = F,min.segment.length = 0,
-                              vjust = 0.2, point.padding = NA, box.padding = 0.5)+ #nudge_y = -0.2, 
+                              point.padding = NA, box.padding = 0.5)+ #nudge_y = -0.2, 
     scale_x_continuous(limits = c(0, NA), expand = expansion(mult = c(0, .15))) + 
     scale_y_discrete(expand = expansion(add = .7)) + #.6 is default - add a little spacing to the sides
     xlab("") +  ylab(paste0(condition_name," diagnosis ~"))+
     theme_bw() +
     theme(
       legend.position = "none",  
-      axis.text.y = element_text(lineheight = 0.8, angle = 0, size = rel(2), color = "gray8"),
-      axis.title.y = element_text(angle = 90, size = rel(2),
-                                  margin = margin(t = 0, r = 20, b = 0, l = 0), color = "gray8"),
-      panel.grid.major.y = element_blank()
+      text=element_text(lineheight = 0.8, angle = 0, size = 21, color = "gray8"),
+      # axis.text.y = element_text(lineheight = 0.8, angle = 0, size = rel(2), color = "gray8"),
+      # axis.title.y = element_text(angle = 90, size = rel(2),
+      #                             margin = margin(t = 0, r = 20, b = 0, l = 0), color = "gray8"),
+      # panel.grid.major.y = element_blank()
     ))
 
 
@@ -511,24 +514,25 @@ pos = position_dodge(width = 0.5)
     geom_point(position=pos, size=3) +     
     #geom_linerange(position=pos) +
     scale_color_manual(values=MetBrewer::met.brewer("Johnson", 2),
-                       name = "R2 formula")+
+                       name = expression(paste(R^2)))+
     ggrepel::geom_label_repel(position = pos, size = rel(4),  show.legend = F,min.segment.length = 0,
-                              vjust = 0.2, point.padding = NA, box.padding = 0.5)+
+                               point.padding = NA, box.padding = 0.5)+
     scale_x_continuous(limits = c(0, NA), expand = expansion(mult = c(0, .1))) + 
     scale_y_discrete(expand = expansion(add = .7)) + #.6 is default - add a little spacing to the sides
     xlab("") +  ylab("")+
     theme_bw() +
     theme(
-      legend.position = "right",  
+      legend.position = "none",  
       axis.text.y = element_blank(),#element_text(lineheight = 0.8, angle = 0, size = rel(1.3)),
+      text=element_text(lineheight = 0.8, angle = 0, size = 21, color = "gray8"),
       #plot.margin = margin(t = 0, r = 1, b = 1, l = 0.3, "cm"),
-      panel.grid.major.y = element_blank()
+      # panel.grid.major.y = element_blank()
     ))
 
 
 (f2<-arrangeGrob(textGrob("B)", just = "left",
                           gp = gpar(fontsize = 18, fontface = "bold", col="black")), 
-                 textGrob(paste("Coefficients of determination per SNP * 10^7"), 
+                 textGrob(bquote("Coefficients of determination per SNP \u00D7"~10^7), 
                           gp = gpar(fontsize = 18, fontface = "bold", col="darkgreen")), 
                  #textGrob("diagnosis ~ PRS, probit link function \nProportion of the total variance explained by the genetic factor on the liability scale, \ncorrected for ascertainment, as per Lee et al 2012", gp = gpar(fontsize = 10)), 
                  p2,
@@ -543,8 +547,9 @@ fig1grob<- arrangeGrob(
     f1, f2, 
     layout_matrix=rbind(c(1,1),
                         c(2,3)),
-    widths = c(1, 0.6), heights = c(0.1,1)
+    widths = c(1, 0.5), heights = c(0.1,1)
   )
+
 ggsave(
   filename = paste0(OUTPUT_prefix, ENH_list, "_", Sys.Date(),"_CoD_main_partitions.pdf"), 
   fig1grob,  
@@ -562,18 +567,19 @@ ggsave(
               )) +  
     geom_pointrange(position=pos, size=1, lwd=1) + 
     scale_color_manual(values=MetBrewer::met.brewer("Johnson", 2),
-                       name = "R2 formula")+
+                       expression(paste(R^2)))+
     ggrepel::geom_label_repel(position = pos, size = rel(4),  show.legend = F,min.segment.length = 0,
-                              vjust = 0.2, point.padding = NA, box.padding = 0.5)+ #nudge_y = -0.2, 
+                               point.padding = NA, box.padding = 0.5)+ #nudge_y = -0.2, 
     scale_x_continuous(limits = c(0, NA), expand = expansion(mult = c(0, .15))) + 
     scale_y_discrete(expand = expansion(add = .7)) + #.6 is default - add a little spacing to the sides
     xlab("") +  ylab(paste0(condition_name," diagnosis ~"))+theme_bw() +
     theme(
-      legend.position = "bottom",  
-      axis.text.y = element_text(lineheight = 0.8, angle = 0, size = rel(2), color = "gray8"),
-      axis.title.y = element_text(angle = 90, size = rel(2),
-                                  margin = margin(t = 0, r = 20, b = 0, l = 0), color = "gray8"),
-      panel.grid.major.y = element_blank()
+      legend.position = "none",  
+      text=element_text(lineheight = 0.8, angle = 0, size = 21, color = "gray8"),
+      # axis.text.y = element_text(lineheight = 0.8, angle = 0, size = rel(2), color = "gray8"),
+      # axis.title.y = element_text(angle = 90, size = rel(2),
+      #                             margin = margin(t = 0, r = 20, b = 0, l = 0), color = "gray8"),
+      # panel.grid.major.y = element_blank()
     ))
 
 fig2_grob = arrangeGrob(
@@ -599,19 +605,22 @@ ggsave(
                 label=round(R2*100,2))) +  
     geom_pointrange(position=pos, size=1, lwd=1) + 
     scale_color_manual(values=MetBrewer::met.brewer("Johnson", 2),
-                       name = "R2 formula")+
+                       expression(paste(R^2)))+
     ggrepel::geom_label_repel(position = pos, size = rel(4),  show.legend = F,min.segment.length = 0,
-                              vjust = 0.2, point.padding = NA, box.padding = 0.5)+ 
+                               point.padding = NA, box.padding = 0.5)+ 
     scale_x_continuous(limits = c(0, NA), expand = expansion(mult = c(0, .15))) + 
     scale_y_discrete(expand = expansion(add = .7)) + #.6 is default - add a little spacing to the sides
     xlab("") +  ylab(paste0(condition_name," diagnosis ~"))+
     theme_bw() +
     theme(
-      legend.position = "bottom",  
-      axis.text.y = element_text(lineheight = 0.8, angle = 0, size = rel(2), color = "gray8"),
-      axis.title.y = element_text(angle = 90, size = rel(2),
-                                  margin = margin(t = 0, r = 20, b = 0, l = 0), color = "gray8"),
-      panel.grid.major.y = element_blank()
+      legend.position = "none",  
+      text=element_text(lineheight = 0.8, angle = 0, size = 21, color = "gray8"),
+      # axis.text.y = element_text(lineheight = 0.8, angle = 0, size = rel(2), color = "gray8"),
+      # axis.text.x = element_text(lineheight = 0.8, angle = 0, size = rel(2), color = "gray8"),
+      # axis.title.y = element_text(angle = 90, size = rel(2),
+      #                             margin = margin(t = 0, r = 20, b = 0, l = 0), color = "gray8"),
+      # legend.text= element_text(lineheight = 0.8, angle = 0, size = rel(2), color = "gray8"),
+      # panel.grid.major.y = element_blank()
     ))
 
 fig3_grob= arrangeGrob(
@@ -638,8 +647,7 @@ fig2_grob_modif = arrangeGrob(
                       c(3,3)),
   widths = c(0.1, 1), heights = c(0.15, 1)
 )
-fig3_modif <- fig3 + theme(axis.title.y =element_blank(),
-                              legend.position = "none")
+fig3_modif <- fig3 + theme(axis.title.y =element_blank(), legend.position = "right")
 fig3_grob_modif= arrangeGrob(
   textGrob("D)", just = "left",
            gp = gpar(fontsize = 18, fontface = "bold", col="black")), 
@@ -657,8 +665,9 @@ ggsave(filename = paste0(OUTPUT_prefix, ENH_list, "_", Sys.Date(),"_all_plots.pd
          layout_matrix=rbind(c(1,1),
                              c(2,2),
                              c(3,4)),
-         heights = c(0.08, 0.5, 0.5, 0.04), widths = c(1,1)       ),  
+         heights = c(0.08, 0.5, 0.5, 0.04), widths = c(1,1.2)       ),  
        width = 20, height = 14, device = "pdf", scale = 1)
+
 
 
 
