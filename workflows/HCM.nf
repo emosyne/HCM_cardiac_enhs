@@ -71,17 +71,17 @@ condition = "SCZ" // SCZ or HCM
 
 
 workflow HCM {
-    // BASE =   GWAS
-    // TARGET = UKBB
+    // // BASE =   GWAS
+    // // TARGET = UKBB
 
 
-    // BASE (GWAS) QC: REMOVE LOW MAF AND INFO SCORES
-    //produce GWAS_QC
-    PLINK_base_GWAS_QC_and_clump (
-        full_GWAS_hg19
-            .combine(LD_reference)
-            .map { [it, condition].flatten() }
-    )
+    // // BASE (GWAS) QC: REMOVE LOW MAF AND INFO SCORES
+    // //produce GWAS_QC
+    // PLINK_base_GWAS_QC_and_clump (
+    //     full_GWAS_hg19
+    //         .combine(LD_reference)
+    //         .map { [it, condition].flatten() }
+    // )
     
     enhancer_lists_bed_files.collect(Channel.fromPath("./input/EPWAS/EP_WAS.bed")).map{it -> it[1]}.collect().view()
 
