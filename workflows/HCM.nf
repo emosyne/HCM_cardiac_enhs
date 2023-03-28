@@ -83,17 +83,17 @@ workflow HCM {
     //         .map { [it, condition].flatten() }
     // )
     
-    enhancer_lists_bed_files.map{it -> it[1]}.mix(Channel.fromPath("./input/EPWAS/EP_WAS.bed")).collect().view()
+    
 
-//     R_extract_GWAS_SNPs_into_bed ( 
-//         // THIS MODULE IMPORTS 
-//         // GWAS (hg19), and selects all SNPs in input bed files and all GWAS clumped SNPs and outputs a bed file
-//         enhancer_lists_bed_files.combine(Channel.fromPath("./input/EPWAS/EP_WAS.bed")).map{it -> it[1]}.collect(),
-//         PLINK_base_GWAS_QC_and_clump.out.GWAS_QC_noClump
-//             .combine(PLINK_base_GWAS_QC_and_clump.out.clumped_SNPs)
-//             .map { [it, condition].flatten() }
+    R_extract_GWAS_SNPs_into_bed ( 
+        // THIS MODULE IMPORTS 
+        // GWAS (hg19), and selects all SNPs in input bed files and all GWAS clumped SNPs and outputs a bed file
+        enhancer_lists_bed_files.map{it -> it[1]}.mix(Channel.fromPath("./input/EPWAS/EP_WAS.bed")).collect(),
+        PLINK_base_GWAS_QC_and_clump.out.GWAS_QC_noClump
+            .combine(PLINK_base_GWAS_QC_and_clump.out.clumped_SNPs)
+            .map { [it, condition].flatten() }
         
-//         )
+        )
 //     // R_extract_GWAS_SNPs_into_bed.out.clumped_GWAS_SNPs_plus_those_in_bed_files
 //     //     .combine(R_extract_GWAS_SNPs_into_bed.out.clumped_GWAS)
 //     //     .view()
