@@ -83,7 +83,7 @@ workflow HCM {
     //         .map { [it, condition].flatten() }
     // )
     
-    enhancer_lists_bed_files.collect(Channel.fromPath("./input/EPWAS/EP_WAS.bed")).map{it -> it[1]}.collect().view()
+    enhancer_lists_bed_files.mix(Channel.fromPath("./input/EPWAS/EP_WAS.bed")).map{it -> it[1]}.collect().view()
 
 //     R_extract_GWAS_SNPs_into_bed ( 
 //         // THIS MODULE IMPORTS 
