@@ -14,14 +14,12 @@ args = commandArgs()
 
 print(args)                                                                                                
 
-# R_final_plot.R $task.cpus "${ENH_list}_${model}" ${cohort_fam} \
-        # ${EPWAS_originalOR_summary} ${EPWAS_originalOR_best}\
-        # ${EPWAS_OR_by_measure1_summary} ${EPWAS_OR_by_measure1_best}\
-        # ${EPWAS_OR_by_measure2_summary} ${EPWAS_OR_by_measure2_best}\
-        # ${residual_GWAS_compartment_summary} ${residual_GWAS_compartment_best}\
-        # ${EPWAS_originalOR_prsice} ${EPWAS_OR_by_measure1_prsice} ${EPWAS_OR_by_measure2_prsice} ${residual_GWAS_compartment_prsice}   \
-        # ${original_GWAS_summary} ${original_GWAS_prsice} ${original_GWAS_best}\
-        # ${modif_name_1} ${modif_name_2} ${CTthreshold} ${condition}
+  # [8] "32"                                                                                                                       
+  # [9] "Neural_significant_enh_REC"                                                                                               
+  # [10] "GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam"                                                                                     
+  # [11] "SCZ_Neural_significant_enh_0.05_REC_clumped_EPWAS_originalOR.summary"                                                     
+  # [12] "SCZ_Neural_significant_enh_0.05_REC_clumped_EPWAS_originalOR.best"                                                        
+                 
 nthreads = as.numeric(args[8])
 #set max CPU processes
 setDTthreads(nthreads)
@@ -36,6 +34,11 @@ EPWAS_originalOR_best =
   fread(args[12], select=c("FID", "IID", "PRS")) %>% 
   dplyr::rename(EPWAS_originalOR_best_PRS = PRS)
 
+  # [13] "SCZ_Neural_significant_enh_0.05_REC_mult_1_clumped_EPWAS_OR_by_measure1.summary"                                          
+  # [14] "SCZ_Neural_significant_enh_0.05_REC_mult_1_clumped_EPWAS_OR_by_measure1.best"                                             
+  # [15] "SCZ_Neural_significant_enh_0.05_REC_mult_1_clumped_EPWAS_OR_by_measure2.summary"                                          
+  # [16] "SCZ_Neural_significant_enh_0.05_REC_mult_1_clumped_EPWAS_OR_by_measure2.best"                                             
+
 EPWAS_OR_by_measure1_summary = args[13]
 EPWAS_OR_by_measure1_best = 
   fread(args[14], select=c("FID", "IID", "PRS")) %>% 
@@ -46,6 +49,13 @@ EPWAS_OR_by_measure2_best =
   fread(args[16], select=c("FID", "IID", "PRS")) %>% 
   dplyr::rename(EPWAS_OR_by_measure2_best_PRS = PRS)
 
+  # [17] "SCZ_Neural_significant_enh_0.05_REC_clumped_residual_GWAS_compartment.summary"                                            
+  # [18] "SCZ_Neural_significant_enh_0.05_REC_clumped_residual_GWAS_compartment.best"                                               
+  # [19] "SCZ_Neural_significant_enh_0.05_REC_clumped_EPWAS_originalOR.prsice"                                                      
+  # [20] "SCZ_Neural_significant_enh_0.05_REC_mult_1_clumped_EPWAS_OR_by_measure1.prsice"                                           
+  # [21] "SCZ_Neural_significant_enh_0.05_REC_mult_1_clumped_EPWAS_OR_by_measure2.prsice"                                           
+  # [22] "SCZ_Neural_significant_enh_0.05_REC_clumped_residual_GWAS_compartment.prsice"                                             
+  
 residual_GWAS_compartment_summary = args[17]
 residual_GWAS_compartment_best = 
   fread(args[18], select=c("FID", "IID", "PRS"))  %>% 
@@ -56,17 +66,24 @@ EPWAS_originalOR_prsice = args[19]
 EPWAS_OR_by_measure1_prsice = args[20]
 EPWAS_OR_by_measure2_prsice = args[21]
 residual_GWAS_compartment_prsice = args[22]
-merged_GWAS_prsice = args[23]
 
-original_GWAS_summary = args[24]
-original_GWAS_prsice = args[25]
-(original_GWAS_best = fread(args[26], select=c("FID", "IID", "PRS"))  %>% 
+  # [23] "SCZ_Neural_significant_enh_original_GWAS.summary"                                                                         
+  # [24] "SCZ_Neural_significant_enh_original_GWAS.prsice"                                                                          
+  # [25] "SCZ_Neural_significant_enh_original_GWAS.best"                                                                             
+
+original_GWAS_summary = args[23]
+original_GWAS_prsice = args[24]
+(original_GWAS_best = fread(args[25], select=c("FID", "IID", "PRS"))  %>% 
   dplyr::rename(original_GWAS_best_PRS = PRS))
 
-modif_name_1 = args[27]
-modif_name_2 = args[28]
-threshold = args[29]
-condition_name = args[30] #SCZ or HCM
+  # [26] "enh_ES"                                                                                                                   
+  # [27] "enh_TS_tpm"                                                                                                               
+  # [28] "0.05"                                                                                                                     
+  # [29] "SCZ"     
+modif_name_1 = args[26]
+modif_name_2 = args[27]
+threshold = args[28]
+condition_name = args[29] #SCZ or HCM
 
 #set input variables
 number_quantiles = 3
