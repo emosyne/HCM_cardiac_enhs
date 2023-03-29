@@ -109,7 +109,7 @@ workflow HCM {
             .combine(genotype_chr_files) //The combine operator combines (cartesian product) the items emitted by two channels
             
         
-    chromosomes_by_condition_plus_SNPs.view()
+    // chromosomes_by_condition_plus_SNPs.view()
 
     // GENERATE UKBB UNIQUE FILE
     PLINK2_EXTRACT ( 
@@ -239,7 +239,7 @@ workflow HCM {
             .map { [it, "enh_ES", "enh_TS_tpm"].flatten() }
 
 
-    // PRS_results.view()
+    PRS_results.view()
     // // [Neural_significant_enh_0.05_REC, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/22/ab6f513091f0242088d9840181230c/SCZ_Neural_significant_enh_0.05_REC_clumped_EPWAS_originalOR.summary, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/22/ab6f513091f0242088d9840181230c/SCZ_Neural_significant_enh_0.05_REC_mult_1_clumped_EPWAS_OR_by_measure1.summary, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/22/ab6f513091f0242088d9840181230c/SCZ_Neural_significant_enh_0.05_REC_mult_1_clumped_EPWAS_OR_by_measure2.summary, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/22/ab6f513091f0242088d9840181230c/SCZ_Neural_significant_enh_0.05_REC_clumped_EPWAS_originalOR.prsice, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/22/ab6f513091f0242088d9840181230c/SCZ_Neural_significant_enh_0.05_REC_mult_1_clumped_EPWAS_OR_by_measure1.prsice, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/22/ab6f513091f0242088d9840181230c/SCZ_Neural_significant_enh_0.05_REC_mult_1_clumped_EPWAS_OR_by_measure2.prsice, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/22/ab6f513091f0242088d9840181230c/SCZ_Neural_significant_enh_0.05_REC_clumped_EPWAS_originalOR.best, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/22/ab6f513091f0242088d9840181230c/SCZ_Neural_significant_enh_0.05_REC_mult_1_clumped_EPWAS_OR_by_measure1.best, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/22/ab6f513091f0242088d9840181230c/SCZ_Neural_significant_enh_0.05_REC_mult_1_clumped_EPWAS_OR_by_measure2.best, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/22/ab6f513091f0242088d9840181230c/SCZ_Neural_significant_enh_0.05_REC_clumped_residual_GWAS_compartment.summary, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/22/ab6f513091f0242088d9840181230c/SCZ_Neural_significant_enh_0.05_REC_clumped_residual_GWAS_compartment.prsice, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/22/ab6f513091f0242088d9840181230c/SCZ_Neural_significant_enh_0.05_REC_clumped_residual_GWAS_compartment.best, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/22/ab6f513091f0242088d9840181230c/SCZ_Neural_significant_enh_original_GWAS.summary, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/22/ab6f513091f0242088d9840181230c/SCZ_Neural_significant_enh_original_GWAS.prsice, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/22/ab6f513091f0242088d9840181230c/SCZ_Neural_significant_enh_original_GWAS.best, Neural_significant_enh, 0.05, SCZ, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/22/ab6f513091f0242088d9840181230c/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, REC, enh_ES, enh_TS_tpm]      
 
     // R_final_plot (
