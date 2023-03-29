@@ -172,22 +172,22 @@ workflow HCM {
         .map { it.flatten() }
         .set{cohort_GWAS_enh_list}
     
-    cohort_GWAS_enh_list.view()
-    // [GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, SCZ_GWAS_QC_nodups.tsv.gz, SCZ, Neural_significant_enh, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/input/enh_bedfiles/Neural_significant_enh.bed, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/input/EPWAS/UKBB_ENH_associations_DOM.tsv.gz]
-    // [GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, SCZ_GWAS_QC_nodups.tsv.gz, SCZ, Neural_significant_enh, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/input/enh_bedfiles/Neural_significant_enh.bed, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/input/EPWAS/UKBB_ENH_associations_ADD.tsv.gz]
-    // [GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, SCZ_GWAS_QC_nodups.tsv.gz, SCZ, Neural_significant_enh, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/input/enh_bedfiles/Neural_significant_enh.bed, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/input/EPWAS/UKBB_ENH_associations_REC.tsv.gz]
+    // cohort_GWAS_enh_list.view()
+    // [GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, SCZ_GWAS_QC_nodups.tsv.gz, SCZ, Neural_significant_enh, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/input/enh_bedfiles/Neural_significant_enh.bed, REC, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/input/EPWAS/UKBB_ENH_associations_REC.tsv.gz]
+    // [GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, SCZ_GWAS_QC_nodups.tsv.gz, SCZ, Neural_significant_enh, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/input/enh_bedfiles/Neural_significant_enh.bed, DOM, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/input/EPWAS/UKBB_ENH_associations_DOM.tsv.gz]
+    // [GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bed, GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bim, GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, SCZ_GWAS_QC_nodups.tsv.gz, SCZ, Neural_significant_enh, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/input/enh_bedfiles/Neural_significant_enh.bed, ADD, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/input/EPWAS/UKBB_ENH_associations_ADD.tsv.gz]
     
-    // // BASE subsetting
-    // R_prepare_lists_for_clump (
-    //     // SUBSETS GWAS SNPS INTO ENH COMPARTMENT AND RESIDUAL COMPARTMENT.
-    //     // ########################### IN PREPARATION FOR CLUMPING, DIVIDE P VALUES FOR ENH SNPS BY X TO PRESERVE ENH SNPS ###########################
-    //     cohort_GWAS_enh_list
-    // )
+    // BASE subsetting
+    R_prepare_lists_for_clump (
+        // SUBSETS GWAS SNPS INTO ENH COMPARTMENT AND RESIDUAL COMPARTMENT.
+        // ########################### IN PREPARATION FOR CLUMPING, DIVIDE P VALUES FOR ENH SNPS BY X TO PRESERVE ENH SNPS ###########################
+        cohort_GWAS_enh_list
+    )
     
     
-// //    R_prepare_lists_for_clump.out.lists_before_clump
-// //         .combine(LD_reference)
-// //         .view()
+   R_prepare_lists_for_clump.out.lists_before_clump
+        .combine(LD_reference)
+        .view()
 //     // [/rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/36/bf081900a69b45cca3a65ece2e46af/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bed, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/36/bf081900a69b45cca3a65ece2e46af/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bim, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/36/bf081900a69b45cca3a65ece2e46af/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, NEURAL_8k_GRB_significant_EPs, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/36/bf081900a69b45cca3a65ece2e46af/SCZ_NEURAL_8k_GRB_significant_EPs_noclump_TS_ENH_GWAS_compartment.tsv.gz, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/36/bf081900a69b45cca3a65ece2e46af/SCZ_NEURAL_8k_GRB_significant_EPs_noclump_residual_GWAS_compartment.tsv.gz, SCZ, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.bed, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.bim, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.fam]
 //     // [/rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/32/8b1a7419f3343722f9ca4094fdbc39/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bed, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/32/8b1a7419f3343722f9ca4094fdbc39/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bim, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/32/8b1a7419f3343722f9ca4094fdbc39/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, 20k_notNeural, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/32/8b1a7419f3343722f9ca4094fdbc39/SCZ_20k_notNeural_noclump_TS_ENH_GWAS_compartment.tsv.gz, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/32/8b1a7419f3343722f9ca4094fdbc39/SCZ_20k_notNeural_noclump_residual_GWAS_compartment.tsv.gz, SCZ, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.bed, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.bim, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.fam]
 //     // [/rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/b2/4a149c4188f7278835fc78b74fe44b/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bed, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/b2/4a149c4188f7278835fc78b74fe44b/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bim, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/b2/4a149c4188f7278835fc78b74fe44b/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, 34k_neg, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/b2/4a149c4188f7278835fc78b74fe44b/SCZ_34k_neg_noclump_TS_ENH_GWAS_compartment.tsv.gz, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/b2/4a149c4188f7278835fc78b74fe44b/SCZ_34k_neg_noclump_residual_GWAS_compartment.tsv.gz, SCZ, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.bed, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.bim, /rds/general/user/eosimo/home/lenhard_prs/LD_ref/EUR_phase3_autosomes_hg19.fam]
