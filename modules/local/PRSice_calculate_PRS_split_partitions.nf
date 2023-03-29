@@ -24,7 +24,7 @@ process PRSice_calculate_PRS_split_partitions {
              emit: clumped_EPWAS_PRS
     tuple val("${ENH_list}"), path("*_clumped_residual_GWAS_compartment.summary"), path("*_clumped_residual_GWAS_compartment.prsice"), path("*_clumped_residual_GWAS_compartment.best"), \
              emit: clumped_residual_GWAS_compartment_PRS
-    tuple val("${ENH_list}"), path("*_original_GWAS.summary"), path("*_original_GWAS.prsice"), path("*_original_GWAS.best"), val(CTthreshold), val(condition),   val(ENH_list),            \
+    tuple val("${ENH_list}"), path("*_original_GWAS.summary"), path("*_original_GWAS.prsice"), path("*_original_GWAS.best"), val(CTthreshold), val(condition),   val(ENH_list),  path(cohort_fam_QC),        \
              emit: clumped_original_GWAS_PRS
     tuple  path("*.png"), path("*.txt"), path("*.log") //figures, quantiles text and log
 
@@ -104,8 +104,6 @@ process PRSice_calculate_PRS_split_partitions {
         --memory ${mem_Gb}Gb \\
         --snp SNP --chr CHR --bp POS --A1 A1 --A2 A2 --pvalue P --stat OR --or \\
         --out ${condition}_${ENH_list}_${CTthreshold}_${EPWAS_model}_clumped_residual_GWAS_compartment
-        
-    
     
     echo ORIGINAL GWAS LOO
     PRSice.R \\
