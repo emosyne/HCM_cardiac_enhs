@@ -102,14 +102,14 @@ workflow HCM {
             .map { [it, condition].flatten() }
         
         )
-    R_extract_GWAS_SNPs_into_bed.out.clumped_GWAS_SNPs_plus_those_in_bed_files
-        .view()
+    // R_extract_GWAS_SNPs_into_bed.out.clumped_GWAS_SNPs_plus_those_in_bed_files
+    //     .view()
     chromosomes_by_condition_plus_SNPs = 
         R_extract_GWAS_SNPs_into_bed.out.clumped_GWAS_SNPs_plus_those_in_bed_files
             .combine(genotype_chr_files) //The combine operator combines (cartesian product) the items emitted by two channels
             
         
-    // chromosomes_by_condition_plus_SNPs.view()
+    chromosomes_by_condition_plus_SNPs.view()
 
     // GENERATE UKBB UNIQUE FILE
     PLINK2_EXTRACT ( 
