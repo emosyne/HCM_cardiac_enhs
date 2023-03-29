@@ -20,11 +20,11 @@ process PRSice_calculate_PRS_split_partitions {
         path(LD_ref_bed), path(LD_ref_bim), path(LD_ref_fam), val(CTthreshold)
     
     output:
-    tuple val("${ENH_list}"), path("*_clumped_EPWAS_*.summary"), path("*_clumped_EPWAS_*.prsice"), path("*_clumped_EPWAS_*.best"), \
+    tuple val("${ENH_list}_${CTthreshold}_${EPWAS_model}"), path("*_clumped_EPWAS_*.summary"), path("*_clumped_EPWAS_*.prsice"), path("*_clumped_EPWAS_*.best"), \
              emit: clumped_EPWAS_PRS
-    tuple val("${ENH_list}"), path("*_clumped_residual_GWAS_compartment.summary"), path("*_clumped_residual_GWAS_compartment.prsice"), path("*_clumped_residual_GWAS_compartment.best"), \
+    tuple val("${ENH_list}_${CTthreshold}_${EPWAS_model}"), path("*_clumped_residual_GWAS_compartment.summary"), path("*_clumped_residual_GWAS_compartment.prsice"), path("*_clumped_residual_GWAS_compartment.best"), \
              emit: clumped_residual_GWAS_compartment_PRS
-    tuple val("${ENH_list}"), path("*_original_GWAS.summary"), path("*_original_GWAS.prsice"), path("*_original_GWAS.best"), val(CTthreshold), val(condition),   val(ENH_list),  path(cohort_fam_QC), val(EPWAS_model),        \
+    tuple val("${ENH_list}_${CTthreshold}_${EPWAS_model}"), path("*_original_GWAS.summary"), path("*_original_GWAS.prsice"), path("*_original_GWAS.best"), val(ENH_list),  val(CTthreshold), val(condition),  path(cohort_fam_QC), val(EPWAS_model),        \
              emit: clumped_original_GWAS_PRS
     tuple  path("*.png"), path("*.txt"), path("*.log") //figures, quantiles text and log
 
