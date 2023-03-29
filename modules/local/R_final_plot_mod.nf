@@ -2,7 +2,7 @@ process R_final_plot {
     // debug true
     container 'emosyne/r_docker:1.97'
     label 'process_high_short'
-    tag "$ENH_list"
+    tag "$ENHlist_thresh_model"
     cache "lenient"
     // errorStrategy 'ignore'
 
@@ -31,7 +31,7 @@ process R_final_plot {
     script:
     """
     
-    R_final_plot.R $task.cpus "${ENH_list}_${model}" ${cohort_fam} \
+    R_final_plot.R $task.cpus "${ENHlist_thresh_model}" ${cohort_fam} \
         ${EPWAS_originalOR_summary} ${EPWAS_originalOR_best}\
         ${EPWAS_OR_by_measure1_summary} ${EPWAS_OR_by_measure1_best}\
         ${EPWAS_OR_by_measure2_summary} ${EPWAS_OR_by_measure2_best}\
