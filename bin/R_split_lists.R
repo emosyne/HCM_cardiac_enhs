@@ -25,7 +25,7 @@ pdivby = 100000
 
 # #OUTPUT
 clumped_residual_GWAS_compartment_out = paste0(ENH_list_cohort, "_clumped_residual_GWAS_compartment.tsv.gz")
-clumped_TS_ENH_GWAS_compartment_out = paste0(ENH_list_cohort,"_X_", ES_multiplier,"_clumped_TS_ENH_GWAS_compartment.tsv.gz")
+clumped_TS_ENH_GWAS_compartment_out = paste0(ENH_list_cohort,"_X_", ES_multiplier,"_clumped_EPWAS.tsv.gz")
 clumped_merged_GWAS_out = paste0(ENH_list_cohort, "_clumped_merged_GWAS.tsv.gz")
 
 
