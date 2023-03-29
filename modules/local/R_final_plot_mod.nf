@@ -7,20 +7,20 @@ process R_final_plot {
     // errorStrategy 'ignore'
 
     input: 
-    // [Neural_significant_enh, 
+    // [Neural_significant_enh_0.05_REC, 
         // SCZ_Neural_significant_enh_0.05_REC_clumped_EPWAS_originalOR.summary, SCZ_Neural_significant_enh_0.05_REC_mult_1_clumped_EPWAS_OR_by_measure1.summary, SCZ_Neural_significant_enh_0.05_REC_mult_1_clumped_EPWAS_OR_by_measure2.summary, 
         // SCZ_Neural_significant_enh_0.05_REC_clumped_EPWAS_originalOR.prsice, SCZ_Neural_significant_enh_0.05_REC_mult_1_clumped_EPWAS_OR_by_measure1.prsice, SCZ_Neural_significant_enh_0.05_REC_mult_1_clumped_EPWAS_OR_by_measure2.prsice, 
         // SCZ_Neural_significant_enh_0.05_REC_clumped_EPWAS_originalOR.best, SCZ_Neural_significant_enh_0.05_REC_mult_1_clumped_EPWAS_OR_by_measure1.best, SCZ_Neural_significant_enh_0.05_REC_mult_1_clumped_EPWAS_OR_by_measure2.best, 
-        // SCZ_Neural_significant_enh_0.05_REC_clumped_residual_GWAS_compartment.summary, SCZ_Neural_significant_enh_0.05_REC_clumped_residual_GWAS_compartment.prsice, SCZ_Neural_significant_enh_0.05_REC_clumped_residual_GWAS_compartment.best, 
-        // SCZ_Neural_significant_enh_original_GWAS.summary, SCZ_Neural_significant_enh_original_GWAS.prsice, SCZ_Neural_significant_enh_original_GWAS.best, 0.05, SCZ, Neural_significant_enh, enh_ES, enh_TS_tpm]
-    tuple val(ENH_list), \
+        // SCZ_Neural_significant_enh_0.05_REC_clumped_residual_GWAS_compartment.summary, SCZ_Neural_significant_enh_0.05_REC_clumped_residual_GWAS_compartment.prsice, SCZ_Neural_significant_enh_0.05_REC_clumped_residual_GWAS_compartment.best,
+        // SCZ_Neural_significant_enh_original_GWAS.summary, SCZ_Neural_significant_enh_original_GWAS.prsice, SCZ_Neural_significant_enh_original_GWAS.best, 
+        // Neural_significant_enh, 0.05, SCZ, GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, REC, enh_ES, enh_TS_tpm]      
+    tuple val(ENHlist_thresh_model), \
         path(EPWAS_originalOR_summary), path(EPWAS_OR_by_measure1_summary), path(EPWAS_OR_by_measure2_summary),  \
         path(EPWAS_originalOR_prsice), path(EPWAS_OR_by_measure1_prsice), path(EPWAS_OR_by_measure2_prsice),  \
-        path (EPWAS_originalOR_best), path(EPWAS_OR_by_measure1_best), path(EPWAS_OR_by_measure2_best),  \
+        path(EPWAS_originalOR_best), path(EPWAS_OR_by_measure1_best), path(EPWAS_OR_by_measure2_best),  \
         path(residual_GWAS_compartment_summary), path(residual_GWAS_compartment_prsice), path (residual_GWAS_compartment_best), \
-        path(cohort_fam),\
         path(original_GWAS_summary), path(original_GWAS_prsice), path (original_GWAS_best),\
-        val(CTthreshold), val(condition),\
+        val(ENH_list), val(CTthreshold), val(condition), path(cohort_fam), val(model),\
         val(modif_name_1),val(modif_name_2)
 
     output:
@@ -31,7 +31,7 @@ process R_final_plot {
     script:
     """
     
-    R_final_plot.R $task.cpus "${ENH_list}" ${cohort_fam} \
+    R_final_plot.R $task.cpus "${ENH_list}_${model}" ${cohort_fam} \
         ${EPWAS_originalOR_summary} ${EPWAS_originalOR_best}\
         ${EPWAS_OR_by_measure1_summary} ${EPWAS_OR_by_measure1_best}\
         ${EPWAS_OR_by_measure2_summary} ${EPWAS_OR_by_measure2_best}\
