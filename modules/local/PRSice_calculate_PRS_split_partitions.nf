@@ -24,8 +24,6 @@ process PRSice_calculate_PRS_split_partitions {
              emit: clumped_EPWAS_PRS
     tuple val("${ENH_list}"), path("*_clumped_residual_GWAS_compartment.summary"), path("*_clumped_residual_GWAS_compartment.prsice"), path("*_clumped_residual_GWAS_compartment.best"), \
              emit: clumped_residual_GWAS_compartment_PRS
-    tuple val("${ENH_list}"), path("*_clumped_merged_GWAS.summary"), path("*_clumped_merged_GWAS.prsice"), path("*_clumped_merged_GWAS.best"),  path(cohort_fam_QC),                     \
-             emit: clumped_merged_GWAS_PRS
     tuple val("${ENH_list}"), path("*_original_GWAS.summary"), path("*_original_GWAS.prsice"), path("*_original_GWAS.best"), val(CTthreshold), val(condition),   val(ENH_list),            \
              emit: clumped_original_GWAS_PRS
     tuple  path("*.png"), path("*.txt"), path("*.log") //figures, quantiles text and log
@@ -108,21 +106,6 @@ process PRSice_calculate_PRS_split_partitions {
         --out ${condition}_${ENH_list}_${CTthreshold}_${EPWAS_model}_clumped_residual_GWAS_compartment
         
     
-    echo clumped_merged_GWAS - original OR
-    PRSice.R \\
-        --prsice /usr/local/bin/PRSice_linux \\
-        --base ${clumped_merged_GWAS} \\
-        --snp SNP --chr CHR --bp POS --A1 A1 --A2 A2 --pvalue P --stat OR --or \\
-        --target ${cohort_bed_QC.simpleName} \\
-        --no-clump  --score avg \\
-        --keep-ambig \\
-        --quantile 10 --quant-ref 1 \\
-        --bar-levels ${CTthreshold} --no-full --fastscore \\
-        --binary-target T --prevalence 0.002 \\
-        --cov covariates.pheno --cov-factor sex \\
-        --thread $max_cpus \\
-        --memory ${mem_Gb}Gb \\
-        --out ${condition}_${ENH_list}_${CTthreshold}_${EPWAS_model}_clumped_merged_GWAS
     
     echo ORIGINAL GWAS LOO
     PRSice.R \\
