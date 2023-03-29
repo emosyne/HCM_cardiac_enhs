@@ -197,6 +197,7 @@ workflow HCM {
             .combine(LD_reference)
     )
     // PLINK_clump.out.clumped_SNPs_and_noclump_lists.view()
+    // [/rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/82/3cd69072a998abd4ba99f1bae51356/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bed, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/82/3cd69072a998abd4ba99f1bae51356/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.bim, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/82/3cd69072a998abd4ba99f1bae51356/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, Neural_significant_enh, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/82/3cd69072a998abd4ba99f1bae51356/SCZ_REC_Neural_significant_enh_noclump_EPWAS.tsv.gz, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/82/3cd69072a998abd4ba99f1bae51356/SCZ_REC_Neural_significant_enh_noclump_residual_GWAS_compartment.tsv.gz, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/82/3cd69072a998abd4ba99f1bae51356/SCZ_Neural_significant_enh_clumped_SNPs.clumped, SCZ, REC]
     
 
     R_split_lists (
