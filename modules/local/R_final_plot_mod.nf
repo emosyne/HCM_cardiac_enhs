@@ -25,8 +25,8 @@ process R_final_plot {
 
     output:
     // path("*.txt")
-    path("*/*/*.pdf")
-    path("*/*/*.log")
+    path("*/*.pdf")
+    path("*/*.log")
 
     script:
     """
