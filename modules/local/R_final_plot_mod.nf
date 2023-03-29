@@ -31,14 +31,14 @@ process R_final_plot {
     script:
     """
     
-    R_final_plot.R $task.cpus "${ENHlist_thresh_model}" ${cohort_fam} \
+    R_final_plot.R $task.cpus ${ENH_list} ${cohort_fam} \
         ${EPWAS_originalOR_summary} ${EPWAS_originalOR_best}\
         ${EPWAS_OR_by_measure1_summary} ${EPWAS_OR_by_measure1_best}\
         ${EPWAS_OR_by_measure2_summary} ${EPWAS_OR_by_measure2_best}\
         ${residual_GWAS_compartment_summary} ${residual_GWAS_compartment_best}\
         ${EPWAS_originalOR_prsice} ${EPWAS_OR_by_measure1_prsice} ${EPWAS_OR_by_measure2_prsice} ${residual_GWAS_compartment_prsice}   \
         ${original_GWAS_summary} ${original_GWAS_prsice} ${original_GWAS_best}\
-        ${modif_name_1} ${modif_name_2} ${CTthreshold} ${condition}
+        ${modif_name_1} ${modif_name_2} ${CTthreshold} ${condition} ${ENHlist_thresh_model} 
     """
 }
     

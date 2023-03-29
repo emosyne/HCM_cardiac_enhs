@@ -15,7 +15,7 @@ args = commandArgs()
 print(args)                                                                                                
 
   # [8] "32"                                                                                                                       
-  # [9] "Neural_significant_enh_REC"                                                                                               
+  # [9] "Neural_significant_enh_0.5_ADD"                                                                                               
   # [10] "GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam"                                                                                     
   # [11] "SCZ_Neural_significant_enh_0.05_REC_clumped_EPWAS_originalOR.summary"                                                     
   # [12] "SCZ_Neural_significant_enh_0.05_REC_clumped_EPWAS_originalOR.best"                                                        
@@ -84,6 +84,7 @@ modif_name_1 = args[26]
 modif_name_2 = args[27]
 threshold = args[28]
 condition_name = args[29] #SCZ or HCM
+ENHlist_thresh_model = args[30]
 
 #set input variables
 number_quantiles = 3
@@ -95,9 +96,8 @@ pop_prev = ifelse(test = condition_name == "SCZ", yes = 0.01, no = 0.00225)
 
 
 #OUTPUT_prefix
-OUTPUT_prefix = paste0(condition_name,"/",threshold,"/")
-if (!dir.exists(file.path(condition_name))) {dir.create(file.path(condition_name))}
-if (!dir.exists(file.path(paste0(condition_name,"/",threshold)))) {dir.create(file.path(paste0(condition_name,"/",threshold)))}
+OUTPUT_prefix = paste0(ENHlist_thresh_model,"/")
+if (!dir.exists(file.path(ENHlist_thresh_model))) {dir.create(file.path(ENHlist_thresh_model))}
 
 
 
