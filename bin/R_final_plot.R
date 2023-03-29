@@ -686,80 +686,80 @@ ggsave(filename = paste0(OUTPUT_prefix, ENH_list, "_", Sys.Date(),"_all_plots.pd
 
 
 
-# OR based plots
-# double quantile plot for interactions
+# # OR based plots
+# # double quantile plot for interactions
 
-#https://cran.r-project.org/web/packages/samplesizeCMH/vignettes/samplesizeCMH-introduction.html
-#https://stats.stackexchange.com/questions/593123/can-i-add-up-ors-for-specific-predictors/593130#593130
-#https://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704-ep713_confounding-em/BS704-EP713_Confounding-EM7.html
-scaled_BEST_PRS_score_per_UKBB_participant
+# #https://cran.r-project.org/web/packages/samplesizeCMH/vignettes/samplesizeCMH-introduction.html
+# #https://stats.stackexchange.com/questions/593123/can-i-add-up-ors-for-specific-predictors/593130#593130
+# #https://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704-ep713_confounding-em/BS704-EP713_Confounding-EM7.html
+# scaled_BEST_PRS_score_per_UKBB_participant
 
-# CALCULATE ORS
-#merged_GWAS_q_OR
-summary(logistic<-glm(formula = dx ~ original_GWAS_q, 
-                      data = scaled_BEST_PRS_score_per_UKBB_participant, family = binomial, na.action = "na.omit"))
-(original_GWAS_q_OR<-exp(cbind(coef(logistic), confint(logistic))) %>% as_tibble(rownames = "quant"))
-colnames(original_GWAS_q_OR) <- c("ENH_compartment_quantile", "OR", "LCI", "UCI")
-original_GWAS_q_OR
+# # CALCULATE ORS
+# #merged_GWAS_q_OR
+# summary(logistic<-glm(formula = dx ~ original_GWAS_q, 
+#                       data = scaled_BEST_PRS_score_per_UKBB_participant, family = binomial, na.action = "na.omit"))
+# (original_GWAS_q_OR<-exp(cbind(coef(logistic), confint(logistic))) %>% as_tibble(rownames = "quant"))
+# colnames(original_GWAS_q_OR) <- c("ENH_compartment_quantile", "OR", "LCI", "UCI")
+# original_GWAS_q_OR
 
-(ORs <- original_GWAS_q_OR)
-ORs[1,]<-list("1",1,1,1)
-ORs[,1]<-list(1:nrow(ORs))
-ORs$original_OR_quant <- "All"
-ORs
+# (ORs <- original_GWAS_q_OR)
+# ORs[1,]<-list("1",1,1,1)
+# ORs[,1]<-list(1:nrow(ORs))
+# ORs$original_OR_quant <- "All"
+# ORs
 
-sink(paste0(OUTPUT_prefix, ENH_list, "_", Sys.Date(),"_ORs.log"))
-ORs_original_OR <- ORs
-for  (i in 1:number_quantiles) {
-  print(i)
-  logistic<-glm(formula = dx ~ original_GWAS_q, 
-                data = scaled_BEST_PRS_score_per_UKBB_participant[scaled_BEST_PRS_score_per_UKBB_participant$TS_ENH_compartment_originalOR_q==i,],
-                family = binomial, na.action = "na.omit")
-  (OR<-exp(cbind(coef(logistic), confint(logistic))) %>% as_tibble(rownames = "quant"))
-  OR[1,]<-list("1",1,1,1)
-  OR[,1]<-list(1:nrow(OR))
-  colnames(OR) <- c("ENH_compartment_quantile", "OR", "LCI", "UCI")
-  OR$original_OR_quant <- paste0("Enh q",i)
-  OR
+# sink(paste0(OUTPUT_prefix, ENH_list, "_", Sys.Date(),"_ORs.log"))
+# ORs_original_OR <- ORs
+# for  (i in 1:number_quantiles) {
+#   print(i)
+#   logistic<-glm(formula = dx ~ original_GWAS_q, 
+#                 data = scaled_BEST_PRS_score_per_UKBB_participant[scaled_BEST_PRS_score_per_UKBB_participant$TS_ENH_compartment_originalOR_q==i,],
+#                 family = binomial, na.action = "na.omit")
+#   (OR<-exp(cbind(coef(logistic), confint(logistic))) %>% as_tibble(rownames = "quant"))
+#   OR[1,]<-list("1",1,1,1)
+#   OR[,1]<-list(1:nrow(OR))
+#   colnames(OR) <- c("ENH_compartment_quantile", "OR", "LCI", "UCI")
+#   OR$original_OR_quant <- paste0("Enh q",i)
+#   OR
   
-  ORs_original_OR<-rbind(ORs_original_OR,OR)
-}
-ORs_original_OR
+#   ORs_original_OR<-rbind(ORs_original_OR,OR)
+# }
+# ORs_original_OR
 
 
 
-(all_ORs<-
-    ORs_original_OR)
-all_ORs$original_OR_quant = factor(all_ORs$original_OR_quant)
-all_ORs$original_OR_quant = relevel(all_ORs$original_OR_quant, ref = "All")
-sink()
+# (all_ORs<-
+#     ORs_original_OR)
+# all_ORs$original_OR_quant = factor(all_ORs$original_OR_quant)
+# all_ORs$original_OR_quant = relevel(all_ORs$original_OR_quant, ref = "All")
+# sink()
 
-# pdf(file = PRS_double_QUANTILE_PLOT, width = 11, height = 7)
-(p4 = ggplot(data = all_ORs , aes(y= OR, ymin = LCI, ymax=UCI, 
-                                  x=factor(ENH_compartment_quantile), colour=original_OR_quant, group=original_OR_quant)) + 
-    # facet_wrap(facets = vars((comp)))+
-    scale_colour_manual(name="ENH compartment quantile", values = c("tomato",MetBrewer::met.brewer("Hokusai2",number_quantiles)))+
-    geom_pointrange(position = position_dodge(width = 0.3))  + 
-    ylab(paste0("OR for ",condition_name))+   xlab('Original PRS quantile')+
-    # labs(title =  paste("Participant distribution by HCM OR by original PGC GWAS quantile\nand further by", ENH_list, "quantile"))+ 
-    theme_bw() +
-    theme(
-      strip.text.x = element_text(size = rel(1.3)),
-      axis.text = element_text(size = rel(1)),
-      axis.title = element_text(size = rel(1.5)),
-      plot.margin = margin(t = 0, r = 1, b = 0, l = 1, "cm"),
-      legend.position = "bottom",
-      panel.grid.major.x = element_blank()
-    ))
+# # pdf(file = PRS_double_QUANTILE_PLOT, width = 11, height = 7)
+# (p4 = ggplot(data = all_ORs , aes(y= OR, ymin = LCI, ymax=UCI, 
+#                                   x=factor(ENH_compartment_quantile), colour=original_OR_quant, group=original_OR_quant)) + 
+#     # facet_wrap(facets = vars((comp)))+
+#     scale_colour_manual(name="ENH compartment quantile", values = c("tomato",MetBrewer::met.brewer("Hokusai2",number_quantiles)))+
+#     geom_pointrange(position = position_dodge(width = 0.3))  + 
+#     ylab(paste0("OR for ",condition_name))+   xlab('Original PRS quantile')+
+#     # labs(title =  paste("Participant distribution by HCM OR by original PGC GWAS quantile\nand further by", ENH_list, "quantile"))+ 
+#     theme_bw() +
+#     theme(
+#       strip.text.x = element_text(size = rel(1.3)),
+#       axis.text = element_text(size = rel(1)),
+#       axis.title = element_text(size = rel(1.5)),
+#       plot.margin = margin(t = 0, r = 1, b = 0, l = 1, "cm"),
+#       legend.position = "bottom",
+#       panel.grid.major.x = element_blank()
+#     ))
 
-# dev.off()
-f4<-arrangeGrob(
-  textGrob(paste0("Participant distribution by OR for ",addline_format(condition_name),", first by original GWAS quantile (in red)\nand further by ", addline_format(ENH_list), " quantile (shades of blue)"), gp = gpar(fontsize = 16, fontface = "bold",col="maroon")), 
-  p4,
-  ncol=1,
-  heights = c(0.1, 1))
+# # dev.off()
+# f4<-arrangeGrob(
+#   textGrob(paste0("Participant distribution by OR for ",addline_format(condition_name),", first by original GWAS quantile (in red)\nand further by ", addline_format(ENH_list), " quantile (shades of blue)"), gp = gpar(fontsize = 16, fontface = "bold",col="maroon")), 
+#   p4,
+#   ncol=1,
+#   heights = c(0.1, 1))
 
 
-ggsave(filename = paste0(OUTPUT_prefix, ENH_list, "_", Sys.Date(),"_Quant_by_quant_plot.pdf"),
-       f4,  width = 9, height = 7)
+# ggsave(filename = paste0(OUTPUT_prefix, ENH_list, "_", Sys.Date(),"_Quant_by_quant_plot.pdf"),
+#        f4,  width = 9, height = 7)
 
