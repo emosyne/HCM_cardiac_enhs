@@ -36,8 +36,7 @@ process R_final_plot {
         ${EPWAS_OR_by_measure1_summary} ${EPWAS_OR_by_measure1_best}\
         ${EPWAS_OR_by_measure2_summary} ${EPWAS_OR_by_measure2_best}\
         ${residual_GWAS_compartment_summary} ${residual_GWAS_compartment_best}\
-        ${merged_GWAS_summary} ${merged_GWAS_best}\
-        ${EPWAS_originalOR_prsice} ${EPWAS_OR_by_measure1_prsice} ${EPWAS_OR_by_measure2_prsice} ${residual_GWAS_compartment_prsice} ${merged_GWAS_prsice}  \
+        ${EPWAS_originalOR_prsice} ${EPWAS_OR_by_measure1_prsice} ${EPWAS_OR_by_measure2_prsice} ${residual_GWAS_compartment_prsice}   \
         ${original_GWAS_summary} ${original_GWAS_prsice} ${original_GWAS_best}\
         ${modif_name_1} ${modif_name_2} ${CTthreshold} ${condition}
     """

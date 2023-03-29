@@ -14,13 +14,12 @@ args = commandArgs()
 
 print(args)                                                                                                
 
-# R_final_plot.R $task.cpus "${ENH_list}_${condition}" ${cohort_fam} \
-        # ${TS_ENH_GWAS_compartment_originalOR_summary} ${TS_ENH_GWAS_compartment_originalOR_best}\
-        # ${TS_ENH_GWAS_compartment_OR_by_measure1_summary} ${TS_ENH_GWAS_compartment_OR_by_measure1_best}\
-        # ${TS_ENH_GWAS_compartment_OR_by_measure2_summary} ${TS_ENH_GWAS_compartment_OR_by_measure2_best}\
+# R_final_plot.R $task.cpus "${ENH_list}_${model}" ${cohort_fam} \
+        # ${EPWAS_originalOR_summary} ${EPWAS_originalOR_best}\
+        # ${EPWAS_OR_by_measure1_summary} ${EPWAS_OR_by_measure1_best}\
+        # ${EPWAS_OR_by_measure2_summary} ${EPWAS_OR_by_measure2_best}\
         # ${residual_GWAS_compartment_summary} ${residual_GWAS_compartment_best}\
-        # ${merged_GWAS_summary} ${merged_GWAS_best}\
-        # ${TS_ENH_GWAS_compartment_originalOR_prsice} ${TS_ENH_GWAS_compartment_OR_by_measure1_prsice} ${TS_ENH_GWAS_compartment_OR_by_measure2_prsice} ${residual_GWAS_compartment_prsice} ${merged_GWAS_prsice}  \
+        # ${EPWAS_originalOR_prsice} ${EPWAS_OR_by_measure1_prsice} ${EPWAS_OR_by_measure2_prsice} ${residual_GWAS_compartment_prsice}   \
         # ${original_GWAS_summary} ${original_GWAS_prsice} ${original_GWAS_best}\
         # ${modif_name_1} ${modif_name_2} ${CTthreshold} ${condition}
 nthreads = as.numeric(args[8])
@@ -32,46 +31,42 @@ setDTthreads(nthreads)
 (diagnosis = fread(args[10], header=F, col.names = c("FID", "IID", "IIDf", "IIDm", "sex", "dx" )) %>%
     dplyr::select("FID", "IID", "dx"))
 
-TS_ENH_GWAS_compartment_originalOR_summary = args[11]
-TS_ENH_GWAS_compartment_originalOR_best = 
+EPWAS_originalOR_summary = args[11]
+EPWAS_originalOR_best = 
   fread(args[12], select=c("FID", "IID", "PRS")) %>% 
-  dplyr::rename(TS_ENH_GWAS_compartment_originalOR_best_PRS = PRS)
+  dplyr::rename(EPWAS_originalOR_best_PRS = PRS)
 
-TS_ENH_GWAS_compartment_OR_by_measure1_summary = args[13]
-TS_ENH_GWAS_compartment_OR_by_measure1_best = 
+EPWAS_OR_by_measure1_summary = args[13]
+EPWAS_OR_by_measure1_best = 
   fread(args[14], select=c("FID", "IID", "PRS")) %>% 
-  dplyr::rename(TS_ENH_GWAS_compartment_OR_by_measure1_best_PRS = PRS)
+  dplyr::rename(EPWAS_OR_by_measure1_best_PRS = PRS)
 
-TS_ENH_GWAS_compartment_OR_by_measure2_summary = args[15]
-TS_ENH_GWAS_compartment_OR_by_measure2_best = 
+EPWAS_OR_by_measure2_summary = args[15]
+EPWAS_OR_by_measure2_best = 
   fread(args[16], select=c("FID", "IID", "PRS")) %>% 
-  dplyr::rename(TS_ENH_GWAS_compartment_OR_by_measure2_best_PRS = PRS)
+  dplyr::rename(EPWAS_OR_by_measure2_best_PRS = PRS)
 
 residual_GWAS_compartment_summary = args[17]
 residual_GWAS_compartment_best = 
   fread(args[18], select=c("FID", "IID", "PRS"))  %>% 
   dplyr::rename(residual_GWAS_compartment_best_PRS = PRS)
-        # ${merged_GWAS_summary} ${merged_GWAS_best}\
-        # ${TS_ENH_GWAS_compartment_originalOR_prsice} ${TS_ENH_GWAS_compartment_OR_by_measure1_prsice} ${TS_ENH_GWAS_compartment_OR_by_measure2_prsice} ${residual_GWAS_compartment_prsice} 
-        # ${merged_GWAS_prsice}  \
-        # ${original_GWAS_summary} ${original_GWAS_prsice} ${original_GWAS_best}\
-        # ${modif_name_1} ${modif_name_2} ${CTthreshold} ${condition}
 
-TS_ENH_GWAS_compartment_originalOR_prsice = args[21]
-TS_ENH_GWAS_compartment_OR_by_measure1_prsice = args[22]
-TS_ENH_GWAS_compartment_OR_by_measure2_prsice = args[23]
-residual_GWAS_compartment_prsice = args[24]
-merged_GWAS_prsice = args[25]
 
-original_GWAS_summary = args[26]
-original_GWAS_prsice = args[27]
-(original_GWAS_best = fread(args[28], select=c("FID", "IID", "PRS"))  %>% 
+EPWAS_originalOR_prsice = args[19]
+EPWAS_OR_by_measure1_prsice = args[20]
+EPWAS_OR_by_measure2_prsice = args[21]
+residual_GWAS_compartment_prsice = args[22]
+merged_GWAS_prsice = args[23]
+
+original_GWAS_summary = args[24]
+original_GWAS_prsice = args[25]
+(original_GWAS_best = fread(args[26], select=c("FID", "IID", "PRS"))  %>% 
   dplyr::rename(original_GWAS_best_PRS = PRS))
 
-modif_name_1 = args[29]
-modif_name_2 = args[30]
-threshold = args[31]
-condition_name = args[32] #SCZ or HCM
+modif_name_1 = args[27]
+modif_name_2 = args[28]
+threshold = args[29]
+condition_name = args[30] #SCZ or HCM
 
 #set input variables
 number_quantiles = 3
@@ -97,12 +92,12 @@ if (!dir.exists(file.path(paste0(condition_name,"/",threshold)))) {dir.create(fi
 #import thresholds and SNP N for each summary
 (summary_table = 
    rbind(
-     "TS_ENH_GWAS_compartment_originalOR_summary" = 
-       data.frame(fread(TS_ENH_GWAS_compartment_originalOR_summary, select=c("Threshold", "PRS.R2","Num_SNP"))),#"PRS.R2.adj",
-     "TS_ENH_GWAS_compartment_OR_by_measure1_summary" = 
-       data.frame(fread(TS_ENH_GWAS_compartment_OR_by_measure1_summary, select=c("Threshold", "PRS.R2","Num_SNP"))),#"PRS.R2.adj",
-     "TS_ENH_GWAS_compartment_OR_by_measure2_summary" = 
-       data.frame(fread(TS_ENH_GWAS_compartment_OR_by_measure2_summary, select=c("Threshold", "PRS.R2","Num_SNP"))),#"PRS.R2.adj",
+     "EPWAS_originalOR_summary" = 
+       data.frame(fread(EPWAS_originalOR_summary, select=c("Threshold", "PRS.R2","Num_SNP"))),#"PRS.R2.adj",
+     "EPWAS_OR_by_measure1_summary" = 
+       data.frame(fread(EPWAS_OR_by_measure1_summary, select=c("Threshold", "PRS.R2","Num_SNP"))),#"PRS.R2.adj",
+     "EPWAS_OR_by_measure2_summary" = 
+       data.frame(fread(EPWAS_OR_by_measure2_summary, select=c("Threshold", "PRS.R2","Num_SNP"))),#"PRS.R2.adj",
      "residual_GWAS_compartment_summary"=
        data.frame(fread(residual_GWAS_compartment_summary, select=c("Threshold", "PRS.R2","Num_SNP"))),#"PRS.R2.adj",
      "original_GWAS_summary"=
@@ -113,9 +108,9 @@ if (!dir.exists(file.path(paste0(condition_name,"/",threshold)))) {dir.create(fi
 
 #BEST TABLE
 #create total PRS score
-(BEST_PRS_score_per_UKBB_participant <- TS_ENH_GWAS_compartment_originalOR_best %>%
-    left_join(TS_ENH_GWAS_compartment_OR_by_measure1_best) %>%
-    left_join(TS_ENH_GWAS_compartment_OR_by_measure2_best) %>%
+(BEST_PRS_score_per_UKBB_participant <- EPWAS_originalOR_best %>%
+    left_join(EPWAS_OR_by_measure1_best) %>%
+    left_join(EPWAS_OR_by_measure2_best) %>%
     left_join(residual_GWAS_compartment_best) %>%
     # left_join(merged_GWAS_best) %>%
     left_join(original_GWAS_best) %>%
@@ -135,7 +130,7 @@ scaled_BEST_PRS_score_per_UKBB_participant[,c(2:6)] <-  data.frame(scale(BEST_PR
 (scaled_BEST_PRS_score_per_UKBB_participant<-
     scaled_BEST_PRS_score_per_UKBB_participant %>% 
     # mutate(weight_total_PRS_best = 
-    #          (TS_ENH_GWAS_compartment_originalOR_best_PRS * summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_originalOR_summary",]$Num_SNP  /summary_table[summary_table$compartment=="merged_GWAS_summary",]$Num_SNP) + 
+    #          (EPWAS_originalOR_best_PRS * summary_table[summary_table$compartment=="EPWAS_originalOR_summary",]$Num_SNP  /summary_table[summary_table$compartment=="merged_GWAS_summary",]$Num_SNP) + 
     #          (residual_GWAS_compartment_best_PRS     * summary_table[summary_table$compartment=="residual_GWAS_compartment_summary",]$Num_SNP      /summary_table[summary_table$compartment=="merged_GWAS_summary",]$Num_SNP)) %>%
     remove_missing() %>% 
     #generate quantiles
@@ -146,13 +141,13 @@ scaled_BEST_PRS_score_per_UKBB_participant[,c(2:6)] <-  data.frame(scale(BEST_PR
     mutate(residual_GWAS_compartment_q = 
              factor(ntile(residual_GWAS_compartment_best_PRS, n = number_quantiles))) %>% 
     mutate(TS_ENH_compartment_originalOR_q = 
-             factor(ntile(TS_ENH_GWAS_compartment_originalOR_best_PRS, number_quantiles))) %>% 
+             factor(ntile(EPWAS_originalOR_best_PRS, number_quantiles))) %>% 
     # mutate(weight_total_q = 
     #          factor(ntile(weight_total_PRS_best, number_quantiles)))%>% 
     mutate(TS_ENH_compartment_OR_by_measure1_q = 
-             factor(ntile(TS_ENH_GWAS_compartment_OR_by_measure1_best_PRS, number_quantiles)))%>% 
+             factor(ntile(EPWAS_OR_by_measure1_best_PRS, number_quantiles)))%>% 
     mutate(TS_ENH_compartment_OR_by_measure2_q = 
-             factor(ntile(TS_ENH_GWAS_compartment_OR_by_measure2_best_PRS, number_quantiles)))
+             factor(ntile(EPWAS_OR_by_measure2_best_PRS, number_quantiles)))
 )
 
 
@@ -257,12 +252,12 @@ residual_GWAS_compart_logistic_model_R2 = rbind(cbind(psychometric::CI.Rsq(pseud
 
 # TS ENH original OR
 #logistic model
-logit = glm(dx ~ TS_ENH_GWAS_compartment_originalOR_best_PRS, 
+logit = glm(dx ~ EPWAS_originalOR_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant, family = binomial(logit))
 summary(logit)
 (pseudo_R2 = as.numeric(fmsb::NagelkerkeR2(logit)[2]))
 ## linear model
-linear = lm(as.numeric(as.character(dx)) ~ TS_ENH_GWAS_compartment_originalOR_best_PRS, 
+linear = lm(as.numeric(as.character(dx)) ~ EPWAS_originalOR_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
 #summary(linear)
 # R2 on the liability scale using the transformation
@@ -273,7 +268,7 @@ linear = lm(as.numeric(as.character(dx)) ~ TS_ENH_GWAS_compartment_originalOR_be
 TS_ENH_originalOR_compart_logistic_model_R2 = rbind(cbind(psychometric::CI.Rsq(pseudo_R2,length(logit$fitted.values),1)[c(1,3,4)],t="Nagelkerke"),
                                                     cbind(ChoiMe(psychometric::CI.Rsq(pseudo_R2,length(logit$fitted.values),1)[c(1,3,4)]),t="Choi"))
 (info = tibble(comp="2",    
-               NSNP=summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_originalOR_summary",]$Num_SNP, 
+               NSNP=summary_table[summary_table$compartment=="EPWAS_originalOR_summary",]$Num_SNP, 
                CoD_per_SNP=NA) %>% 
     #double row
     slice(rep(1:n(), each = 2)))
@@ -285,12 +280,12 @@ TS_ENH_originalOR_compart_logistic_model_R2 = rbind(cbind(psychometric::CI.Rsq(p
 
 # TS ENH  OR by measure 1
 #logistic model
-logit = glm(dx ~ TS_ENH_GWAS_compartment_OR_by_measure1_best_PRS, 
+logit = glm(dx ~ EPWAS_OR_by_measure1_best_PRS, 
              data = scaled_BEST_PRS_score_per_UKBB_participant, family = binomial(logit))
 summary(logit)
 (pseudo_R2 = as.numeric(fmsb::NagelkerkeR2(logit)[2]))
 ## linear model
-linear = lm(as.numeric(as.character(dx)) ~ TS_ENH_GWAS_compartment_OR_by_measure1_best_PRS, 
+linear = lm(as.numeric(as.character(dx)) ~ EPWAS_OR_by_measure1_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
 #summary(linear)
 # R2 on the liability scale using the transformation
@@ -301,7 +296,7 @@ linear = lm(as.numeric(as.character(dx)) ~ TS_ENH_GWAS_compartment_OR_by_measure
 TS_ENH_OR_by_measure1_compart_logistic_model_R2 = rbind(cbind(psychometric::CI.Rsq(pseudo_R2,length(logit$fitted.values),1)[c(1,3,4)],t="Nagelkerke"),
                                                         cbind(ChoiMe(psychometric::CI.Rsq(pseudo_R2,length(logit$fitted.values),1)[c(1,3,4)]),t="Choi"))
 (info = tibble(comp="2b",    
-               NSNP=summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_OR_by_measure1_summary",]$Num_SNP, 
+               NSNP=summary_table[summary_table$compartment=="EPWAS_OR_by_measure1_summary",]$Num_SNP, 
                CoD_per_SNP=NA) %>% 
     #double row
     slice(rep(1:n(), each = 2)))
@@ -313,12 +308,12 @@ TS_ENH_OR_by_measure1_compart_logistic_model_R2 = rbind(cbind(psychometric::CI.R
 
 # TS ENH  OR by measure 2
 #logistic model
-logit = glm(dx ~ TS_ENH_GWAS_compartment_OR_by_measure2_best_PRS, 
+logit = glm(dx ~ EPWAS_OR_by_measure2_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant, family = binomial(logit))
 summary(logit)
 (pseudo_R2 = as.numeric(fmsb::NagelkerkeR2(logit)[2]))
 ## linear model
-linear = lm(as.numeric(as.character(dx)) ~ TS_ENH_GWAS_compartment_OR_by_measure2_best_PRS, 
+linear = lm(as.numeric(as.character(dx)) ~ EPWAS_OR_by_measure2_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
 #summary(linear)
 # R2 on the liability scale using the transformation
@@ -329,7 +324,7 @@ linear = lm(as.numeric(as.character(dx)) ~ TS_ENH_GWAS_compartment_OR_by_measure
 TS_ENH_OR_by_measure2_compart_logistic_model_R2 = rbind(cbind(psychometric::CI.Rsq(pseudo_R2,length(logit$fitted.values),1)[c(1,3,4)],t="Nagelkerke"),
                                                         cbind(ChoiMe(psychometric::CI.Rsq(pseudo_R2,length(logit$fitted.values),1)[c(1,3,4)]),t="Choi"))
 (info = tibble(comp="2c",    
-               NSNP=summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_OR_by_measure2_summary",]$Num_SNP, 
+               NSNP=summary_table[summary_table$compartment=="EPWAS_OR_by_measure2_summary",]$Num_SNP, 
                CoD_per_SNP=NA) %>% 
     #double row
     slice(rep(1:n(), each = 2)))
@@ -343,12 +338,12 @@ TS_ENH_OR_by_measure2_compart_logistic_model_R2 = rbind(cbind(psychometric::CI.R
 
 ##simple additive model
 #logistic model
-logit = glm(dx ~ residual_GWAS_compartment_best_PRS + TS_ENH_GWAS_compartment_originalOR_best_PRS, 
+logit = glm(dx ~ residual_GWAS_compartment_best_PRS + EPWAS_originalOR_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant, family = binomial(logit)) 
 summary(logit)
 (pseudo_R2 = as.numeric(fmsb::NagelkerkeR2(logit)[2]))
 ## linear model
-linear = lm(as.numeric(as.character(dx)) ~ residual_GWAS_compartment_best_PRS + TS_ENH_GWAS_compartment_originalOR_best_PRS, 
+linear = lm(as.numeric(as.character(dx)) ~ residual_GWAS_compartment_best_PRS + EPWAS_originalOR_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
 #summary(linear)
 # R2 on the liability scale using the transformation
@@ -359,7 +354,7 @@ linear = lm(as.numeric(as.character(dx)) ~ residual_GWAS_compartment_best_PRS + 
 residual_GWAS_plus_TS_ENH_originalOR_logistic_model_R2 =  rbind(cbind(psychometric::CI.Rsq(pseudo_R2,length(logit$fitted.values),1)[c(1,3,4)],t="Nagelkerke"),
                                                                 cbind(ChoiMe(psychometric::CI.Rsq(pseudo_R2,length(logit$fitted.values),1)[c(1,3,4)]),t="Choi"))
 (info = tibble(comp="3",    
-               NSNP=summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_OR_by_measure2_summary",]$Num_SNP +
+               NSNP=summary_table[summary_table$compartment=="EPWAS_OR_by_measure2_summary",]$Num_SNP +
                  summary_table[summary_table$compartment=="residual_GWAS_compartment_summary",]$Num_SNP, 
                CoD_per_SNP=NA) %>% 
     #double row
@@ -372,12 +367,12 @@ residual_GWAS_plus_TS_ENH_originalOR_logistic_model_R2 =  rbind(cbind(psychometr
 
 ## full factorial design 
 #logistic model
-logit = glm(dx ~ residual_GWAS_compartment_best_PRS*TS_ENH_GWAS_compartment_originalOR_best_PRS, 
+logit = glm(dx ~ residual_GWAS_compartment_best_PRS*EPWAS_originalOR_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant, family = binomial(logit))
 summary(logit)
 (pseudo_R2 = as.numeric(fmsb::NagelkerkeR2(logit)[2]))
 ## linear model
-linear = lm(as.numeric(as.character(dx)) ~ residual_GWAS_compartment_best_PRS*TS_ENH_GWAS_compartment_originalOR_best_PRS, 
+linear = lm(as.numeric(as.character(dx)) ~ residual_GWAS_compartment_best_PRS*EPWAS_originalOR_best_PRS, 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
 #summary(linear)
 # R2 on the liability scale using the transformation
@@ -388,7 +383,7 @@ linear = lm(as.numeric(as.character(dx)) ~ residual_GWAS_compartment_best_PRS*TS
 logistic_full_factorial_design_model_R2 = rbind(cbind(psychometric::CI.Rsq(pseudo_R2,length(logit$fitted.values),1)[c(1,3,4)],t="Nagelkerke"),
                                                 cbind(ChoiMe(psychometric::CI.Rsq(pseudo_R2,length(logit$fitted.values),1)[c(1,3,4)]),t="Choi"))
 (info = tibble(comp="3b",    
-               NSNP=summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_OR_by_measure2_summary",]$Num_SNP +
+               NSNP=summary_table[summary_table$compartment=="EPWAS_OR_by_measure2_summary",]$Num_SNP +
                  summary_table[summary_table$compartment=="residual_GWAS_compartment_summary",]$Num_SNP, 
                CoD_per_SNP=NA) %>% 
     #double row
@@ -400,14 +395,14 @@ logistic_full_factorial_design_model_R2 = rbind(cbind(psychometric::CI.Rsq(pseud
 ))
 
 # full factorial design including interactions and non-linear interactions
-logit = glm(dx ~ residual_GWAS_compartment_best_PRS*TS_ENH_GWAS_compartment_originalOR_best_PRS +
-              I(residual_GWAS_compartment_best_PRS^2) + I(TS_ENH_GWAS_compartment_originalOR_best_PRS^2), 
+logit = glm(dx ~ residual_GWAS_compartment_best_PRS*EPWAS_originalOR_best_PRS +
+              I(residual_GWAS_compartment_best_PRS^2) + I(EPWAS_originalOR_best_PRS^2), 
             data = scaled_BEST_PRS_score_per_UKBB_participant, family = binomial(logit))
 summary(logit)
 (pseudo_R2 = as.numeric(fmsb::NagelkerkeR2(logit)[2]))
 ## linear model
-linear = lm(as.numeric(as.character(dx)) ~ residual_GWAS_compartment_best_PRS*TS_ENH_GWAS_compartment_originalOR_best_PRS +
-              I(residual_GWAS_compartment_best_PRS^2) + I(TS_ENH_GWAS_compartment_originalOR_best_PRS^2), 
+linear = lm(as.numeric(as.character(dx)) ~ residual_GWAS_compartment_best_PRS*EPWAS_originalOR_best_PRS +
+              I(residual_GWAS_compartment_best_PRS^2) + I(EPWAS_originalOR_best_PRS^2), 
             data = scaled_BEST_PRS_score_per_UKBB_participant)
 #summary(linear)
 # R2 on the liability scale using the transformation
@@ -418,7 +413,7 @@ linear = lm(as.numeric(as.character(dx)) ~ residual_GWAS_compartment_best_PRS*TS
 logistic_full_factorial_design_nonlinear_interactions_model_R2 = rbind(cbind(psychometric::CI.Rsq(pseudo_R2,length(logit$fitted.values),1)[c(1,3,4)],t="Nagelkerke"),
                                                                        cbind(ChoiMe(psychometric::CI.Rsq(pseudo_R2,length(logit$fitted.values),1)[c(1,3,4)]),t="Choi"))
 (info = tibble(comp="3c",    
-               NSNP=summary_table[summary_table$compartment=="TS_ENH_GWAS_compartment_OR_by_measure2_summary",]$Num_SNP +
+               NSNP=summary_table[summary_table$compartment=="EPWAS_OR_by_measure2_summary",]$Num_SNP +
                  summary_table[summary_table$compartment=="residual_GWAS_compartment_summary",]$Num_SNP, 
                CoD_per_SNP=NA) %>% 
     #double row
