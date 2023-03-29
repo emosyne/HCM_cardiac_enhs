@@ -90,7 +90,7 @@ workflow HCM {
             .combine(LD_reference)
             .map { [it, condition].flatten() }
     )
-    
+    PLINK_base_GWAS_QC_and_clump.out.GWAS_QC_noClump.view()
     
 
     R_extract_GWAS_SNPs_into_bed ( 
