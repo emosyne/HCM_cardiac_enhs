@@ -11,11 +11,6 @@ include {R_split_lists}                         from '../modules/local/R_split_l
 include {PRSice_calculate_PRS_split_partitions} from '../modules/local/PRSice_calculate_PRS_split_partitions.nf'
 include {R_final_plot}                          from '../modules/local/R_final_plot_mod.nf'
 
-// // chain file
-// hg38ToHg19_chain = Channel
-//     .fromPath( "./input/chainfiles/hg38ToHg19.over.chain", checkIfExists: true)
-
-
 
 
 // #### UKBB input files ####
@@ -70,7 +65,7 @@ condition = "HCM" // SCZ or HCM
 // condition = "SCZ" // SCZ or HCM
 
 
-workflow HCM {
+workflow HCM_cardiac_enhs {
     // BASE =   GWAS
     // TARGET = UKBB
 

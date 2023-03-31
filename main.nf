@@ -3,8 +3,8 @@
 // Declare syntax version
 nextflow.enable.dsl=2
 
-include { HCM } from './workflows/HCM.nf'
+include { HCM_cardiac_enhs } from './workflows/HCM_cardiac_enhs.nf'
 
 workflow {
-    HCM()
+    HCM_cardiac_enhs()
 }
