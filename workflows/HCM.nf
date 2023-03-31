@@ -239,12 +239,12 @@ workflow HCM {
             .map { [it, "enh_ES", "enh_TS_tpm"].flatten() }
 
 
-    PRS_results.view()
+    // PRS_results.view()
     // // [Neural_significant_enh_0.5_ADD, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/75/2f6c1f78d6cd3f9fd54828627f671f/SCZ_Neural_significant_enh_0.5_ADD_clumped_EPWAS_originalOR.summary, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/75/2f6c1f78d6cd3f9fd54828627f671f/SCZ_Neural_significant_enh_0.5_ADD_mult_1_clumped_EPWAS_OR_by_measure1.summary, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/75/2f6c1f78d6cd3f9fd54828627f671f/SCZ_Neural_significant_enh_0.5_ADD_mult_1_clumped_EPWAS_OR_by_measure2.summary, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/75/2f6c1f78d6cd3f9fd54828627f671f/SCZ_Neural_significant_enh_0.5_ADD_clumped_EPWAS_originalOR.prsice, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/75/2f6c1f78d6cd3f9fd54828627f671f/SCZ_Neural_significant_enh_0.5_ADD_mult_1_clumped_EPWAS_OR_by_measure1.prsice, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/75/2f6c1f78d6cd3f9fd54828627f671f/SCZ_Neural_significant_enh_0.5_ADD_mult_1_clumped_EPWAS_OR_by_measure2.prsice, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/75/2f6c1f78d6cd3f9fd54828627f671f/SCZ_Neural_significant_enh_0.5_ADD_clumped_EPWAS_originalOR.best, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/75/2f6c1f78d6cd3f9fd54828627f671f/SCZ_Neural_significant_enh_0.5_ADD_mult_1_clumped_EPWAS_OR_by_measure1.best, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/75/2f6c1f78d6cd3f9fd54828627f671f/SCZ_Neural_significant_enh_0.5_ADD_mult_1_clumped_EPWAS_OR_by_measure2.best, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/75/2f6c1f78d6cd3f9fd54828627f671f/SCZ_Neural_significant_enh_0.5_ADD_clumped_residual_GWAS_compartment.summary, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/75/2f6c1f78d6cd3f9fd54828627f671f/SCZ_Neural_significant_enh_0.5_ADD_clumped_residual_GWAS_compartment.prsice, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/75/2f6c1f78d6cd3f9fd54828627f671f/SCZ_Neural_significant_enh_0.5_ADD_clumped_residual_GWAS_compartment.best, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/75/2f6c1f78d6cd3f9fd54828627f671f/SCZ_Neural_significant_enh_original_GWAS.summary, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/75/2f6c1f78d6cd3f9fd54828627f671f/SCZ_Neural_significant_enh_original_GWAS.prsice, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/75/2f6c1f78d6cd3f9fd54828627f671f/SCZ_Neural_significant_enh_original_GWAS.best, Neural_significant_enh, 0.5, SCZ, /rds/general/ephemeral/user/eosimo/ephemeral/HCM_cardiac_enhs/work/75/2f6c1f78d6cd3f9fd54828627f671f/GWAS_ENH_SNPs_hg19_ALLCHR_SCZ_QC.fam, ADD, enh_ES, enh_TS_tpm]
 
-    // R_final_plot (
-    //     PRS_results
-    // )
+    R_final_plot (
+        PRS_results
+    )
 
 }
 
