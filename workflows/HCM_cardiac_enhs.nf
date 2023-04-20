@@ -44,7 +44,7 @@ enhancer_lists_bed_files =
         .map { ENH_list -> ["${ENH_list}", 
             file("./input/enh_bedfiles/${ENH_list}.bed", checkIfExists: true)]
             } 
-annotations = Channel.fromPath( "./ ../private_input_files/ES_multipliers/2023-02-01_CARDIAC_NoFibro_significant_ES_significant_contact_EPs_ANNOT_plus_100_noOverlap.csv.gz", checkIfExists: true)
+annotations = Channel.fromPath( "../private_input_files/ES_multipliers/2023-02-01_CARDIAC_NoFibro_significant_ES_significant_contact_EPs_ANNOT_plus_100_noOverlap.csv.gz", checkIfExists: true)
 condition = "HCM" // SCZ or HCM
 
 // //  SCHIZO and neural lists ##############
