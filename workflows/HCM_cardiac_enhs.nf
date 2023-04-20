@@ -102,7 +102,7 @@ workflow HCM_cardiac_enhs {
     
     
 
-    PLINK_MERGE( // SETTING TO BE RESTORED FOR RUNNING IN IMPERIAL
+    PLINK_MERGE( 
         // merge all bed files into one:
         PLINK2_EXTRACT.out.SNPextracted_by_chromosome.collect(),
         UKBBethinicityRelatedness,
