@@ -133,7 +133,7 @@ workflow HCM_cardiac_enhs {
     // Remove individuals with heterozigosity F coefficients that are more than 3 standard deviation (SD) units from the mean
     // also remove mismatching SNPs
     // also standard QC --maf 0.01 --mac 100 --geno 0.1 --hwe 1e-15 --mind 0.1 
-    PLINK_PRODUCE_QC_DATASET ( //   SETTING TO BE RESTORED FOR RUNNING IN IMPERIAL     --maf 0.01 --mac 100 --geno 0.1 --hwe 1e-15 --mind 0.1 \\
+    PLINK_PRODUCE_QC_DATASET ( 
 
         R_PRS_QC.out.QC_het_a1_mismatch
     )
